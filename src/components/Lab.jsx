@@ -1,4 +1,5 @@
 import { LAB, tx } from '../data/content.js'
+import { LAB_FILLED, LAB_MODE } from './ui/sections.js'
 import { useApp } from '../hooks/useApp.jsx'
 import Section from './ui/Section.jsx'
 import { RevealGroup, RevealItem } from './ui/Reveal.jsx'
@@ -6,13 +7,13 @@ import Media from './ui/Media.jsx'
 
 const ICONS = ['bench', 'chip', 'pcb', 'scope', 'wave', 'code', 'layers', 'pcb', 'bench']
 
-export default function Lab() {
+export default function Lab({ index }) {
   const { lang, t } = useApp()
 
   return (
-    <Section id="lab" index="04" kicker={t.labKicker} title={t.labTitle} intro={t.labIntro}>
+    <Section id="lab" index={index} kicker={t.labKicker} title={t.labTitle} intro={t.labIntro}>
       <RevealGroup className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4" stagger={0.04}>
-        {LAB.map((slot, i) => {
+        {(LAB_MODE === 'filled' ? LAB_FILLED : LAB).map((slot, i) => {
           const caption = tx(slot.caption, lang)
           const hint = tx(slot.hint, lang)
           return (

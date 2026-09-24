@@ -206,20 +206,20 @@ class CV:
         self.skill('Sensors & Actuation', 'IR sensor, analog inputs, 12-bit SPI ADC/DAC; DC motor control (H-bridge, PWM), servo control')
         self.skill('Digital Design & Signals', 'VHDL, Intel Quartus, ModelSim; MATLAB, FIR/IIR filter design')
         self.skill('Software & Tools', 'Python, JavaScript/TypeScript, React, Next.js, Firebase, PostgreSQL, Git, Linux')
-        self.pending_line('Lab & Instrumentation — oscilloscope, multimeter, bench supply, function generator, soldering (THT/SMD)? List only what is true.')
+        b = self.skill('Lab & Instrumentation', 'Oscilloscope, digital multimeter, bench power supply, function generator, soldering')
+        self.pending(b, 'THT, SMD or both?')
 
         # Experience
         self.heading('Experience')
-        self.entry('Teaching Assistant — Arduino 101', ', Pontificia Universidad Javeriana', 'Feb 2026 – Present')
-        self.bullet('Guide undergraduate students through sensors, actuators and peripheral devices on the Arduino platform.')
-        b = self.bullet('Mentor projects from system design to implementation; debug embedded C (memory management, optimization).')
-        self.pending(b, 'students per semester (only if exact)')
-
-        self.entry('Teaching Assistant — Processor-Based Systems Design', ', Pontificia Universidad Javeriana', 'Jan 2025 – Jun 2025')
+        self.entry('Teaching Assistant — Processor-Based Systems Design', ', Pontificia Universidad Javeriana', 'Feb 2026 – Present')
         b = self.bullet('Designed and developed custom PCBs in Altium Designer for hands-on experimentation with course concepts.')
-        self.pending(b, 'board function, MCU, layers, units built')
-        self.bullet('Resolved office-hours questions on embedded C, finite-state machines, interrupts and timing analysis.')
-        self.bullet('Supported embedded-systems and microprocessor course projects; explained digital-system architectures.')
+        self.pending(b, 'board function, MCU, layers, units built; students per semester (only if exact)')
+        self.bullet('Resolve office-hours questions on embedded C, finite-state machines, interrupts and timing analysis.')
+        self.bullet('Support embedded-systems and microprocessor course projects; explain digital-system architectures.')
+
+        self.entry('Teaching Assistant — Arduino 101', ', Pontificia Universidad Javeriana', 'Jan 2025 – Jun 2025')
+        self.bullet('Guided undergraduate students through sensors, actuators and peripheral devices on the Arduino platform.')
+        self.bullet('Mentored projects from system design to implementation; debugged embedded C (memory management, optimization).')
 
         self.entry('Academic Tutor — Programa Tu', ', Instituto Alberto Merani', 'Sep 2024 – Present')
         self.bullet('Deliver one-on-one tutoring in physics, mathematics, critical thinking and language (22+ contracted hours).')
@@ -232,7 +232,7 @@ class CV:
         self.pending(b, 'sample rate, exact PIC part number, solo or team')
         self.bullet('Wrote a UART command parser and FSM to switch filter, input and DAC routing at runtime without reflashing.')
 
-        self.entry('Custom Course PCBs', '  |  Altium Designer', '2025')
+        self.entry('Custom Course PCBs', '  |  Altium Designer', '2026')
         b = self.bullet('Designed custom PCBs for hands-on work in Processor-Based Systems Design, from schematic capture to layout.')
         self.pending(b, 'what the boards do, MCU, layers, quantity fabricated')
 

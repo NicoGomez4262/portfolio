@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { NAV, PROFILE, SECTIONS } from '../data/content.js'
+import { NAV, PROFILE } from '../data/content.js'
+import { sectionVisible } from './ui/sections.js'
 import { useApp, useActiveSection } from '../hooks/useApp.jsx'
 import Icon from './ui/Icon.jsx'
 
-const ITEMS = NAV.filter((n) => SECTIONS[n.id] !== false)
+const ITEMS = NAV.filter((n) => sectionVisible(n.id))
 // Se observan también las secciones fuera del menú, para no dejar resaltado un enlace viejo.
 const IDS = ['top', 'about', ...ITEMS.map((n) => n.id), 'education']
 

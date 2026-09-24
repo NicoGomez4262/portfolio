@@ -25,11 +25,11 @@ function LevelBar({ level }) {
   )
 }
 
-export default function Education() {
+export default function Education({ index }) {
   const { lang, t } = useApp()
 
   return (
-    <Section id="education" index="06" kicker={t.eduKicker} title={t.eduTitle}>
+    <Section id="education" index={index} kicker={t.eduKicker} title={t.eduTitle}>
       <div className="grid gap-5 lg:grid-cols-[1.5fr_1fr]">
         <div className="space-y-4">
           {EDUCATION.map((e, i) => (

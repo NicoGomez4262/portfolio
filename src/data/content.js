@@ -37,7 +37,9 @@ export const SEEKING = {
 
 /** Interruptores de secciones. */
 export const SECTIONS = {
-  lab: true, // si al aplicar aún no hay fotos del laboratorio, poner false oculta la galería y su enlace
+  // 'auto' = la galería aparece sola cuando hay al menos 3 fotos en public/media/lab/, mostrando solo esas.
+  // true = siempre visible con los 9 huecos · false = oculta.
+  lab: 'auto',
 }
 
 export const NAV = [
@@ -233,7 +235,7 @@ export const ABOUT = {
   en: {
     body: [
       'I am an Electronic Engineering student at Pontificia Universidad Javeriana in Bogotá, focused on embedded systems and hardware design. I write firmware in C for PIC and Arduino microcontrollers, design PCBs in Altium, describe digital logic in VHDL and run real-time digital filters on small MCUs.',
-      'As a teaching assistant I designed custom PCBs for a processor-based systems course, and I now mentor Arduino 101 students from system design to implementation.',
+      'As a teaching assistant for Processor-Based Systems Design I designed custom PCBs for the course, and I help students debug embedded C, interrupts and timing. At the bench I work with an oscilloscope, multimeter, bench supply, function generator and soldering iron.',
       'I also build the software that talks to the hardware: Python on a Raspberry Pi, MQTT links and web apps in production. That lets me follow a system from the sensor to the screen.',
     ],
     focus: ['Embedded C', 'PCB design', 'Digital design · VHDL', 'Signal processing', 'Rapid prototyping', 'IoT · MQTT'],
@@ -241,7 +243,7 @@ export const ABOUT = {
   es: {
     body: [
       'Soy estudiante de Ingeniería Electrónica en la Pontificia Universidad Javeriana, en Bogotá, con enfoque en sistemas embebidos y diseño de hardware. Escribo firmware en C para microcontroladores PIC y Arduino, diseño PCB en Altium, describo lógica digital en VHDL y ejecuto filtros digitales en tiempo real sobre microcontroladores pequeños.',
-      'Como monitor diseñé PCB a la medida para un curso de sistemas basados en procesadores, y hoy acompaño a estudiantes de Arduino 101 desde el diseño del sistema hasta su implementación.',
+      'Como monitor de Diseño de Sistemas Basados en Procesadores diseñé PCB a la medida para el curso y ayudo a los estudiantes a depurar C embebido, interrupciones y temporización. En la mesa de trabajo uso osciloscopio, multímetro, fuente de banco, generador de funciones y cautín.',
       'También construyo el software que habla con el hardware: Python sobre Raspberry Pi, enlaces MQTT y aplicaciones web en producción. Así puedo seguir un sistema desde el sensor hasta la pantalla.',
     ],
     focus: ['C embebido', 'Diseño de PCB', 'Diseño digital · VHDL', 'Procesamiento de señales', 'Prototipado rápido', 'IoT · MQTT'],
@@ -250,53 +252,54 @@ export const ABOUT = {
 
 export const EXPERIENCE = [
   {
-    id: 'ta-arduino',
+    id: 'ta-processors',
     org: 'Pontificia Universidad Javeriana',
     place: 'Bogotá, Colombia',
     current: true,
     dates: { en: 'Feb 2026 — Present', es: 'Feb 2026 — Actual' },
-    tags: ['Arduino', 'C', 'Sensors', 'Actuators', 'Debugging'],
-    students: null, // ⚠ PENDIENTE — número de estudiantes por semestre (solo si es exacto)
-    en: {
-      role: 'Teaching Assistant — Arduino 101',
-      bullets: [
-        'Guide undergraduate students through sensors, actuators and peripheral devices on the Arduino platform.',
-        'Mentor student projects from system design through implementation.',
-        'Support students in C and embedded systems: debugging, memory management and code optimization.',
-      ],
-    },
-    es: {
-      role: 'Monitor — Arduino 101',
-      bullets: [
-        'Guío a estudiantes de pregrado en el uso de sensores, actuadores y periféricos sobre la plataforma Arduino.',
-        'Acompaño proyectos de estudiantes desde el diseño del sistema hasta su implementación.',
-        'Doy soporte en C y sistemas embebidos: depuración, manejo de memoria y optimización de código.',
-      ],
-    },
-  },
-  {
-    id: 'ta-processors',
-    org: 'Pontificia Universidad Javeriana',
-    place: 'Bogotá, Colombia',
-    current: false,
-    dates: { en: 'Jan 2025 — Jun 2025', es: 'Ene 2025 — Jun 2025' },
     tags: ['PCB design', 'Altium', 'Embedded C', 'FSMs', 'Interrupts', 'Timing'],
+    students: null, // ⚠ PENDIENTE — número de estudiantes por semestre (solo si es exacto)
     en: {
       role: 'Teaching Assistant — Processor-Based Systems Design',
       bullets: [
         'Designed and developed custom PCBs for the course, enabling hands-on experimentation with its concepts.',
-        'Supported course projects in embedded systems and microprocessors.',
-        'Resolved office-hours questions on embedded C, finite-state machines, interrupts and timing analysis.',
-        'Helped students understand digital-system architectures and their implementation strategies.',
+        'Support course projects in embedded systems and microprocessors.',
+        'Resolve office-hours questions on embedded C, finite-state machines, interrupts and timing analysis.',
+        'Help students understand digital-system architectures and their implementation strategies.',
       ],
     },
     es: {
       role: 'Monitor — Diseño de Sistemas Basados en Procesadores',
       bullets: [
-        'Diseñé y desarrollé PCB a la medida para el curso, que permitieron experimentar en físico con sus conceptos.',
-        'Apoyé los proyectos del curso en sistemas embebidos y microprocesadores.',
-        'Resolví dudas en horas de consulta sobre C embebido, máquinas de estados, interrupciones y análisis de temporización.',
-        'Acompañé a los estudiantes en la comprensión de arquitecturas de sistemas digitales y sus estrategias de implementación.',
+        'Diseñé y desarrollé PCB a la medida para el curso, que permiten experimentar en físico con sus conceptos.',
+        'Apoyo los proyectos del curso en sistemas embebidos y microprocesadores.',
+        'Resuelvo dudas en horas de consulta sobre C embebido, máquinas de estados, interrupciones y análisis de temporización.',
+        'Acompaño a los estudiantes en la comprensión de arquitecturas de sistemas digitales y sus estrategias de implementación.',
+      ],
+    },
+  },
+  {
+    id: 'ta-arduino',
+    org: 'Pontificia Universidad Javeriana',
+    place: 'Bogotá, Colombia',
+    current: false,
+    dates: { en: 'Jan 2025 — Jun 2025', es: 'Ene 2025 — Jun 2025' },
+    tags: ['Arduino', 'C', 'Sensors', 'Actuators', 'Debugging'],
+    students: null, // ⚠ PENDIENTE — número de estudiantes por semestre (solo si es exacto)
+    en: {
+      role: 'Teaching Assistant — Arduino 101',
+      bullets: [
+        'Guided undergraduate students through sensors, actuators and peripheral devices on the Arduino platform.',
+        'Mentored student projects from system design through implementation.',
+        'Supported students in C and embedded systems: debugging, memory management and code optimization.',
+      ],
+    },
+    es: {
+      role: 'Monitor — Arduino 101',
+      bullets: [
+        'Guié a estudiantes de pregrado en el uso de sensores, actuadores y periféricos sobre la plataforma Arduino.',
+        'Acompañé proyectos de estudiantes desde el diseño del sistema hasta su implementación.',
+        'Di soporte en C y sistemas embebidos: depuración, manejo de memoria y optimización de código.',
       ],
     },
   },
@@ -411,14 +414,14 @@ export const HARDWARE = [
   {
     id: 'custom-pcbs',
     name: { en: 'Custom PCBs for Processor-Based Systems Design', es: 'PCB a la medida para Diseño de Sistemas Basados en Procesadores' },
-    year: '2025',
+    year: '2026',
     repo: null,
     demo: null,
     team: null,
     gallery: ['schematic', 'pcb', 'board'],
     specs: [
       { k: 'EDA', v: 'Altium Designer' },
-      { k: { en: 'Context', es: 'Contexto' }, v: { en: 'Teaching assistant · 2025', es: 'Monitoría · 2025' } },
+      { k: { en: 'Context', es: 'Contexto' }, v: { en: 'Teaching assistant · 2026', es: 'Monitoría · 2026' } },
       { k: { en: 'Board function', es: 'Función' }, v: null }, // ⚠ PENDIENTE — qué hace cada placa
       { k: 'MCU', v: null }, // ⚠ PENDIENTE — microcontrolador / procesador
       { k: { en: 'Layers', es: 'Capas' }, v: null }, // ⚠ PENDIENTE
@@ -659,7 +662,7 @@ export const SKILLS = [
     rows: [
       { k: 'EDA', v: 'Altium Designer' },
       { k: { en: 'Simulation', es: 'Simulación' }, v: 'LTspice' },
-      { k: { en: 'Delivered', es: 'Entregado' }, v: { en: 'Custom course PCBs (TA, 2025)', es: 'PCB del curso (monitoría, 2025)' } },
+      { k: { en: 'Delivered', es: 'Entregado' }, v: { en: 'Custom course PCBs (TA, 2026)', es: 'PCB del curso (monitoría, 2026)' } },
       { k: { en: 'Mechanical', es: 'Mecánica' }, v: { en: '3D design & printing', es: 'Diseño e impresión 3D' } },
     ],
   },
@@ -705,8 +708,11 @@ export const SKILLS = [
     code: 'HW-05',
     en: 'Lab & Instrumentation',
     es: 'Laboratorio e instrumentación',
-    pending: true, // ⚠ PENDIENTE — confirmar: osciloscopio, multímetro, fuente, generador, soldadura THT/SMD… (solo lo que sea cierto)
-    rows: [],
+    rows: [
+      { k: { en: 'Measurement', es: 'Medición' }, v: { en: 'Oscilloscope · digital multimeter', es: 'Osciloscopio · multímetro digital' } },
+      { k: { en: 'Sources', es: 'Fuentes' }, v: { en: 'Bench power supply · function generator', es: 'Fuente de banco · generador de funciones' } },
+      { k: { en: 'Assembly', es: 'Ensamble' }, v: { en: 'Soldering', es: 'Soldadura' } }, // ⚠ PENDIENTE — ¿THT, SMD o ambas?
+    ],
   },
   {
     id: 'software',

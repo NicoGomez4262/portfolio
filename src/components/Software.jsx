@@ -54,11 +54,11 @@ function SoftwareCard({ p, lang, t }) {
   )
 }
 
-export default function Software() {
+export default function Software({ index }) {
   const { lang, t } = useApp()
 
   return (
-    <Section id="software" index="05" kicker={t.swKicker} title={t.swTitle} intro={t.swIntro}>
+    <Section id="software" index={index} kicker={t.swKicker} title={t.swTitle} intro={t.swIntro}>
       <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" stagger={0.05}>
         {SOFTWARE.map((p) => (
           <RevealItem key={p.id}>

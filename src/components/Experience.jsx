@@ -58,11 +58,11 @@ function Entry({ item, lang, t, delay }) {
   )
 }
 
-export default function Experience() {
+export default function Experience({ index }) {
   const { lang, t } = useApp()
 
   return (
-    <Section id="experience" index="02" kicker={t.expKicker} title={t.expTitle}>
+    <Section id="experience" index={index} kicker={t.expKicker} title={t.expTitle}>
       <ol className="relative max-w-4xl space-y-5 before:absolute before:top-2 before:bottom-2 before:left-3 before:w-px before:bg-gradient-to-b before:from-accent/50 before:via-line before:to-transparent sm:before:left-[0.9375rem]">
         {EXPERIENCE.map((item, i) => (
           <Entry key={item.id} item={item} lang={lang} t={t} delay={i * 0.06} />

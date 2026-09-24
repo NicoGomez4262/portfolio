@@ -42,11 +42,11 @@ function Datasheet({ group, lang, t }) {
   )
 }
 
-export default function Skills() {
+export default function Skills({ index }) {
   const { lang, t } = useApp()
 
   return (
-    <Section id="skills" index="03" kicker={t.skillsKicker} title={t.skillsTitle} intro={t.skillsIntro}>
+    <Section id="skills" index={index} kicker={t.skillsKicker} title={t.skillsTitle} intro={t.skillsIntro}>
       <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" stagger={0.05}>
         {SKILLS.map((g) => (
           <RevealItem key={g.id} className={g.id === 'embedded' ? 'lg:row-span-2' : g.id === 'software' ? 'lg:col-span-2' : ''}>

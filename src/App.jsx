@@ -1,5 +1,5 @@
 import { AppProvider } from './hooks/useApp.jsx'
-import { SECTIONS } from './data/content.js'
+import { sectionVisible } from './components/ui/sections.js'
 import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import Credentials from './components/Credentials.jsx'
@@ -18,6 +18,9 @@ import Footer from './components/Footer.jsx'
  * Orden pensado para un reclutador de hardware (Kiwibot / robot.com):
  * prueba técnica primero, contexto después.
  */
+const ORDER = ['hardware', 'experience', 'skills', 'lab', 'software', 'education', 'contact'].filter(sectionVisible)
+const idx = (id) => String(ORDER.indexOf(id) + 1).padStart(2, '0')
+
 export default function App() {
   return (
     <AppProvider>
@@ -25,15 +28,15 @@ export default function App() {
       <main>
         <Hero />
         <Credentials />
-        <About />
-        <HardwareProjects />
-        <Experience />
-        <Skills />
-        {SECTIONS.lab && <Lab />}
-        <Software />
+        <About index="00" />
+        <HardwareProjects index={idx('hardware')} />
+        <Experience index={idx('experience')} />
+        <Skills index={idx('skills')} />
+        {sectionVisible('lab') && <Lab index={idx('lab')} />}
+        <Software index={idx('software')} />
         <GitHubStats />
-        <Education />
-        <Contact />
+        <Education index={idx('education')} />
+        <Contact index={idx('contact')} />
       </main>
       <Footer />
     </AppProvider>

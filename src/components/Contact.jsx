@@ -30,7 +30,7 @@ function CopyButton({ text, t }) {
   )
 }
 
-export default function Contact() {
+export default function Contact({ index }) {
   const { t } = useApp()
 
   const links = [
@@ -39,7 +39,7 @@ export default function Contact() {
   ].filter(Boolean)
 
   return (
-    <Section id="contact" index="07" kicker={t.contactKicker} title={t.contactTitle} intro={t.contactBody}>
+    <Section id="contact" index={index} kicker={t.contactKicker} title={t.contactTitle} intro={t.contactBody}>
       <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
         <Reveal>
           <div className="card relative h-full overflow-hidden p-6 sm:p-8">

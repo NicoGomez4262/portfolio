@@ -269,7 +269,7 @@ function ProjectModal({ project, index, lang, t, onClose }) {
   )
 }
 
-export default function HardwareProjects() {
+export default function HardwareProjects({ index }) {
   const { lang, t } = useApp()
   const [open, setOpen] = useState(null)
   const triggerRef = useRef(null)
@@ -284,7 +284,7 @@ export default function HardwareProjects() {
   }, [])
 
   return (
-    <Section id="hardware" index="01" kicker={t.hwKicker} title={t.hwTitle} intro={t.hwIntro}>
+    <Section id="hardware" index={index} kicker={t.hwKicker} title={t.hwTitle} intro={t.hwIntro}>
       <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
         {HARDWARE.map((p, i) =>
           p.placeholder ? (

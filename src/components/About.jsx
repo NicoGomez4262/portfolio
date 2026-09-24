@@ -3,12 +3,12 @@ import { useApp } from '../hooks/useApp.jsx'
 import Section from './ui/Section.jsx'
 import Reveal, { RevealGroup, RevealItem } from './ui/Reveal.jsx'
 
-export default function About() {
+export default function About({ index }) {
   const { lang, t } = useApp()
   const copy = ABOUT[lang]
 
   return (
-    <Section id="about" index="00" kicker={t.aboutKicker} title={t.aboutTitle}>
+    <Section id="about" index={index} kicker={t.aboutKicker} title={t.aboutTitle}>
       <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
         <div className="space-y-5">
           {copy.body.map((p, i) => (
