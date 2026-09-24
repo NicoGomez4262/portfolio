@@ -5,7 +5,8 @@ import { useApp, useActiveSection } from '../hooks/useApp.jsx'
 import Icon from './ui/Icon.jsx'
 
 const ITEMS = NAV.filter((n) => SECTIONS[n.id] !== false)
-const IDS = ITEMS.map((n) => n.id)
+// Se observan también las secciones fuera del menú, para no dejar resaltado un enlace viejo.
+const IDS = ['top', 'about', ...ITEMS.map((n) => n.id), 'education']
 
 export default function Nav() {
   const { lang, theme, toggleLang, toggleTheme, t } = useApp()
