@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>%TITLE%</title>
+    <meta name="description" content="%DESCRIPTION%" />
+    <meta name="author" content="Nicolás Andrés Gómez Ramírez" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="%SITE_URL%/" />
+    <meta name="theme-color" content="#07090c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Nicolás Gómez" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="%TITLE%" />
+    <meta property="og:description" content="%DESCRIPTION%" />
+    <meta property="og:image" content="%SITE_URL%/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nicolás Gómez — Electronic Engineering Student · Embedded Systems &amp; PCB Design" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_CO" />
+    <meta property="profile:first_name" content="Nicolás" />
+    <meta property="profile:last_name" content="Gómez" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%TITLE%" />
+    <meta name="twitter:description" content="%DESCRIPTION%" />
+    <meta name="twitter:image" content="%SITE_URL%/og.png" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json">%JSON_LD%</script>
+
+    <script>
+      // Aplica tema e idioma guardados antes de pintar, para evitar el parpadeo.
+      try {
+        var t = localStorage.getItem('ng-theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+        var l = localStorage.getItem('ng-lang')
+        if (l === 'es' || l === 'en') document.documentElement.lang = l
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; padding: 2rem; color: #e7edf4; background: #07090c">
+        Nicolás Gómez — Electronic Engineering Student · Embedded Systems &amp; PCB Design ·
+        <a href="/assets/Nicolas_Gomez_CV.pdf" style="color: #22d3ee">Download résumé (PDF)</a>
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

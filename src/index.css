@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Tokens — se redefinen por tema y las utilidades los leen en vivo.
+   Contraste verificado AA (≥ 4.5:1) para texto sobre bg y surface en ambos temas.
+   ============================================================ */
+:root {
+  --bg:        #07090c;
+  --bg-elev:   #0b0e14;
+  --surface:   #0f141b;
+  --surface-2: #151b24;
+  --line:      #212a38;
+  --line-soft: #171e29;
+  --ink:       #e8edf3;
+  --ink-dim:   #a3b0bf;
+  --ink-faint: #7f8ca0;
+  --accent:    #22d3ee;
+  --accent-ink:#07090c;
+  --copper:    #f5a524;
+  --grid:      rgba(34, 211, 238, 0.05);
+  --trace:     rgba(34, 211, 238, 0.30);
+  --glow:      rgba(34, 211, 238, 0.14);
+  --shadow:    0 22px 50px -24px rgba(0, 0, 0, 0.9);
+}
+
+[data-theme="light"] {
+  --bg:        #f5f7f9;
+  --bg-elev:   #ffffff;
+  --surface:   #ffffff;
+  --surface-2: #eef2f6;
+  --line:      #d9e0e8;
+  --line-soft: #e6ebf0;
+  --ink:       #0c1420;
+  --ink-dim:   #465363;
+  --ink-faint: #5b6878;
+  --accent:    #0e7490;
+  --accent-ink:#ffffff;
+  --copper:    #b45309;
+  --grid:      rgba(14, 116, 144, 0.07);
+  --trace:     rgba(14, 116, 144, 0.28);
+  --glow:      rgba(14, 116, 144, 0.10);
+  --shadow:    0 18px 40px -22px rgba(15, 30, 50, 0.30);
+}
+
+@theme inline {
+  --color-bg:         var(--bg);
+  --color-bg-elev:    var(--bg-elev);
+  --color-surface:    var(--surface);
+  --color-surface-2:  var(--surface-2);
+  --color-line:       var(--line);
+  --color-line-soft:  var(--line-soft);
+  --color-ink:        var(--ink);
+  --color-ink-dim:    var(--ink-dim);
+  --color-ink-faint:  var(--ink-faint);
+  --color-accent:     var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-copper:     var(--copper);
+
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:    "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+@layer base {
+  * { border-color: var(--line); }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background-color .35s ease, color .35s ease;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  ::selection { background: var(--accent); color: var(--accent-ink); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 99px;
+    border: 3px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+}
+
+@layer utilities {
+  /* Retícula tipo PCB */
+  .pcb-grid {
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .pcb-dots {
+    background-image: radial-gradient(circle, var(--grid) 1.3px, transparent 1.4px);
+    background-size: 22px 22px;
+  }
+
+  /* Rayado de "pendiente": hueco de diseño, no texto falso */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--line-soft) 0 1px,
+      transparent 1px 7px
+    );
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+  }
+
+  .mask-radial {
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 60% 45%, #000 30%, transparent 78%);
+    mask-image: radial-gradient(ellipse 75% 70% at 60% 45%, #000 30%, transparent 78%);
+  }
+
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.875rem;
+    transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+  }
+
+  .card-hover:hover {
+    border-color: color-mix(in oklab, var(--accent) 45%, var(--line));
+    box-shadow: var(--shadow), 0 0 36px -18px var(--glow);
+  }
+
+  .ring-glow { box-shadow: 0 0 0 1px var(--line), 0 0 44px -14px var(--glow); }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+/* ============================================================
+   Animaciones — solo transform/opacity, salvo las trazas del hero
+   (stroke-dashoffset, una sola vez al cargar, ≤ 1.2 s).
+   ============================================================ */
+@keyframes trace-draw { to { stroke-dashoffset: 0; } }
+@keyframes pad-in { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+
+.trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: trace-draw .88s cubic-bezier(.65, 0, .35, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+.pad {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: pad-in .3s ease-out forwards;
+  animation-delay: var(--d, .9s);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .45; transform: scale(.8); }
+}
+.live-dot { animation: pulse-dot 2.2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .trace { stroke-dashoffset: 0; animation: none; }
+  .pad { opacity: 1; animation: none; }
+  .live-dot { animation: none; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
