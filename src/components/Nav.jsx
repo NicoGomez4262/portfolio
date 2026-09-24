@@ -71,7 +71,7 @@ export default function Nav() {
         }`}
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-8">
-          <a href="#top" className="group flex h-11 items-center gap-2.5 font-display text-sm font-semibold text-ink">
+          <a href="#top" className="group flex h-11 min-w-11 items-center gap-2.5 font-display text-sm font-semibold text-ink">
             <span className="grid size-9 place-items-center rounded-lg border border-line bg-surface font-mono text-[11px] text-accent transition group-hover:border-accent/50">
               {PROFILE.initials}
             </span>

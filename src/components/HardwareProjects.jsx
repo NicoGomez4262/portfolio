@@ -210,7 +210,7 @@ function ProjectModal({ project, index, lang, t, onClose }) {
             <p className="text-sm leading-relaxed text-ink-dim">{copy.problem}</p>
           </div>
 
-          <div className="mt-7 grid gap-8 md:grid-cols-[1.15fr_1fr]">
+          <div className="mt-7 grid gap-8">
             <div>
               <p className="mb-3 font-mono text-[10px] tracking-[0.16em] text-ink-faint uppercase">{t.didLabel}</p>
               <ul className="space-y-3">
