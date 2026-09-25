@@ -126,7 +126,7 @@ español (escríbelos en `incoming/datos/respuestas.md`).
 
 | # | Archivo | Entrega | Ruta final | Formato | Tamaño final | Peso final | Qué debe mostrar |
 |---|---|---|---|---|---|---|---|
-| 5.1 | `foto.jpg` (o `.png`) | `incoming/foto/` | `public/assets/foto.webp` + `public/assets/foto.jpg` | WebP + JPG de respaldo | 480 × 480 (cuadrada) | < 80 KB cada una | La foto editada con Higgsfield: fondo pizarra oscuro, cara y ropa intactas, rostro centrado con margen. Se ve pequeña (64–80 px) junto al badge. |
+| 5.1 | `foto.jpg` (opcional) | `incoming/foto/` | `public/assets/foto.webp` + `public/assets/foto.jpg` | WebP + JPG de respaldo | 480 × 480 (cuadrada) | < 80 KB cada una | **Ya hay foto en el sitio** (de `Foto_CV.png`, fondo crema). Solo si quieres la versión con fondo pizarra oscuro hecha con Higgsfield (el prompt está en la entrega del 24 sep 2026): cara y ropa intactas, rostro centrado con margen. |
 | 5.2 | `screen.png` | `incoming/software/proteo-web/` | `public/media/software/proteo-web/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Tablero del cliente con el estado del casillero (no la pantalla de login). |
 | 5.3 | `screen.png` | `incoming/software/voltio-residencial/` | `public/media/software/voltio-residencial/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Pantalla principal (reserva o reporte de consumo). |
 | 5.4 | `screen.png` | `incoming/software/video-dj/` | `public/media/software/video-dj/screen.webp` | WebP | 1600 × 1000 | < 250 KB | La loop station con el seguimiento de manos visible. |
@@ -149,8 +149,8 @@ blanco: en el sitio se sigue viendo como hueco de diseño, nunca como texto inve
 | 6.4 | **FIR:** ¿individual o en equipo? ¿De qué materia? | Tarjeta HW-03 | P1 |
 | 6.5 | **¿Diseñaste filtros IIR?** (hoy la hoja de datos dice «FIR / IIR design») | Skills HW-04, CV | P0 |
 | 6.6 | **PROTEO:** materia, integrantes del equipo y tu rol. (El propósito ya está confirmado por el código: guardaequipajes inteligente para hoteles.) ¿El código de la Raspberry del prototipo final (solenoide, cámara) está en algún repo? | Tarjeta HW-01, CV | P0 |
-| 6.7 | **VOLLEY-PONG:** confirmar el compañero (Ruslán Domínguez Ivanova) y si Luis Alberto Muñoz Rodríguez, coautor del informe del taller SVGA, fue parte del proyecto final; nombre exacto de la materia («Sistemas Digitales»?) | Tarjeta HW-04 | P1 |
-| 6.8 | **CORRELACIUM:** confirmar la placa (el código usa pines GP0/GP1/GP2, propios de la Raspberry Pi Pico) y el nombre exacto de la materia («Procesamiento de Señales»?) | Tarjeta HW-05 | P1 |
+| 6.7 | **VOLLEY-PONG:** nombre exacto de la materia («Sistemas Digitales»?). El equipo ya está confirmado. | Tarjeta HW-04 | P1 |
+| 6.8 | **CORRELACIUM:** nombre exacto de la materia («Procesamiento de Señales»?). La placa ya está confirmada (Raspberry Pi Pico). | Tarjeta HW-05 | P1 |
 | 6.9 | **Soldadura:** ¿THT, SMD o ambas? | Skills HW-05, CV | P1 |
 | 6.10 | **Materias relevantes** con su nombre exacto (EN y ES), 5–8 como máximo | Formación | P1 |
 | 6.11 | **Estudiantes por monitoría** (Diseño de Sistemas Basados en Procesadores y Arduino 101), solo si es un número exacto | Experiencia | P2 |
@@ -161,7 +161,8 @@ blanco: en el sitio se sigue viendo como hueco de diseño, nunca como texto inve
 
 Resuelto en esta sesión (ya no está pendiente): URL oficial de Programa Tú
 (<https://programatu.institutomerani.edu.co>), LinkedIn, teléfono y WhatsApp, propósito de PROTEO, tarjeta y
-reloj de VOLLEY-PONG (DE2-115, 50 MHz), compañero de CORRELACIUM.
+reloj de VOLLEY-PONG (DE2-115, 50 MHz), equipo de VOLLEY-PONG (Ruslán Domínguez Ivanova y Luis Alberto Muñoz
+Rodríguez), compañero de CORRELACIUM, placa de CORRELACIUM (Raspberry Pi Pico) y foto del avatar.
 
 ---
 

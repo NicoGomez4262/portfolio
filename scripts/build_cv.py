@@ -255,7 +255,7 @@ class CV:
                         'bus, with a UART command parser and FSM to switch filter, input and routing at runtime.')
         self.pending(b, 'sample rate, exact PIC part number, solo or team')
 
-        self.entry('VOLLEY-PONG — Two-Player Game on an FPGA (DE2-115)', '  |  VHDL, team of 2', '2024')
+        self.entry('VOLLEY-PONG — Two-Player Game on an FPGA (DE2-115)', '  |  VHDL, team of 3', '2024')
         self.bullet('800×600 VGA sync generator verified in ModelSim, fixed-point ball physics with gravity and collisions, boost '
                     'meter and scoring in pure VHDL; joystick inputs through LM393 comparators.')
 

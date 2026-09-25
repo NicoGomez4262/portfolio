@@ -36,8 +36,7 @@ export const PROFILE = {
   github: 'https://github.com/NicoGomez4262',
   githubUser: 'NicoGomez4262',
   linkedin: 'https://www.linkedin.com/in/nicol%C3%A1s-g%C3%B3mez-2b5709428', // ÚNICO lugar
-  // ⚠ PENDIENTE — public/assets/foto.webp (+ foto.jpg de respaldo), cuadrada, ~480×480, < 80 KB.
-  // Mientras no exista, el avatar muestra las iniciales.
+  // public/assets/foto.webp (+ foto.jpg de respaldo), cuadrada, 480×480, < 80 KB. Sin archivo: iniciales.
   photo: '/assets/foto',
   gpa: '4.3',
   gpaScale: '5.0',
@@ -636,9 +635,8 @@ export const HARDWARE = [
     year: '2024',
     repo: 'https://github.com/RuDomiv/VOLLEY-PONG-VHDL',
     demo: null,
-    // ⚠ VERIFICAR — el repo VOLLEY-PONG no nombra al compañero. El nombre sale del repo CORRELACIUM
-    // (mismo dueño, @RuDomiv) y del informe del taller SVGA que está en este repo.
-    team: { en: 'With Ruslán Domínguez Ivanova', es: 'Con Ruslán Domínguez Ivanova' },
+    // Equipo confirmado por Nicolás (24 sep 2026).
+    team: { en: 'With Ruslán Domínguez Ivanova and Luis Alberto Muñoz Rodríguez', es: 'Con Ruslán Domínguez Ivanova y Luis Alberto Muñoz Rodríguez' },
     // ⚠ VERIFICAR — nombre exacto de la materia. El repo dice "final exam of the digital systems course".
     course: { en: 'Digital Systems · final exam', es: 'Sistemas Digitales · examen final' },
     gallery: ['board', 'demo', 'scope', 'rtl', 'schematic'],
@@ -692,8 +690,7 @@ export const HARDWARE = [
       plot: { en: 'Recorded X/Y/Z templates · data from the repo', es: 'Plantillas X/Y/Z grabadas · datos del repo' },
     },
     specs: [
-      // ⚠ VERIFICAR — el código usa MicroPython con pines GP0/GP1/GP2 (nomenclatura de la Raspberry Pi Pico).
-      { k: 'MCU', v: 'Raspberry Pi Pico · MicroPython' },
+      { k: 'MCU', v: 'Raspberry Pi Pico · MicroPython' }, // confirmado por Nicolás (24 sep 2026)
       { k: 'Sensor', v: { en: 'ADXL345 3-axis accelerometer · ±2 g', es: 'Acelerómetro ADXL345 de 3 ejes · ±2 g' } },
       { k: 'Bus', v: 'I²C · 400 kHz' },
       { k: { en: 'Sampling', es: 'Muestreo' }, v: { en: '100 Hz timer · 100-sample window', es: 'Timer de 100 Hz · ventana de 100 muestras' } },
