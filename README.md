@@ -6,6 +6,10 @@ Bilingüe con **inglés por defecto** y toggle a español, tema oscuro y claro.
 
 **En vivo:** <https://nicolasgomez.dev> · **Stack:** React 19 · Vite 8 · Tailwind CSS 4 · Framer Motion 13 · Vercel.
 
+> **¿Retomando el trabajo?** Lee primero [`docs/next_session.md`](docs/next_session.md): tiene el prompt
+> con lo pendiente de la sesión anterior y lo que falta entregar (ver también
+> [`docs/MATERIALS.md`](docs/MATERIALS.md)).
+
 ---
 
 ## Cómo correrlo
