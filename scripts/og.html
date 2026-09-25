@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Plantilla de la imagen Open Graph (1200 × 630). La llena y la captura scripts/og.mjs. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=block" rel="stylesheet" />
+    <style>
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        background: #07090c;
+        color: #e8edf3;
+        font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        background-image:
+          radial-gradient(ellipse 900px 420px at 36% -12%, rgba(34, 211, 238, 0.13), transparent 70%),
+          linear-gradient(to right, rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+        background-size: auto, 44px 44px, 44px 44px;
+      }
+      svg.traces { position: absolute; inset: 0; width: 1200px; height: 630px; }
+      main { position: absolute; left: 80px; top: 72px; right: 80px; }
+      .badge {
+        display: inline-flex; align-items: center; gap: 14px; padding: 12px 22px 12px 18px;
+        border: 1px solid rgba(34, 211, 238, 0.32); border-radius: 999px; background: rgba(15, 20, 27, 0.85);
+        font: 500 19px/1 'IBM Plex Mono', monospace; letter-spacing: 0.01em;
+      }
+      .badge i { width: 11px; height: 11px; border-radius: 50%; background: #22d3ee; box-shadow: 0 0 14px rgba(34, 211, 238, 0.8); }
+      h1 {
+        margin-top: 34px; font: 600 118px/1 'Archivo', sans-serif; font-stretch: 108%; letter-spacing: -0.025em;
+      }
+      .role { margin-top: 30px; font: 400 27px/1.2 'IBM Plex Mono', monospace; letter-spacing: 0.01em; }
+      .role b { font-weight: 400; color: #22d3ee; }
+      .role span { color: #7f8ca0; margin: 0 10px; }
+      .tag { margin-top: 20px; font: 400 29px/1.35 'IBM Plex Sans', sans-serif; color: #a3b0bf; }
+      footer {
+        position: absolute; left: 80px; right: 80px; bottom: 52px; padding-top: 26px;
+        border-top: 1px solid #212a38; display: flex; align-items: center; justify-content: space-between;
+        font: 400 19px/1 'IBM Plex Mono', monospace; color: #7f8ca0;
+      }
+      footer strong { color: #e8edf3; font-weight: 600; }
+      footer .sep { margin: 0 12px; }
+      .site { display: flex; align-items: center; gap: 14px; color: #22d3ee; font-weight: 500; }
+      .chip {
+        display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #212a38; border-radius: 10px;
+        background: #0f141b; color: #22d3ee; font: 500 16px/1 'IBM Plex Mono', monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="traces" viewBox="0 0 1200 630" fill="none" aria-hidden="true">
+      <g stroke="rgba(34,211,238,0.34)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M860 0V48L900 88H1000" />
+        <path d="M1200 96H1040L990 146V262" />
+        <path d="M1200 360H1110L1070 400V468" />
+        <path d="M1200 540H1010L960 490H900" />
+        <circle cx="1000" cy="88" r="6" fill="#07090c" />
+        <circle cx="990" cy="268" r="7" fill="#07090c" />
+        <circle cx="1070" cy="468" r="6" fill="#07090c" />
+        <circle cx="900" cy="490" r="6" fill="#07090c" />
+      </g>
+      <g stroke="rgba(34,211,238,0.34)" stroke-width="1.6">
+        <rect x="1020" y="188" width="80" height="112" rx="5" />
+        <circle cx="1034" cy="202" r="3" />
+        <rect x="1006" y="203" width="12" height="7" rx="1" /><rect x="1006" y="225" width="12" height="7" rx="1" />
+        <rect x="1006" y="247" width="12" height="7" rx="1" /><rect x="1006" y="269" width="12" height="7" rx="1" />
+        <rect x="1102" y="203" width="12" height="7" rx="1" /><rect x="1102" y="225" width="12" height="7" rx="1" />
+        <rect x="1102" y="247" width="12" height="7" rx="1" /><rect x="1102" y="269" width="12" height="7" rx="1" />
+      </g>
+    </svg>
+
+    <main>
+      <p class="badge"><i></i>{{seeking}}</p>
+      <h1>{{name}}</h1>
+      <p class="role">{{role}}<span>·</span><b>{{focus}}</b></p>
+      <p class="tag">{{tagline}}</p>
+    </main>
+
+    <footer>
+      <p><strong>{{university}}</strong><span class="sep">·</span>GPA {{gpa}}<span class="sep">·</span>Class of {{graduation}}</p>
+      <p class="site">{{domain}}<span class="chip">{{initials}}</span></p>
+    </footer>
+  </body>
+</html>
