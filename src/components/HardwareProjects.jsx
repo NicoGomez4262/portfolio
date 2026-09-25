@@ -81,28 +81,30 @@ function ProjectCard({ project, index, lang, t, onOpen }) {
     <Reveal className={star ? 'md:col-span-2' : ''} delay={star ? 0 : (index % 2) * 0.06}>
       <article
         id={`hw-${project.id}`}
-        className={`xlink card card-hover group flex h-full scroll-mt-24 flex-col overflow-hidden ${star ? 'lg:grid lg:grid-cols-[1.08fr_1fr]' : ''}`}
+        className={`xlink card card-hover group flex h-full scroll-mt-24 flex-col overflow-hidden ${star ? 'lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(0,1fr)]' : ''}`}
       >
-        <button
-          type="button"
-          onClick={(e) => onOpen(project, e.currentTarget)}
-          aria-label={`${t.openProject}: ${name}`}
-          className={`relative block w-full overflow-hidden border-line text-left ${star ? 'border-b lg:border-r lg:border-b-0' : 'border-b'}`}
-        >
-          <Media
-            base={coverBase(project)}
-            alt={name}
-            video={false}
-            className={`transition duration-500 group-hover:scale-[1.015] ${star ? 'lg:h-full' : ''}`}
-            placeholder={coverPlaceholder(project, lang, t)}
-          />
+        <div className={`relative border-line ${star ? 'border-b lg:border-r lg:border-b-0' : 'border-b'}`}>
+          <button
+            type="button"
+            onClick={(e) => onOpen(project, e.currentTarget)}
+            aria-label={`${t.openProject}: ${name}`}
+            className={`relative block w-full overflow-hidden text-left ${star ? 'lg:h-full' : ''}`}
+          >
+            <Media
+              base={coverBase(project)}
+              alt={name}
+              video={false}
+              className={`transition duration-500 group-hover:scale-[1.015] ${star ? 'lg:h-full' : ''}`}
+              placeholder={coverPlaceholder(project, lang, t)}
+            />
+          </button>
           {star && (
-            <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-copper/40 bg-bg/85 px-3 py-1 font-mono text-[10px] tracking-[0.14em] text-copper uppercase backdrop-blur-sm">
+            <span className="pointer-events-none absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-copper/40 bg-bg/85 px-3 py-1 font-mono text-[10px] tracking-[0.14em] text-copper uppercase backdrop-blur-sm">
               <Icon name="star" size={11} />
               {t.starLabel}
             </span>
           )}
-        </button>
+        </div>
 
         <div className="flex flex-1 flex-col p-5 sm:p-7">
           <div className="mb-3 flex items-center gap-3 font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">

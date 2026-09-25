@@ -6,6 +6,7 @@
  * - Recorre la página con scrollTo({ behavior: 'instant' }): con scroll suave las animaciones de entrada no disparan.
  * - Captura la página completa con captureBeyondViewport (por tramos) en los anchos de FULL y en ambos temas.
  * - Audita cada ancho: scroll horizontal, áreas táctiles de menos de 44 px y errores de consola.
+ *   SITE_LANG=es audita y captura la versión en español.
  * - Prueba el selector de hoja de vida desde todos los puntos de descarga (foco inicial, trampa de foco,
  *   cambio de idioma sin cerrar, Escape y regreso del foco) y el modal de proyecto con su enlace cruzado.
  * El informe queda en <carpeta>/report.json. Las capturas quedan en tramos .partN.png para unirlas después.
@@ -20,6 +21,7 @@ const SIZES = { 360: 780, 390: 844, 414: 896, 768: 1024, 820: 1180, 1024: 768, 1
 const WIDTHS = (process.env.WIDTHS || Object.keys(SIZES).join(',')).split(',').map(Number)
 const FULL = (process.env.FULL || '390,768,1024,1440').split(',').map(Number)
 const THEMES = (process.env.THEMES || 'dark,light').split(',')
+const SITE_LANG = process.env.SITE_LANG === 'es' ? 'es' : 'en'
 mkdirSync(OUT, { recursive: true })
 
 const REVEAL = `(async () => {
@@ -131,11 +133,11 @@ try {
     for (const theme of THEMES) {
       const full = FULL.includes(width)
       if (theme !== 'dark' && !full) continue
-      const page = await openPage(browser, width, theme)
+      const page = await openPage(browser, width, theme, SITE_LANG)
       await page.eval(REVEAL)
       if (theme === 'dark') report.widths[width] = await page.eval(AUDIT)
       if (full) {
-        const parts = await page.screenshot(join(OUT, `full-${width}-${theme}.png`), { full: true })
+        const parts = await page.screenshot(join(OUT, `full-${width}-${theme}${SITE_LANG === 'es' ? '-es' : ''}.png`), { full: true })
         report.full.push({ width, theme, parts })
       }
       await close(page)
