@@ -44,13 +44,16 @@ export default function Nav() {
       <button
         type="button"
         onClick={toggleLang}
-        aria-label={t.langLabel}
-        lang={lang === 'en' ? 'es' : 'en'}
         className="flex h-11 items-center gap-1 rounded-full border border-line px-3.5 font-mono text-xs font-medium text-ink-dim transition hover:border-accent/50 hover:text-accent"
       >
+        {/* El nombre accesible empieza con el texto visible (WCAG 2.5.3) y luego explica la acción. */}
         <span className={lang === 'en' ? 'text-accent' : ''}>EN</span>
         <span className="text-ink-faint">/</span>
         <span className={lang === 'es' ? 'text-accent' : ''}>ES</span>
+        <span className="sr-only" lang={lang === 'en' ? 'es' : 'en'}>
+          {' '}
+          — {t.langLabel}
+        </span>
       </button>
       <button type="button" onClick={toggleTheme} aria-label={t.themeLabel} className={iconBtn}>
         <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={17} />
