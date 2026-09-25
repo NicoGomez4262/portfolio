@@ -6,6 +6,7 @@ import Section from './ui/Section.jsx'
 import Reveal from './ui/Reveal.jsx'
 import Pending from './ui/Pending.jsx'
 import Icon from './ui/Icon.jsx'
+import { InstLink, RichText } from './ui/InstLink.jsx'
 
 function LevelBar({ level }) {
   const reduced = useReducedMotion()
@@ -41,7 +42,9 @@ export default function Education({ index }) {
                 </div>
                 <p className="mt-1.5 flex items-center gap-2 text-sm text-accent">
                   <Icon name="cap" size={15} />
-                  {e.org} <span className="text-ink-faint">· {e.place}</span>
+                  <span>
+                    <InstLink id={e.org} /> <span className="text-ink-faint">· {e.place}</span>
+                  </span>
                 </p>
                 {e[lang].detail && <p className="mt-4 font-mono text-sm text-ink">{e[lang].detail}</p>}
 
@@ -86,7 +89,11 @@ export default function Education({ index }) {
                   <div className="mt-3">
                     <LevelBar level={l.level} />
                   </div>
-                  {l[lang].note && <p className="mt-2.5 font-mono text-[11px] text-ink-faint">{l[lang].note}</p>}
+                  {l[lang].note && (
+                    <p className="mt-2.5 font-mono text-[11px] text-ink-faint">
+                      <RichText text={l[lang].note} />
+                    </p>
+                  )}
                 </div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useCallback, useEffect, useState } from 'react'
+import { createContext, useContext, useCallback, useEffect, useRef, useState } from 'react'
 import { UI } from '../data/content.js'
 
 const AppCtx = createContext(null)
@@ -21,7 +21,9 @@ const write = (key, value) => {
 
 export function AppProvider({ children }) {
   const [theme, setTheme] = useState(() => (read('ng-theme', 'dark') === 'light' ? 'light' : 'dark'))
-  const [lang, setLang] = useState(() => (read('ng-lang', 'en') === 'es' ? 'es' : 'en'))
+  const [lang, setLangState] = useState(() => (read('ng-lang', 'en') === 'es' ? 'es' : 'en'))
+  const [cvOpen, setCvOpen] = useState(false)
+  const cvTrigger = useRef(null)
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -35,10 +37,22 @@ export function AppProvider({ children }) {
   }, [lang])
 
   const toggleTheme = useCallback(() => setTheme((t) => (t === 'dark' ? 'light' : 'dark')), [])
-  const toggleLang = useCallback(() => setLang((l) => (l === 'en' ? 'es' : 'en')), [])
+  const toggleLang = useCallback(() => setLangState((l) => (l === 'en' ? 'es' : 'en')), [])
+  const setLang = useCallback((l) => setLangState(l === 'es' ? 'es' : 'en'), [])
+
+  // Diálogo de la hoja de vida: se abre desde cualquier botón de descarga y devuelve el foco a ese botón.
+  const openCv = useCallback((trigger) => {
+    cvTrigger.current = trigger ?? null
+    setCvOpen(true)
+  }, [])
+  const closeCv = useCallback(() => {
+    setCvOpen(false)
+    const el = cvTrigger.current
+    if (el?.isConnected) el.focus({ preventScroll: true })
+  }, [])
 
   return (
-    <AppCtx.Provider value={{ theme, lang, toggleTheme, toggleLang, t: UI[lang] }}>
+    <AppCtx.Provider value={{ theme, lang, toggleTheme, toggleLang, setLang, t: UI[lang], cvOpen, openCv, closeCv }}>
       {children}
     </AppCtx.Provider>
   )

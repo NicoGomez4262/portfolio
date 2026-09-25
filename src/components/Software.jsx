@@ -9,7 +9,7 @@ function SoftwareCard({ p, lang, t }) {
   const link = 'inline-flex h-11 items-center gap-1.5 rounded-full border px-3.5 font-mono text-[11px] tracking-wide transition'
 
   return (
-    <article className="card card-hover flex h-full flex-col p-5 sm:p-6">
+    <article id={`sw-${p.id}`} className="xlink card card-hover flex h-full scroll-mt-24 flex-col p-5 sm:p-6">
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="text-lg font-semibold text-ink">{p.name}</h3>
         {p.wip && (
@@ -31,13 +31,13 @@ function SoftwareCard({ p, lang, t }) {
 
       <div className="mt-auto flex flex-wrap items-center gap-2 pt-5">
         {p.demo && (
-          <a href={p.demo} target="_blank" rel="noreferrer noopener" className={`${link} border-accent/40 bg-accent/10 text-accent hover:bg-accent/20`}>
+          <a href={p.demo} target="_blank" rel="noopener noreferrer" className={`${link} border-accent/40 bg-accent/10 text-accent hover:bg-accent/20`}>
             {t.viewDemo}
             <Icon name="arrowUpRight" size={12} />
           </a>
         )}
         {p.repo ? (
-          <a href={p.repo} target="_blank" rel="noreferrer noopener" className={`${link} border-line text-ink-dim hover:border-accent/50 hover:text-accent`}>
+          <a href={p.repo} target="_blank" rel="noopener noreferrer" className={`${link} border-line text-ink-dim hover:border-accent/50 hover:text-accent`}>
             <Icon name="github" size={13} />
             {t.viewCode}
           </a>
@@ -49,6 +49,13 @@ function SoftwareCard({ p, lang, t }) {
             </span>
           )
         )}
+        {p.hardware && (
+          <a href={`#hw-${p.hardware}`} className={`${link} border-line text-ink-dim hover:border-accent/50 hover:text-accent`}>
+            <Icon name="chip" size={13} />
+            {t.toHardware}
+            <Icon name="arrowRight" size={12} />
+          </a>
+        )}
       </div>
     </article>
   )
@@ -59,7 +66,7 @@ export default function Software({ index }) {
 
   return (
     <Section id="software" index={index} kicker={t.swKicker} title={t.swTitle} intro={t.swIntro}>
-      <RevealGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" stagger={0.05}>
+      <RevealGroup className="grid gap-4 md:grid-cols-2" stagger={0.05}>
         {SOFTWARE.map((p) => (
           <RevealItem key={p.id}>
             <SoftwareCard p={p} lang={lang} t={t} />

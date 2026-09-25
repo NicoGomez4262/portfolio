@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { readdirSync, statSync, existsSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { SITE_URL } from './site.config.js'
-import { PROFILE, EDUCATION } from './src/data/content.js'
+import { PROFILE, INSTITUTIONS, CV_FILES, CV_BACKUP } from './src/data/content.js'
 
 const PUBLIC_DIR = 'public'
 const MANIFEST_ID = 'virtual:media-manifest'
@@ -51,13 +51,15 @@ function mediaManifest() {
 }
 
 const TITLE = 'Nicolás Gómez — Electronics & Hardware Engineering Intern Portfolio'
-const DESCRIPTION =
-  'Electronic Engineering student at Pontificia Universidad Javeriana (GPA 4.25/5.0) seeking a hardware / electrical engineering internship. Embedded C, custom PCBs in Altium, real-time FIR filtering on a PIC.'
+const DESCRIPTION = `Electronic Engineering student at Pontificia Universidad Javeriana (GPA ${PROFILE.gpa}/${PROFILE.gpaScale}) seeking a hardware / electrical engineering internship. Embedded C, custom PCBs in Altium, FPGA design in VHDL and IoT on Raspberry Pi.`
 
 /** Metadatos, JSON-LD, robots.txt y sitemap.xml, todos derivados de SITE_URL y PROFILE. */
 function seo() {
-  const hasPhoto = listPublic('assets').some((p) => p.startsWith('/assets/foto.'))
-  const photo = listPublic('assets').find((p) => p.startsWith('/assets/foto.'))
+  const assets = listPublic('assets')
+  const photo = ['webp', 'jpg', 'jpeg', 'png'].map((e) => `${PROFILE.photo}.${e}`).find((p) => assets.includes(p))
+  // <noscript>: la hoja de vida EN ATS; mientras no exista, el respaldo generado (nunca un enlace roto).
+  const cvNoscript = [CV_FILES.en.ats, CV_BACKUP.en?.ats].find((p) => p && assets.includes(p)) ?? CV_FILES.en.ats
+  const org = (id, type) => ({ '@type': type, name: INSTITUTIONS[id].name, ...(INSTITUTIONS[id].url && { url: INSTITUTIONS[id].url }) })
 
   const person = {
     '@context': 'https://schema.org',
@@ -65,20 +67,18 @@ function seo() {
     name: PROFILE.name,
     alternateName: PROFILE.shortName,
     url: SITE_URL,
-    image: hasPhoto ? SITE_URL + photo : `${SITE_URL}/og.png`,
+    image: photo ? SITE_URL + photo : `${SITE_URL}/og.png`,
     email: `mailto:${PROFILE.email}`,
+    telephone: PROFILE.phone,
     jobTitle: 'Electronic Engineering Student',
     description: DESCRIPTION,
     address: { '@type': 'PostalAddress', addressLocality: 'Bogotá', addressCountry: 'CO' },
-    alumniOf: [
-      { '@type': 'CollegeOrUniversity', name: EDUCATION[0].org, url: 'https://www.javeriana.edu.co' },
-      { '@type': 'EducationalOrganization', name: EDUCATION[1].org },
-    ],
+    alumniOf: [org('puj', 'CollegeOrUniversity'), org('merani', 'EducationalOrganization')],
     knowsLanguage: [
       { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
       { '@type': 'Language', name: 'English', alternateName: 'en' },
     ],
-    knowsAbout: ['Embedded systems', 'PCB design', 'Altium Designer', 'Embedded C', 'VHDL', 'Digital signal processing', 'FIR filters', 'Microcontrollers', 'Raspberry Pi', 'MQTT'],
+    knowsAbout: ['Embedded systems', 'PCB design', 'Altium Designer', 'Embedded C', 'VHDL', 'FPGA', 'Digital signal processing', 'FIR filters', 'Microcontrollers', 'Raspberry Pi', 'MQTT', 'IoT'],
     sameAs: [PROFILE.github, PROFILE.linkedin].filter(Boolean),
   }
 
@@ -91,6 +91,7 @@ function seo() {
         .replaceAll('%SITE_URL%', SITE_URL)
         .replaceAll('%TITLE%', TITLE)
         .replaceAll('%DESCRIPTION%', DESCRIPTION)
+        .replaceAll('%CV_NOSCRIPT%', cvNoscript)
         .replace('%JSON_LD%', JSON.stringify(person).replace(/</g, '\\u003c'))
     },
     generateBundle() {

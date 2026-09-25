@@ -13,6 +13,7 @@ import GitHubStats from './components/GitHubStats.jsx'
 import Education from './components/Education.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
+import CvDialog from './components/CvDialog.jsx'
 
 /**
  * Orden pensado para un reclutador de hardware (Kiwibot / robot.com):
@@ -39,6 +40,7 @@ export default function App() {
         <Contact index={idx('contact')} />
       </main>
       <Footer />
+      <CvDialog />
     </AppProvider>
   )
 }

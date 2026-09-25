@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { NAV, PROFILE } from '../data/content.js'
 import { sectionVisible } from './ui/sections.js'
 import { useApp, useActiveSection } from '../hooks/useApp.jsx'
+import { lockScroll, unlockScroll } from '../hooks/scrollLock.js'
 import Icon from './ui/Icon.jsx'
 
 const ITEMS = NAV.filter((n) => sectionVisible(n.id))
@@ -10,7 +11,7 @@ const ITEMS = NAV.filter((n) => sectionVisible(n.id))
 const IDS = ['top', 'about', ...ITEMS.map((n) => n.id), 'education']
 
 export default function Nav() {
-  const { lang, theme, toggleLang, toggleTheme, t } = useApp()
+  const { lang, theme, toggleLang, toggleTheme, t, openCv } = useApp()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const active = useActiveSection(IDS)
@@ -24,10 +25,9 @@ export default function Nav() {
 
   // Bloquea el scroll del fondo mientras el menú móvil está abierto.
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
-    }
+    if (!open) return
+    lockScroll()
+    return unlockScroll
   }, [open])
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function Nav() {
     <>
       <a
         href="#hardware"
-        className="sr-only z-[70] rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="sr-only z-[70] rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:inline-flex focus:h-11 focus:items-center"
       >
         {t.skip}
       </a>
@@ -105,14 +105,15 @@ export default function Nav() {
 
           <div className="flex items-center gap-2">
             <div className="hidden items-center gap-2 sm:flex">{controls}</div>
-            <a
-              href={PROFILE.cv}
-              download
+            <button
+              type="button"
+              onClick={(e) => openCv(e.currentTarget)}
+              aria-haspopup="dialog"
               className="hidden h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-accent-ink transition hover:brightness-110 md:inline-flex"
             >
               <Icon name="download" size={15} />
               {t.ctaCvShort}
-            </a>
+            </button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -154,14 +155,15 @@ export default function Nav() {
               ))}
               <div className="mt-8 flex flex-wrap items-center gap-2">
                 {controls}
-                <a
-                  href={PROFILE.cv}
-                  download
+                <button
+                  type="button"
+                  onClick={(e) => openCv(e.currentTarget)}
+                  aria-haspopup="dialog"
                   className="inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink"
                 >
                   <Icon name="download" size={15} />
                   {t.ctaCvShort}
-                </a>
+                </button>
               </div>
             </div>
           </motion.div>

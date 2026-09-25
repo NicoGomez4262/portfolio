@@ -69,7 +69,7 @@ export default function Media({
   const media = failed ? null : resolveMedia(base, { allowVideo: video })
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ aspectRatio: `${width} / ${height}` }}>
+    <div className={`relative w-full overflow-hidden ${className}`} style={{ aspectRatio: `${width} / ${height}` }}>
       {!media && <MediaPlaceholder {...placeholder} />}
 
       {media?.kind === 'image' && (

@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { PROFILE, SEEKING, tx } from '../data/content.js'
+import { HERO_CHIP, PROFILE, SEEKING, tx } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
-import { resolveMedia } from './ui/Media.jsx'
+import Avatar from './ui/Avatar.jsx'
+import { InstLink } from './ui/InstLink.jsx'
 import Icon from './ui/Icon.jsx'
 
 const EASE = [0.22, 1, 0.36, 1]
@@ -46,70 +47,90 @@ function PcbTraces() {
           />
         ))}
       </g>
-      {/* Huella de un IC tipo SOIC */}
-      <g stroke="var(--trace)" strokeWidth="1.4" className="pad" style={{ '--d': '0.5s' }}>
-        <rect x="880" y="300" width="84" height="120" rx="4" />
-        {[0, 1, 2, 3, 4].map((n) => (
-          <g key={n}>
-            <rect x="866" y={312 + n * 22} width="12" height="8" rx="1" />
-            <rect x="966" y={312 + n * 22} width="12" height="8" rx="1" />
-          </g>
-        ))}
-        <circle cx="894" cy="314" r="3" />
-      </g>
     </svg>
   )
 }
 
-/** Marco técnico con esquinas de plano. Si la foto aún no existe, muestra un hueco diseñado. */
-function PhotoFrame({ t }) {
-  const photo = resolveMedia(PROFILE.photo, { allowVideo: false })
+/* Geometría del integrado (DIP de 10 pines): cuerpo, pines y rótulos. */
+const BODY = { x: 104, y: 74, w: 112, h: 232 }
+const PIN_Y = [110, 150, 190, 230, 270]
 
+/**
+ * Bloque técnico del hero: un integrado visto desde arriba, con los pines rotulados con las
+ * señales y buses que aparecen en los proyectos. Numeración de DIP: 1–5 a la izquierda, 6–10 a la derecha.
+ */
+function ChipBlock({ t }) {
   return (
-    <div className="relative aspect-4/5 w-full">
-      {['left-0 top-0 border-l-2 border-t-2', 'right-0 top-0 border-r-2 border-t-2', 'left-0 bottom-0 border-b-2 border-l-2', 'right-0 bottom-0 border-b-2 border-r-2'].map(
-        (pos) => (
-          <span key={pos} aria-hidden className={`absolute z-20 size-7 border-accent/70 ${pos}`} />
-        ),
-      )}
-
-      <div className="absolute inset-2.5 overflow-hidden rounded-sm border border-line bg-surface ring-glow">
-        {photo ? (
-          <img
-            src={photo.src}
-            alt={PROFILE.name}
-            width="800"
-            height="1000"
-            loading="eager"
-            fetchPriority="high"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="pcb-dots grid h-full place-items-center bg-surface-2 px-6 text-center">
-            <div>
-              <span className="font-display text-6xl font-semibold text-ink-faint/60">{PROFILE.initials}</span>
-              <p className="mt-4 font-mono text-[10px] tracking-[0.18em] text-ink-faint uppercase">
-                Photo · {t.soon}
-              </p>
-            </div>
-          </div>
+    <figure className="mx-auto w-full max-w-[20rem]">
+      <div className="relative">
+        {['left-0 top-0 border-l-2 border-t-2', 'right-0 top-0 border-r-2 border-t-2', 'left-0 bottom-0 border-b-2 border-l-2', 'right-0 bottom-0 border-b-2 border-r-2'].map(
+          (pos) => (
+            <span key={pos} aria-hidden className={`absolute size-5 border-accent/60 ${pos}`} />
+          ),
         )}
+        <span aria-hidden className="absolute -top-6 right-1 font-mono text-[10px] tracking-[0.2em] text-ink-faint">
+          REF · U1
+        </span>
+
+        <svg viewBox="0 0 320 380" className="block h-auto w-full" role="img" aria-label={`${HERO_CHIP.part}: ${[...HERO_CHIP.left, ...HERO_CHIP.right].join(', ')}`}>
+          {/* Trazas decorativas arriba y abajo del integrado */}
+          <g stroke="var(--trace)" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M160 74V46L186 20H300" pathLength="1" className="trace" style={{ '--d': '0.35s' }} />
+            <path d="M136 74V56L112 32H24" pathLength="1" className="trace" style={{ '--d': '0.45s' }} />
+            <path d="M160 306V332L136 356H24" pathLength="1" className="trace" style={{ '--d': '0.4s' }} />
+            <path d="M184 306V324L208 348H300" pathLength="1" className="trace" style={{ '--d': '0.5s' }} />
+          </g>
+          <g stroke="var(--trace)" strokeWidth="1.4" fill="var(--bg)">
+            {[[300, 20], [24, 32], [24, 356], [300, 348]].map(([cx, cy], i) => (
+              <circle key={i} cx={cx} cy={cy} r="4.5" className="pad" style={{ '--d': `${1 + i * 0.05}s` }} />
+            ))}
+          </g>
+
+          {/* Pines y rótulos */}
+          {PIN_Y.map((y, i) => (
+            <g key={y}>
+              <rect x={BODY.x - 22} y={y - 5} width="22" height="10" rx="1.5" fill="var(--surface-2)" stroke="var(--trace)" />
+              <rect x={BODY.x + BODY.w} y={y - 5} width="22" height="10" rx="1.5" fill="var(--surface-2)" stroke="var(--trace)" />
+              <text x={BODY.x - 30} y={y + 4} textAnchor="end" className="fill-ink-dim font-mono text-[12px]">
+                {HERO_CHIP.left[i]}
+              </text>
+              <text x={BODY.x + BODY.w + 30} y={y + 4} className="fill-ink-dim font-mono text-[12px]">
+                {HERO_CHIP.right[i]}
+              </text>
+              <text x={BODY.x + 12} y={y + 3.5} className="fill-ink-faint font-mono text-[9px]">
+                {i + 1}
+              </text>
+              <text x={BODY.x + BODY.w - 12} y={y + 3.5} textAnchor="end" className="fill-ink-faint font-mono text-[9px]">
+                {10 - i}
+              </text>
+            </g>
+          ))}
+
+          {/* Cuerpo con muesca y marca de pin 1 */}
+          <rect x={BODY.x} y={BODY.y} width={BODY.w} height={BODY.h} rx="8" fill="var(--surface)" stroke="var(--line)" strokeWidth="1.5" />
+          <path d={`M${BODY.x + BODY.w / 2 - 12} ${BODY.y}a12 12 0 0 0 24 0`} fill="none" stroke="var(--line)" strokeWidth="1.5" />
+          <circle cx={BODY.x + 16} cy={BODY.y + 16} r="3.5" fill="var(--accent)" opacity="0.8" />
+
+          {/* Marca de la pieza */}
+          <text x="160" y="182" textAnchor="middle" className="fill-ink font-mono text-[20px] font-medium tracking-[0.08em]">
+            {HERO_CHIP.part}
+          </text>
+          <text x="160" y="204" textAnchor="middle" className="fill-ink-faint font-mono text-[10px] tracking-[0.18em]">
+            EE · PUJ
+          </text>
+          <text x="160" y="220" textAnchor="middle" className="fill-accent font-mono text-[10px] tracking-[0.18em]">
+            ’{PROFILE.graduation.slice(2)}
+          </text>
+        </svg>
       </div>
 
-      {/* Anotaciones de plano */}
-      <span aria-hidden className="absolute -top-6 right-2 font-mono text-[10px] tracking-[0.2em] text-ink-faint">
-        REF · NG-01
-      </span>
-      <div className="absolute -bottom-3 -left-3 z-20 flex items-center gap-2 rounded-lg border border-line bg-bg-elev/95 px-3 py-2 backdrop-blur-sm">
-        <Icon name="pin" size={14} className="text-accent" />
-        <span className="font-mono text-[11px] tracking-wide text-ink-dim">Bogotá, CO</span>
-      </div>
-    </div>
+      <figcaption className="mt-4 text-center font-mono text-[10px] tracking-[0.16em] text-ink-faint uppercase">{t.chipCaption}</figcaption>
+    </figure>
   )
 }
 
 export default function Hero() {
-  const { lang, t } = useApp()
+  const { lang, t, openCv } = useApp()
   const reduced = useReducedMotion()
 
   const rise = (i) =>
@@ -122,6 +143,8 @@ export default function Hero() {
         }
 
   const dates = SEEKING.dates ? tx(SEEKING.dates, lang) : null
+  const iconLink =
+    'grid size-12 place-items-center rounded-full border border-line text-ink-dim transition hover:border-accent/50 hover:text-accent'
 
   return (
     <section id="top" className="relative isolate flex min-h-[92svh] items-center overflow-hidden pt-24 pb-14 md:pt-28">
@@ -133,18 +156,18 @@ export default function Hero() {
       />
       <PcbTraces />
 
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-4 sm:px-8 lg:grid-cols-[1fr_19rem] lg:gap-20">
-        <div>
-          <motion.p
-            {...rise(0)}
-            className="mb-7 inline-flex max-w-full items-center gap-2.5 rounded-full border border-accent/30 bg-surface/80 py-1.5 pr-4 pl-3 backdrop-blur-sm"
-          >
-            <span className="live-dot size-2 shrink-0 rounded-full bg-accent" />
-            <span className="font-mono text-[11px] leading-snug tracking-wide text-ink">
-              {SEEKING[lang]}
-              {dates && <span className="text-ink-faint"> · {dates}</span>}
-            </span>
-          </motion.p>
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-4 sm:px-8 lg:grid-cols-[1fr_19rem] lg:gap-16">
+        <div className="min-w-0">
+          <motion.div {...rise(0)} className="mb-7 flex items-center gap-3 sm:gap-4">
+            <Avatar className="size-16 sm:size-[4.5rem] lg:size-20" />
+            <p className="inline-flex min-w-0 items-center gap-2.5 rounded-full border border-accent/30 bg-surface/80 py-1.5 pr-4 pl-3 backdrop-blur-sm">
+              <span className="live-dot size-2 shrink-0 rounded-full bg-accent" />
+              <span className="font-mono text-[11px] leading-snug tracking-wide text-ink">
+                {SEEKING[lang]}
+                {dates && <span className="text-ink-faint"> · {dates}</span>}
+              </span>
+            </p>
+          </motion.div>
 
           <motion.h1
             {...rise(1)}
@@ -157,7 +180,9 @@ export default function Hero() {
             <span className="text-ink">{t.role}</span>
             <span aria-hidden className="mx-2.5 text-ink-faint">·</span>
             <span className="text-accent">{t.roleFocus}</span>
-            <span className="mt-1 block text-ink-faint">{PROFILE.university}</span>
+            <span className="mt-1 block text-ink-faint">
+              <InstLink id={PROFILE.university} />
+            </span>
           </motion.p>
 
           <motion.p {...rise(3)} className="mt-7 max-w-xl text-xl leading-relaxed text-ink-dim sm:text-2xl sm:leading-snug">
@@ -172,34 +197,21 @@ export default function Hero() {
               {t.ctaProjects}
               <Icon name="arrowDown" size={16} className="transition group-hover:translate-y-0.5" />
             </a>
-            <a
-              href={PROFILE.cv}
-              download
+            <button
+              type="button"
+              onClick={(e) => openCv(e.currentTarget)}
+              aria-haspopup="dialog"
               className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-surface px-6 text-sm font-medium text-ink transition hover:border-accent/50 hover:text-accent"
             >
               <Icon name="download" size={16} />
               {t.ctaCv}
-            </a>
-            <a
-              href={PROFILE.github}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="GitHub"
-              className="grid size-12 place-items-center rounded-full border border-line text-ink-dim transition hover:border-accent/50 hover:text-accent"
-            >
+            </button>
+            <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconLink}>
               <Icon name="github" size={19} />
             </a>
-            {PROFILE.linkedin && (
-              <a
-                href={PROFILE.linkedin}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="LinkedIn"
-                className="grid size-12 place-items-center rounded-full border border-line text-ink-dim transition hover:border-accent/50 hover:text-accent"
-              >
-                <Icon name="linkedin" size={18} />
-              </a>
-            )}
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconLink}>
+              <Icon name="linkedin" size={18} />
+            </a>
           </motion.div>
         </div>
 
@@ -207,9 +219,9 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0, scale: 0.96 }}
           animate={reduced ? false : { opacity: 1, scale: 1 }}
           transition={{ delay: 0.25, duration: 0.7, ease: EASE }}
-          className="mx-auto w-full max-w-[16rem] sm:max-w-[18rem] lg:mx-0 lg:max-w-none"
+          className="hidden lg:block"
         >
-          <PhotoFrame t={t} />
+          <ChipBlock t={t} />
         </motion.div>
       </div>
     </section>

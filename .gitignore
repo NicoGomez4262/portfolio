@@ -31,3 +31,9 @@ dist-ssr
 
 # Local tooling
 .claude
+
+# Carpeta de entrega de materiales (se procesan y se mueven a public/)
+incoming/
+
+# Capturas de scripts/verify.mjs
+shots/

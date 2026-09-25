@@ -1,9 +1,9 @@
-import { PROFILE } from '../data/content.js'
+import { PROFILE, whatsappUrl } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
 import Icon from './ui/Icon.jsx'
 
 export default function Footer() {
-  const { t } = useApp()
+  const { lang, t } = useApp()
   const year = new Date().getFullYear()
   const btn =
     'grid size-11 place-items-center rounded-full border border-line text-ink-faint transition hover:border-accent/50 hover:text-accent'
@@ -18,19 +18,22 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <a href={PROFILE.github} target="_blank" rel="noreferrer noopener" aria-label="GitHub" className={btn}>
-            <Icon name="github" size={16} />
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <a href={whatsappUrl(lang)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className={btn}>
+            <Icon name="whatsapp" size={16} />
           </a>
-          {PROFILE.linkedin && (
-            <a href={PROFILE.linkedin} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn" className={btn}>
-              <Icon name="linkedin" size={16} />
-            </a>
-          )}
           <a href={`mailto:${PROFILE.email}`} aria-label={PROFILE.email} className={btn}>
             <Icon name="mail" size={16} />
           </a>
-          <a href="#top" aria-label="Back to top" className={btn}>
+          {PROFILE.linkedin && (
+            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={btn}>
+              <Icon name="linkedin" size={16} />
+            </a>
+          )}
+          <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={btn}>
+            <Icon name="github" size={16} />
+          </a>
+          <a href="#top" aria-label={t.backToTop} className={btn}>
             <Icon name="arrowDown" size={16} className="rotate-180" />
           </a>
         </div>
