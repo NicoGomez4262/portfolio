@@ -3,6 +3,7 @@ import { PROFILE, whatsappUrl } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
 import Section from './ui/Section.jsx'
 import Reveal from './ui/Reveal.jsx'
+import CvTrigger, { CvLangTag } from './ui/CvTrigger.jsx'
 import Icon from './ui/Icon.jsx'
 
 function CopyButton({ text, label, t }) {
@@ -40,7 +41,7 @@ const cardIcon =
 
 /** Contacto, en orden de rapidez: WhatsApp, correo, LinkedIn, GitHub y hoja de vida. */
 export default function Contact({ index }) {
-  const { lang, t, openCv } = useApp()
+  const { lang, t } = useApp()
 
   const links = [
     { id: 'linkedin', icon: 'linkedin', label: 'LinkedIn', value: PROFILE.shortName, href: PROFILE.linkedin },
@@ -55,11 +56,14 @@ export default function Contact({ index }) {
             <span aria-hidden className="pcb-dots pointer-events-none absolute inset-0 opacity-70" />
             <div className="relative">
               <p className="flex items-center gap-2 font-mono text-[11px] tracking-[0.16em] text-ink-faint uppercase">
-                <span className="live-dot size-1.5 rounded-full bg-accent" />
+                <span className="size-1.5 rounded-full bg-accent" />
                 {t.waLabel}
               </p>
+              {/* El número abre WhatsApp, igual que el botón: la etiqueta dice WhatsApp, no llamada. */}
               <a
-                href={`tel:+${PROFILE.whatsapp}`}
+                href={whatsappUrl(lang)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mt-2 inline-flex min-h-11 items-center font-display text-2xl font-semibold whitespace-nowrap text-ink transition hover:text-accent sm:text-3xl"
               >
                 {PROFILE.phone}
@@ -109,16 +113,19 @@ export default function Contact({ index }) {
             </Reveal>
           ))}
           <Reveal delay={0.18}>
-            <button type="button" onClick={(e) => openCv(e.currentTarget)} aria-haspopup="dialog" className={cardLink}>
+            <CvTrigger className={cardLink}>
               <span className={cardIcon}>
                 <Icon name="file" size={18} />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">PDF</span>
+                <span className="flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
+                  PDF
+                  <CvLangTag />
+                </span>
                 <span className="mt-0.5 block truncate text-ink">{t.ctaCvShort}</span>
               </span>
               <Icon name="download" size={16} className="shrink-0 text-ink-faint transition group-hover:text-accent" />
-            </button>
+            </CvTrigger>
           </Reveal>
         </div>
       </div>

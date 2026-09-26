@@ -7,8 +7,10 @@
  * - Captura la página completa con captureBeyondViewport (por tramos) en los anchos de FULL y en ambos temas.
  * - Audita cada ancho: scroll horizontal, áreas táctiles de menos de 44 px y errores de consola.
  *   SITE_LANG=es audita y captura la versión en español.
- * - Prueba el selector de hoja de vida desde todos los puntos de descarga (foco inicial, trampa de foco,
- *   cambio de idioma sin cerrar, Escape y regreso del foco) y el modal de proyecto con su enlace cruzado.
+ * - Prueba la hoja de vida desde todos los puntos de descarga. Si el botón descarga directo (data-cv="direct"),
+ *   comprueba que el archivo existe; si abre el selector, prueba foco inicial, trampa de foco, cambio de idioma
+ *   del CV sin cambiar el del sitio, Escape y regreso del foco. También prueba el modal de proyecto con su enlace cruzado.
+ * - CDP_PORT=9334 (o cualquier otro) si otro Chrome headless ya usa el puerto 9333.
  * El informe queda en <carpeta>/report.json. Las capturas quedan en tramos .partN.png para unirlas después.
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -73,6 +75,7 @@ const DIALOG_STATE = `(() => {
     activeInside: d ? d.contains(document.activeElement) : false,
     active: (document.activeElement?.getAttribute('aria-label') || document.activeElement?.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 60),
     lang: document.documentElement.lang,
+    cvLang: d ? d.querySelector('[role=group] [aria-pressed=true]')?.getAttribute('lang') ?? null : null,
     options: d ? [...d.querySelectorAll('li')].map((li) => li.textContent.trim().replace(/\\s+/g, ' ').slice(0, 80)) : [],
     hrefs: d ? [...d.querySelectorAll('li a[href]')].map((a) => a.getAttribute('href') + ' → ' + a.getAttribute('download')) : [],
     bodyLocked: document.body.style.overflow === 'hidden',
@@ -95,11 +98,29 @@ async function close(page) {
   await page.send('Page.close').catch(() => {})
 }
 
-/** Abre el selector desde `selector`, prueba foco, trampa, idioma y Escape, y captura. */
+/** Botón de hoja de vida dentro de `scope`: el de ahora (data-cv) o, en un sitio sin desplegar, el de antes. */
+const cvAt = (scope) => `${scope} [data-cv], ${scope} button[aria-haspopup=dialog]`
+
+/**
+ * Prueba un botón de hoja de vida. Descarga directa: comprueba que el archivo existe (sin hacer clic).
+ * Selector: lo abre, prueba foco, trampa, idioma del CV y Escape, y captura.
+ */
 async function testCv(page, name, selector, shot) {
   const result = { from: name }
-  const ok = await page.eval(`(() => { const b = document.querySelector(${JSON.stringify(selector)}); if (!b) return false; b.scrollIntoView({ block: 'center', behavior: 'instant' }); b.click(); return true })()`)
-  if (!ok) return report.cv.push({ ...result, error: 'trigger not found' })
+  const trigger = await page.eval(`(() => {
+    const b = document.querySelector(${JSON.stringify(selector)})
+    if (!b) return null
+    b.scrollIntoView({ block: 'center', behavior: 'instant' })
+    if (b.dataset.cv === 'direct') return { mode: 'direct', href: b.getAttribute('href'), download: b.getAttribute('download'), hreflang: b.getAttribute('hreflang') }
+    b.click()
+    return { mode: 'dialog' }
+  })()`)
+  if (!trigger) return report.cv.push({ ...result, error: 'trigger not found' })
+  if (trigger.mode === 'direct') {
+    result.direct = trigger
+    result.file = await page.eval(`fetch(${JSON.stringify(trigger.href)}, { method: 'HEAD' }).then((r) => r.status + ' ' + r.headers.get('content-type'))`)
+    return report.cv.push(result)
+  }
   await sleep(700)
   result.opened = await page.eval(DIALOG_STATE)
   if (shot) await page.screenshot(join(OUT, `${shot}.png`))
@@ -113,13 +134,13 @@ async function testCv(page, name, selector, shot) {
     trapped &&= await page.eval(`Boolean(document.querySelector('[role=dialog]')?.contains(document.activeElement))`)
   }
   result.focusTrapped = trapped
-  const other = result.opened.lang === 'en' ? 'es' : 'en'
+  // El idioma del CV es propio del selector: cambiarlo no debe cambiar el idioma del sitio.
+  const other = (result.opened.cvLang ?? result.opened.lang) === 'en' ? 'es' : 'en'
   await page.eval(`document.querySelector('[role=dialog] [role=group] button[lang=${other}]')?.click()`)
   await sleep(450)
   result.afterLangSwitch = await page.eval(DIALOG_STATE)
+  result.siteLangKept = result.afterLangSwitch.lang === result.opened.lang
   if (shot) await page.screenshot(join(OUT, `${shot}-${other}.png`))
-  await page.eval(`document.querySelector('[role=dialog] [role=group] button[lang=${result.opened.lang}]')?.click()`)
-  await sleep(300)
   await page.key('Escape')
   await sleep(650)
   result.afterEscape = await page.eval(`(() => ({ open: Boolean(document.querySelector('[role=dialog]')), focusBack: document.activeElement === document.querySelector(${JSON.stringify(selector)}), bodyLocked: document.body.style.overflow === 'hidden' }))()`)
@@ -146,11 +167,11 @@ try {
 
   // 2) Selector de hoja de vida desde todos los puntos de descarga.
   const mob = await openPage(browser, 390, 'dark')
-  await testCv(mob, 'hero (390)', '#top button[aria-haspopup=dialog]', 'cv-390-dark')
-  await testCv(mob, 'contact card (390)', '#contact button[aria-haspopup=dialog]', null)
+  await testCv(mob, 'hero (390)', cvAt('#top'), 'cv-390-dark')
+  await testCv(mob, 'contact card (390)', cvAt('#contact'), null)
   await mob.eval(`window.scrollTo({ top: 0, behavior: 'instant' }); document.querySelector('header button[aria-controls=mobile-menu]').click()`)
   await sleep(500)
-  await testCv(mob, 'mobile menu (390)', '#mobile-menu button[aria-haspopup=dialog]', null)
+  await testCv(mob, 'mobile menu (390)', cvAt('#mobile-menu'), null)
   await mob.eval(`document.querySelector('header button[aria-controls=mobile-menu]')?.click()`)
   await sleep(400)
 
@@ -168,18 +189,18 @@ try {
   await close(mob)
 
   const light = await openPage(browser, 390, 'light')
-  await testCv(light, 'hero (390, light)', '#top button[aria-haspopup=dialog]', 'cv-390-light')
+  await testCv(light, 'hero (390, light)', cvAt('#top'), 'cv-390-light')
   await light.eval(`(() => { const b = [...document.querySelectorAll('#hw-volley-pong button')].find((x) => !x.getAttribute('aria-label')); b.scrollIntoView({ block: 'center', behavior: 'instant' }); b.click() })()`)
   await sleep(800)
   await light.screenshot(join(OUT, 'modal-390-light-volley.png'))
   await close(light)
 
   const desk = await openPage(browser, 1280, 'dark')
-  await testCv(desk, 'nav (1280)', 'header button[aria-haspopup=dialog]', 'cv-1280-dark')
+  await testCv(desk, 'nav (1280)', cvAt('header'), 'cv-1280-dark')
   await close(desk)
 
   const es = await openPage(browser, 390, 'dark', 'es')
-  await testCv(es, 'hero (390, ES)', '#top button[aria-haspopup=dialog]', 'cv-390-dark-es-start')
+  await testCv(es, 'hero (390, ES)', cvAt('#top'), 'cv-390-dark-es-start')
   await close(es)
 } finally {
   await browser.close()

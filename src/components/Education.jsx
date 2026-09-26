@@ -4,7 +4,6 @@ import { useApp } from '../hooks/useApp.jsx'
 import { useInViewOnce } from '../hooks/useInViewOnce.js'
 import Section from './ui/Section.jsx'
 import Reveal from './ui/Reveal.jsx'
-import Pending from './ui/Pending.jsx'
 import Icon from './ui/Icon.jsx'
 import { InstLink, RichText } from './ui/InstLink.jsx'
 
@@ -48,24 +47,17 @@ export default function Education({ index }) {
                 </p>
                 {e[lang].detail && <p className="mt-4 font-mono text-sm text-ink">{e[lang].detail}</p>}
 
-                {e.coursework !== undefined && (
+                {/* Las materias aparecen solas cuando se confirmen; mientras tanto, sin hueco. */}
+                {e.coursework?.length > 0 && (
                   <div className="mt-5 border-t border-line-soft pt-4">
                     <p className="mb-2.5 font-mono text-[10px] tracking-[0.16em] text-ink-faint uppercase">{t.courseworkLabel}</p>
-                    {e.coursework ? (
-                      <div className="flex flex-wrap gap-1.5">
-                        {e.coursework.map((c) => (
-                          <span key={c} className="rounded border border-line-soft bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-ink-dim">
-                            {c}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-wrap gap-1.5">
-                        <Pending label={t.soon} />
-                        <span className="hatch h-5 w-20 rounded border border-dashed border-line" aria-hidden />
-                        <span className="hatch h-5 w-28 rounded border border-dashed border-line" aria-hidden />
-                      </div>
-                    )}
+                    <div className="flex flex-wrap gap-1.5">
+                      {e.coursework.map((c) => (
+                        <span key={c} className="rounded border border-line-soft bg-surface-2 px-2 py-0.5 font-mono text-[11px] text-ink-dim">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
               </article>

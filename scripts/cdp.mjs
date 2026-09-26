@@ -142,7 +142,8 @@ export class Page {
   }
 }
 
-export async function launch({ port = 9333 } = {}) {
+/** Puerto de depuración: 9333, o CDP_PORT si otro Chrome headless (otra sesión, og.mjs) ya lo está usando. */
+export async function launch({ port = Number(process.env.CDP_PORT) || 9333 } = {}) {
   const profile = mkdtempSync(join(tmpdir(), 'ng-cdp-'))
   const proc = spawn(
     CHROME,

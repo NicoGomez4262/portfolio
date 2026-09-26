@@ -29,10 +29,12 @@ despliega a producción. Respaldo manual: `npx vercel --prod` (requiere `npx ver
 
 | Script | Qué hace |
 | --- | --- |
-| `node scripts/verify.mjs [URL] [carpeta]` | Chrome headless por CDP: recorre la página con `scrollTo` instantáneo, captura página completa (`captureBeyondViewport`) en 390 / 768 / 1024 / 1440 y ambos temas, audita scroll horizontal y áreas táctiles < 44 px en 8 anchos, y prueba el selector de hoja de vida y el modal. Informe en `<carpeta>/report.json`. Variables: `WIDTHS`, `FULL`, `THEMES`. |
+| `node scripts/verify.mjs [URL] [carpeta]` | Chrome headless por CDP: recorre la página con `scrollTo` instantáneo, captura página completa (`captureBeyondViewport`) en 390 / 768 / 1024 / 1440 y ambos temas, audita scroll horizontal y áreas táctiles < 44 px en 8 anchos, y prueba los botones de hoja de vida (descarga directa: que el archivo exista; selector: foco, idioma del CV y Escape) y el modal. Informe en `<carpeta>/report.json`. Variables: `WIDTHS`, `FULL`, `THEMES`, `SITE_LANG=es`, y `CDP_PORT` si otro Chrome headless ya usa el puerto 9333. |
+| `node scripts/carousel.mjs [URL] [carpeta]` | Prueba el carrusel de medios y el visor en Chrome headless (~2 min, 35 pruebas): arranque solo, avance de fotos y videos, controles con mouse / teclado / toque, deslizar, fin en pausa, visor ampliado y YouTube con movimiento reducido. Los proyectos y conteos salen de `content.js`. Por defecto `http://localhost:5173`. Sale con código 1 si algo falla. |
 | `python scripts/stitch.py <carpeta>` | Une los tramos `.partN.png` de `verify.mjs` en un JPEG por captura. |
 | `node scripts/og.mjs` | Regenera `public/og.png` (1200 × 630) desde `scripts/og.html` con los datos de `content.js` y `site.config.js`. |
-| `python scripts/build_cv.py` | Regenera el CV de **respaldo** en inglés (`public/assets/Nicolas_Gomez_CV.pdf`, exportado con Word). Solo se ofrece mientras falte el CV EN ATS propio. |
+| `python scripts/media.py video\|image\|still …` | Procesa fotos y videos de `incoming/` para el carrusel (ver [Fotos y videos](#fotos-y-videos-carrusel-de-cada-proyecto)). |
+| `python scripts/build_cv.py` | Borrador de CV en inglés con los datos del sitio, en `docs/cv/` (DOCX + PDF exportado con Word). **El sitio ya no lo publica**: sirve las 4 hojas de vida propias. |
 
 ---
 
@@ -43,8 +45,10 @@ despliega a producción. Respaldo manual: `npx vercel --prod` (requiere `npx ver
 | **Dominio** (OG, canonical, JSON-LD, robots.txt, sitemap.xml) | `site.config.js` → `SITE_URL`. Única línea. |
 | **Correo, teléfono / WhatsApp, LinkedIn, promedio** | `src/data/content.js` → `PROFILE`. Único lugar de cada dato. |
 | **URLs de instituciones** (Javeriana, Merani, Programa Tú, Berlitz) | `content.js` → `INSTITUTIONS`. En los textos se escriben como `{merani}` y se pintan como enlace. |
-| **Hojas de vida** | `content.js` → `CV_FILES[idioma][formato]` y `CV_BACKUP`. |
+| **Hojas de vida** | `content.js` → `CV_FILES[idioma][formato]` (los PDF, en `public/assets/cv/`). |
+| **Fotos y videos de un proyecto** | `content.js` → `HARDWARE[].media` (los archivos, en `public/media/projects/<id>/`). |
 | **Todo el texto** (EN y ES) | `src/data/content.js` |
+| **Orden de las secciones** (página, nav, menú móvil y número de cada encabezado) | `src/components/ui/sections.js` → `ORDER` |
 | Título y descripción SEO | `vite.config.js` → `TITLE`, `DESCRIPTION` |
 | Colores y tipografía | `src/index.css` (tokens por tema) |
 
@@ -54,14 +58,15 @@ Constantes de `content.js`:
 | --- | --- |
 | `INSTITUTIONS` | Nombre y sitio oficial de cada institución |
 | `PROFILE` | Nombre, correo, teléfono, WhatsApp, GitHub, LinkedIn, foto, promedio, PCB diseñadas |
-| `CV_FILES`, `CV_BACKUP`, `CV_FORMATS` | Rutas de las 4 hojas de vida y del respaldo generado |
+| `CV_FILES`, `CV_FORMATS` | Rutas de las 4 hojas de vida (idioma × formato) |
 | `SEEKING` | Badge del hero y fechas de disponibilidad |
 | `SECTIONS` | Interruptores de secciones (`lab: 'auto'` la muestra con 3+ fotos) |
+| `NAV` | Etiquetas de la navegación; `menuOnly: true` = solo en el menú móvil (el orden sale de `ORDER`) |
 | `HERO_CHIP` | Rótulos de los pines del integrado del hero |
 | `UI` | Textos de interfaz, `en` y `es` (incluye el mensaje prellenado de WhatsApp) |
 | `ABOUT` | Perfil y áreas de enfoque |
 | `EXPERIENCE` | Experiencia; `kind: 'academic' \| 'professional'` la separa en dos bloques |
-| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): specs, "qué hice", bitácora, pies de foto, materia y equipo |
+| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo |
 | `SOFTWARE` | Bloque "Software that talks to hardware" (`hardware` enlaza con su tarjeta de hardware) |
 | `LAB` | 9 fotos del laboratorio con su pie de foto |
 | `EDUCATION`, `LANGUAGES`, `SKILLS` | Lo que dice su nombre |
@@ -74,48 +79,91 @@ La lista completa de lo que falta entregar está en [`docs/MATERIALS.md`](docs/M
 
 ## Hojas de vida: idioma × formato
 
-Todos los botones de descarga (hero, nav, menú móvil, contacto) abren un diálogo que pregunta el formato:
-**Harvard / International (ATS)** o **Modern sidebar**. El idioma es el del sitio y se cambia dentro del
-diálogo sin cerrarlo. Si un archivo no existe, su opción aparece deshabilitada con "Coming soon".
+Los botones de descarga (hero, nav, menú móvil, contacto) **descargan directo cuando no hay nada que elegir**:
+si el idioma del sitio tiene un solo archivo, o si no tiene ninguno y en total existe uno solo. En ese último caso
+el botón muestra una marca con el idioma del archivo (p. ej. **EN** en el sitio en español).
+
+Cuando hay más opciones, abren un diálogo que pregunta el idioma y el formato: **Harvard / International (ATS)**
+o **Modern sidebar**. El idioma del CV se elige dentro del diálogo y **no cambia el idioma del sitio**; arranca en
+el del sitio, o en el otro si el del sitio aún no tiene archivos. Si un archivo no existe, su opción aparece
+deshabilitada con "Coming soon". La lógica está en `src/components/ui/cv.js` y `CvTrigger.jsx`.
+
+Desde el 26 sep 2026 existen los 4 archivos, así que todos los botones abren el selector. Para reemplazar una
+hoja de vida basta con sobrescribir su PDF con el mismo nombre y desplegar.
 
 ```
 public/assets/cv/
-├── Nicolas_Gomez_CV_EN_ATS.pdf
-├── Nicolas_Gomez_CV_EN_Modern.pdf
+├── Nicolas_Gomez_CV_EN_ATS.pdf       ← Word, formato internacional de la Javeriana (carta, 1 página)
+├── Nicolas_Gomez_CV_EN_Modern.pdf    ← Canva, sidebar (A4, 1 página)
 ├── Nicolas_Gomez_CV_ES_ATS.pdf
 └── Nicolas_Gomez_CV_ES_Moderno.pdf
-public/assets/Nicolas_Gomez_CV.pdf   ← respaldo generado (solo cubre EN · ATS mientras falte el propio)
 ```
 
 ---
 
-## Fotos y videos: qué archivo va en qué ruta
+## Fotos y videos (carrusel de cada proyecto)
 
-El componente `<Media>` busca archivos por **ruta base sin extensión** y usa el primero que exista, en este orden:
-`.mp4` (solo en slots de video) → `.webp` → `.jpg` → `.jpeg` → `.png`.
-Si no hay ninguno, muestra un placeholder diseñado con icono y etiqueta. Solo hay que soltar el archivo en la
-carpeta y redesplegar; no hace falta tocar código.
+Cada tarjeta de hardware muestra un **carrusel** con los medios de `HARDWARE[].media`, en ese orden: videos
+primero, luego fotos de la más llamativa a la menos. El modal «Ver más» los repite como bitácora (FIG. 01, 02…).
+Los archivos van en `public/media/projects/<id>/`:
 
-> Un manifiesto generado en build sabe qué archivos existen, así que un slot vacío **no** genera un 404.
-> En `npm run dev` se recarga solo al agregar o borrar archivos.
->
-> La portada de una tarjeta usa `cover`; si no existe, usa el primer medio real de su bitácora.
+```js
+media: [
+  { type: 'video', src: 'demo', caption: { en: '…', es: '…' } },               // demo.mp4 + póster demo.webp
+  { type: 'image', src: 'board', fit: 'contain', caption: { en: '…', es: '…' } }, // board.webp (o .jpg / .png)
+  { type: 'youtube', id: '6g7JhK-fa98', poster: 'locker', caption: { … } },       // YouTube; póster local sin extensión
+]
+```
 
-### Formatos recomendados
+- `fit: 'contain'` = el medio se ve completo sobre la misma imagen desenfocada (verticales, capturas, placas
+  recortadas). Sin `fit`, llena el cuadro 16:10.
+- `bg: 'light'` = fondo blanco en vez del desenfoque (esquemáticos, renders, vistas RTL).
+- Un archivo que no existe se omite solo: el manifiesto de `vite.config.js` sabe qué hay en `public/`, así que no
+  queda hueco ni sale un 404. En `npm run dev` se recarga solo al agregar o borrar archivos.
+- Un proyecto sin ningún medio muestra su `chain` (cadena de señal dibujada con datos confirmados), como el FIR.
 
-| Tipo | Formato | Tamaño | Peso objetivo |
+**Cómo se comporta** (`src/components/ui/MediaCarousel.jsx` y `Lightbox.jsx`):
+
+| Qué | Comportamiento |
+| --- | --- |
+| Arranque | Solo, cuando la mitad del cuadro entra en pantalla. Con `prefers-reduced-motion` o ahorro de datos no arranca: queda en pausa con su botón de reproducir. |
+| Avance | Cada video hasta el final (sin sonido) y cada foto 5 s. El punto activo se llena con el avance. |
+| Fin | Al terminar el último vuelve al primero y **se queda en pausa** (botón «Volver a reproducir»). |
+| Se detiene | Fuera de pantalla, con la pestaña oculta o con un diálogo encima. Las fotos, además, con el mouse encima o con el foco de teclado dentro (un clic no lo congela). |
+| Controles | Contador, ampliar, pausa, flechas y pie de foto aparecen solo con el mouse encima, con foco de teclado o 3 s tras un toque. Debajo, un punto por medio. |
+| Táctil | Un toque muestra los controles (no amplía); deslizar cambia de medio. |
+| Teclado | ← → con el foco dentro del carrusel. |
+| Visor ampliado | Clic en el medio o botón «Ampliar»: pantalla completa, el video sigue en el mismo segundo, ← → / deslizar / puntos y Escape. Al cerrar, la tarjeta queda en el medio que se estaba viendo y el foco vuelve a «Ampliar». |
+| YouTube | La API se carga solo cuando le toca reproducir (youtube-nocookie.com). Mientras no corre, todo el póster es el botón de reproducir (mouse, toque o teclado). |
+
+### Formatos
+
+Lo que produce `scripts/media.py` (los originales llegan a `incoming/` en la mejor calidad posible):
+
+| Tipo | Formato | Tamaño | Peso |
 | --- | --- | --- | --- |
-| Portada de proyecto (`cover`) | WebP (o JPG) | **1600 × 1000** (16:10) | < 250 KB |
-| Esquemático / layout de PCB / RTL / gráfica | WebP o PNG, recortado | 1600 × 1000 | < 300 KB |
-| Placa ensamblada / captura de osciloscopio | WebP o JPG | 1600 × 1000 | < 250 KB |
-| Video demo | MP4 H.264, **sin audio**, 10–20 s, 720p | 1280 × 800 | < 4 MB |
-| Poster del video | Mismo nombre que el video en `.webp` | 1600 × 1000 | < 200 KB |
-| Foto de laboratorio | WebP o JPG | **1200 × 900** (4:3) | < 200 KB |
-| Foto personal (avatar) | WebP + JPG de respaldo, **cuadrada** | **480 × 480** | < 80 KB |
+| Video | MP4 H.264 sin audio, 30 fps, `+faststart`; el HDR del celular se pasa a SDR | 1280 px de ancho, 5–20 s | < 2,5 MB (tope 4 MB) |
+| Póster del video | Mismo nombre en `.webp` | el del video | < 120 KB |
+| Foto, captura o esquemático | WebP sin metadatos EXIF, con la orientación aplicada | lado largo 1600 px | < 250 KB |
+| Foto de laboratorio | WebP | 1200 × 900 (4:3) | < 200 KB |
+| Avatar | WebP + JPG de respaldo, cuadrado | 480 × 480 | < 80 KB |
 | Captura de software (opcional) | WebP | 1600 × 1000 | < 250 KB |
 
-Convertir a WebP: `npx sharp-cli -i foto.jpg -o foto.webp --format webp --quality 80`
-(o [squoosh.app](https://squoosh.app)).
+```bash
+# ffmpeg no está instalado en la máquina: binario portátil, sin admin, en una carpeta temporal.
+npm i --prefix <carpeta-temporal> ffmpeg-static
+export FFMPEG=<carpeta-temporal>/node_modules/ffmpeg-static/ffmpeg.exe
+pip install pillow-heif    # solo si llegan fotos .heif / .heic
+
+python scripts/media.py video incoming/projects/<id>/<original>.mp4 public/media/projects/<id>/demo --ss 3 --to 18
+python scripts/media.py image incoming/projects/<id>/<original>.jpg public/media/projects/<id>/board
+python scripts/media.py still incoming/projects/<id>/<original>.mp4 public/media/projects/<id>/frame --at 12.5
+```
+
+Opciones: `video` acepta `--crop W:H:X:Y`, `--width` (1280), `--crf` (27) y `--poster S` (segundo del póster);
+`image`, `--max` (1600), `--box l,t,r,b` (fracciones), `--trim-black` y `--quality` (80). Detalle en el propio script.
+Antes de publicar, revisa que no se vean caras ni datos personales (en el lote del 25 sep se descartaron o
+recortaron por eso).
 
 ### Mapa de rutas
 
@@ -123,27 +171,24 @@ Convertir a WebP: `npx sharp-cli -i foto.jpg -o foto.webp --format webp --qualit
 public/
 ├── assets/
 │   ├── foto.webp · foto.jpg      ← avatar del hero (sin foto: iniciales NG)
-│   ├── cv/                       ← las 4 hojas de vida
-│   └── Nicolas_Gomez_CV.pdf      ← CV de respaldo generado
+│   └── cv/                       ← las 4 hojas de vida
 └── media/
-    ├── projects/
-    │   ├── proteo/         cover · board · schematic · demo(.mp4)
-    │   ├── custom-pcbs/    cover · schematic · pcb · board
-    │   ├── fir-pic/        cover · schematic · board · scope · demo(.mp4)
-    │   ├── volley-pong/    cover · board · demo(.mp4) · scope ✓ · rtl ✓ · schematic ✓
-    │   ├── correlacium/    cover · board · demo(.mp4) · plot ✓
-    │   ├── conveyor/       cover · schematic · board · demo(.mp4)
-    │   └── dreamsnake/     cover · board · demo(.mp4)
+    ├── projects/<id>/            ← medios del carrusel (HARDWARE[].media)
+    │   ├── proteo/        locker (póster del pitch, que vive en YouTube)
+    │   ├── custom-pcbs/   tetris.mp4 · board · render · schematic · bare · prototype
+    │   ├── eeg-emg/       emg.mp4 · eeg-scope.mp4 · test-bench.mp4 · board · scope-decode
+    │   ├── lvdt/          system · jig · pcb · bench · cad
+    │   ├── conveyor/      belt.mp4 · rpm-plot.mp4 · setup
+    │   ├── volley-pong/   gameplay.mp4 · board · scope · rtl · schematic
+    │   ├── correlacium/   cad.mp4 · print.mp4 · wand · electronics · sensor · plot
+    │   └── dreamsnake/    video (póster del video de YouTube) · prototype
     ├── software/<id>/screen      ← captura opcional (proteo-web, voltio-residencial, video-dj, psicosentir)
-    └── lab/
-        └── 01 … 09               ← galería "On the bench"
+    └── lab/01 … 09               ← galería «On the bench»: aparece sola con 3 o más fotos
 ```
 
-✓ = ya existe. En VOLLEY-PONG vienen del repo (captura del osciloscopio y esquemático del LM393 del informe del
-taller SVGA, vista RTL de Quartus); en CORRELACIUM es una gráfica de las plantillas grabadas en su código.
-
-Los slots de cada proyecto se definen en `HARDWARE[].gallery` y sus pies de foto en `HARDWARE[].captions`.
-Para la galería del laboratorio, escribe el pie de foto en `LAB[].caption`.
+`fir-pic` todavía no tiene medios: su tarjeta dibuja la cadena de señal. El laboratorio y las capturas de
+software usan el componente `<Media>`, que busca por ruta base sin extensión (`.mp4` → `.webp` → `.jpg` →
+`.jpeg` → `.png`) y muestra un placeholder diseñado si no hay archivo. Pies de foto del laboratorio: `LAB[].caption`.
 
 **Entrega de materiales:** suelta los originales en `incoming/` (ignorada por git); ver `docs/MATERIALS.md`.
 
@@ -153,7 +198,7 @@ Para la galería del laboratorio, escribe el pie de foto en `LAB[].caption`.
 
 - `index.html` usa marcadores (`%SITE_URL%`, `%TITLE%`, `%DESCRIPTION%`, `%JSON_LD%`, `%CV_NOSCRIPT%`) que llena el plugin `seo()` de `vite.config.js`.
 - **JSON-LD `Person`**: teléfono, `sameAs` (GitHub y LinkedIn), `alumniOf` con la URL oficial de cada institución, `knowsLanguage`.
-- `<noscript>` enlaza el CV EN ATS (o el respaldo mientras no exista).
+- `<noscript>` enlaza el CV EN ATS.
 - `robots.txt` y `sitemap.xml` se generan en el build a partir de `SITE_URL`.
 - Imagen Open Graph / Twitter: `public/og.png` (1200 × 630), generada con `node scripts/og.mjs`.
 - Favicons: `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`.

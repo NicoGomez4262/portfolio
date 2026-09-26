@@ -35,7 +35,9 @@ export const PROFILE = {
   location: { en: 'Bogotá, Colombia', es: 'Bogotá, Colombia' },
   github: 'https://github.com/NicoGomez4262',
   githubUser: 'NicoGomez4262',
-  linkedin: 'https://www.linkedin.com/in/nicol%C3%A1s-g%C3%B3mez-2b5709428', // ÚNICO lugar
+  // ÚNICO lugar. URL personalizada que Nicolás puso en sus 4 hojas de vida (25 sep 2026); antes era la automática
+  // linkedin.com/in/nicolás-gómez-2b5709428. ⚠ VERIFICAR que sea la vigente (LinkedIn no deja comprobarlo sin sesión).
+  linkedin: 'https://www.linkedin.com/in/nicolas-gomez-elec',
   // public/assets/foto.webp (+ foto.jpg de respaldo), cuadrada, 480×480, < 80 KB. Sin archivo: iniciales.
   photo: '/assets/foto',
   gpa: '4.3',
@@ -54,14 +56,6 @@ export const CV_FILES = {
   es: { ats: '/assets/cv/Nicolas_Gomez_CV_ES_ATS.pdf', modern: '/assets/cv/Nicolas_Gomez_CV_ES_Moderno.pdf' },
 }
 
-/**
- * Respaldo generado con scripts/build_cv.py (inglés, una columna, compatible con ATS).
- * Solo se ofrece mientras falte el archivo propio de ese idioma y formato.
- */
-export const CV_BACKUP = {
-  en: { ats: '/assets/Nicolas_Gomez_CV.pdf' },
-}
-
 export const CV_FORMATS = ['ats', 'modern']
 
 /** Qué busca. `dates` en null = no se muestran fechas. */
@@ -78,20 +72,27 @@ export const SECTIONS = {
   lab: 'auto',
 }
 
+/**
+ * Etiquetas de la navegación. El orden no sale de aquí: lo da ORDER en src/components/ui/sections.js,
+ * que es también el orden de la página y de los números de cada sección.
+ * `menuOnly: true` = solo en el menú móvil, que lista todas las secciones con su número.
+ */
 export const NAV = [
-  { id: 'hardware', en: 'Hardware', es: 'Hardware' },
   { id: 'experience', en: 'Experience', es: 'Experiencia' },
+  { id: 'hardware', en: 'Hardware', es: 'Hardware' },
   { id: 'skills', en: 'Skills', es: 'Habilidades' },
   { id: 'lab', en: 'Lab', es: 'Laboratorio' },
   { id: 'software', en: 'Software', es: 'Software' },
+  { id: 'about', en: 'Profile', es: 'Perfil', menuOnly: true },
+  { id: 'education', en: 'Education', es: 'Formación', menuOnly: true },
   { id: 'contact', en: 'Contact', es: 'Contacto' },
 ]
 
-/** Pines del bloque técnico del hero: señales y buses que aparecen en los proyectos. */
+/** Pines del bloque técnico del hero: señales, buses y áreas de los proyectos. Cada rótulo es texto o { en, es }. */
 export const HERO_CHIP = {
   part: 'NG-01',
   left: ['SPI', 'UART', 'I²C', 'GPIO', 'PWM'],
-  right: ['ADC', 'DAC', 'VGA', 'MQTT', 'IRQ'],
+  right: ['ADC', 'DAC', 'VGA', 'MQTT', { en: 'AI', es: 'IA' }],
 }
 
 export const UI = {
@@ -118,23 +119,34 @@ export const UI = {
 
     hwKicker: 'Featured hardware',
     hwTitle: 'Boards, firmware and signals',
-    hwIntro: 'Embedded, FPGA and signal-processing projects, designed, wired, programmed and debugged. Each one lists the parts and interfaces involved.',
+    hwIntro: 'Embedded, instrumentation, FPGA and signal-processing projects, designed, wired, programmed and debugged. Each card plays its photos and videos; open it for parts, interfaces and the full build log.',
     problemLabel: 'Problem',
     didLabel: 'What I did',
     didTeamLabel: 'What we built',
     specsLabel: 'Specs',
     galleryLabel: 'Build log',
+    mediaLabel: 'photos and videos',
+    mediaCarousel: 'carousel',
+    mediaSlide: 'slide',
+    mediaOf: 'of',
+    mediaGoTo: 'Show item',
+    mediaPrev: 'Previous',
+    mediaNext: 'Next',
+    mediaPlay: 'Play',
+    mediaPause: 'Pause',
+    mediaReplay: 'Play again from the start',
+    mediaEnlarge: 'Enlarge',
+    mediaViewer: 'media viewer',
+    mediaWatchYouTube: 'Watch on YouTube',
     teamLabel: 'Team',
     courseLabel: 'Course',
-    openProject: 'Full breakdown',
+    openProject: 'See more',
     viewCode: 'Source',
     viewDemo: 'Live demo',
     toSoftware: 'Web dashboard',
     toHardware: 'Hardware node',
     close: 'Close',
     starLabel: 'Flagship build',
-    nextTitle: 'Next build',
-    nextBody: 'A new hardware project is on the bench. Documentation, schematics and photos are coming soon.',
 
     expKicker: 'Experience',
     expTitle: 'Teaching, tutoring and building for clients',
@@ -197,8 +209,9 @@ export const UI = {
       modern: { title: 'Modern sidebar', body: 'Two columns with a sidebar. Best to send straight to a person.' },
     },
     cvSoon: 'Coming soon',
-    cvFallback: 'Meanwhile, the Spanish version is available.',
-    cvSwitch: 'Switch to Spanish',
+    // Clave = idioma de la versión que sí está disponible.
+    cvFallback: { en: 'Meanwhile, the English version is available.', es: 'Meanwhile, the Spanish version is available.' },
+    cvSwitch: { en: 'Show the English version', es: 'Show the Spanish version' },
 
     officialSite: 'official site',
     newTab: 'opens in a new tab',
@@ -235,23 +248,34 @@ export const UI = {
 
     hwKicker: 'Hardware destacado',
     hwTitle: 'Placas, firmware y señales',
-    hwIntro: 'Proyectos embebidos, en FPGA y de procesamiento de señales, diseñados, cableados, programados y depurados. Cada uno detalla los componentes e interfaces que usa.',
+    hwIntro: 'Proyectos embebidos, de instrumentación, en FPGA y de procesamiento de señales, diseñados, cableados, programados y depurados. Cada tarjeta reproduce sus fotos y videos; ábrela para ver componentes, interfaces y la bitácora completa.',
     problemLabel: 'Problema',
     didLabel: 'Qué hice',
     didTeamLabel: 'Qué construimos',
     specsLabel: 'Especificaciones',
     galleryLabel: 'Bitácora',
+    mediaLabel: 'fotos y videos',
+    mediaCarousel: 'carrusel',
+    mediaSlide: 'diapositiva',
+    mediaOf: 'de',
+    mediaGoTo: 'Ver elemento',
+    mediaPrev: 'Anterior',
+    mediaNext: 'Siguiente',
+    mediaPlay: 'Reproducir',
+    mediaPause: 'Pausar',
+    mediaReplay: 'Volver a reproducir desde el inicio',
+    mediaEnlarge: 'Ampliar',
+    mediaViewer: 'visor de medios',
+    mediaWatchYouTube: 'Ver en YouTube',
     teamLabel: 'Equipo',
     courseLabel: 'Materia',
-    openProject: 'Ver detalle',
+    openProject: 'Ver más',
     viewCode: 'Código',
     viewDemo: 'Ver en vivo',
     toSoftware: 'Tablero web',
     toHardware: 'Nodo de hardware',
     close: 'Cerrar',
     starLabel: 'Proyecto insignia',
-    nextTitle: 'Próximo proyecto',
-    nextBody: 'Hay un nuevo proyecto de hardware en la mesa de trabajo. Pronto subiré documentación, esquemáticos y fotos.',
 
     expKicker: 'Experiencia',
     expTitle: 'Enseñar, acompañar y construir para clientes',
@@ -314,8 +338,8 @@ export const UI = {
       modern: { title: 'Sidebar moderno', body: 'Dos columnas con barra lateral. Ideal para enviarla directo a una persona.' },
     },
     cvSoon: 'Próximamente',
-    cvFallback: 'Mientras tanto, la versión en inglés ya está disponible.',
-    cvSwitch: 'Cambiar a inglés',
+    cvFallback: { en: 'Mientras tanto, la versión en inglés ya está disponible.', es: 'Mientras tanto, la versión en español ya está disponible.' },
+    cvSwitch: { en: 'Ver la versión en inglés', es: 'Ver la versión en español' },
 
     officialSite: 'sitio oficial',
     newTab: 'se abre en una pestaña nueva',
@@ -496,26 +520,20 @@ export const LANGUAGES = [
 ]
 
 /**
- * Espacios de medios. Cada proyecto busca sus archivos en
- *   public/media/projects/<id>/<slot>.{mp4|webp|jpg}
- * Si el archivo no existe, se muestra un placeholder diseñado con el icono y la etiqueta.
- * `contain: true` = se muestra completo (diagramas, capturas), sin recortar.
- */
-export const MEDIA_SLOTS = {
-  cover: { icon: 'image', en: 'Cover photo', es: 'Foto de portada' },
-  schematic: { icon: 'schematic', en: 'Schematic', es: 'Esquemático', contain: true },
-  pcb: { icon: 'pcb', en: 'PCB layout', es: 'Layout de PCB', contain: true },
-  board: { icon: 'chip', en: 'Assembled board', es: 'Placa ensamblada' },
-  scope: { icon: 'scope', en: 'Oscilloscope capture', es: 'Captura de osciloscopio', contain: true },
-  rtl: { icon: 'layers', en: 'RTL diagram', es: 'Diagrama RTL', contain: true },
-  plot: { icon: 'wave', en: 'Signal plot', es: 'Gráfica de señales', contain: true },
-  demo: { icon: 'play', en: 'Demo video', es: 'Video de demostración', video: true },
-}
-
-/**
  * Proyectos de hardware y embebidos, en el orden en que se muestran (define los códigos HW-0X).
+ * Orden (25 sep 2026): primero lo más fuerte para una práctica de hardware y con mejor material visual;
+ * los que no tienen fotos ni video van al final.
+ *
+ * `media` = carrusel de la tarjeta y bitácora del modal, en orden: videos primero, luego fotos de la más
+ *   llamativa a la menos. Archivos en public/media/projects/<id>/ (ver README y scripts/media.py):
+ *     { type: 'video', src: 'demo' }        → demo.mp4 + póster demo.webp
+ *     { type: 'image', src: 'board' }       → board.webp (o .jpg / .png)
+ *     { type: 'youtube', id, poster }       → video de YouTube; poster = imagen local sin extensión
+ *   `fit: 'contain'` = se ve completo sobre un fondo desenfocado (verticales, capturas); `bg: 'light'` =
+ *   fondo blanco (diagramas). `caption` = pie de foto { en, es }. Un archivo que no existe se omite solo.
+ * `chain` = cadena de señal dibujada en lugar de medios, para proyectos sin fotos ni video.
  * `specs[].v` en null = pendiente (se ve como hueco). `v` puede ser texto o { en, es }.
- * `captions` = pie de foto por slot de la bitácora. `software` = id del proyecto de SOFTWARE enlazado.
+ * `software` = id del proyecto de SOFTWARE enlazado.
  */
 export const HARDWARE = [
   {
@@ -526,8 +544,16 @@ export const HARDWARE = [
     repo: 'https://github.com/NicoGomez4262/PROTEO_Fase2',
     demo: 'https://mi-app-vsc.web.app',
     software: 'proteo-web',
-    team: null, // ⚠ PENDIENTE — materia, equipo y rol de Nicolás en PROTEO
-    gallery: ['board', 'schematic', 'demo'],
+    team: null, // ⚠ PENDIENTE — materia, equipo y rol de Nicolás en PROTEO (el pitch muestra un equipo de 3)
+    // El pitch (4:37) vive en YouTube; el póster es un fotograma del casillero sacado del mismo video.
+    media: [
+      {
+        type: 'youtube',
+        id: '6g7JhK-fa98',
+        poster: 'locker',
+        caption: { en: 'Pitch video: the problem, the locker prototype and the business model', es: 'Video pitch: el problema, el prototipo del casillero y el modelo de negocio' },
+      },
+    ],
     specs: [
       { k: 'SBC', v: 'Raspberry Pi' },
       { k: { en: 'Sensors', es: 'Sensores' }, v: { en: 'IR on GPIO · door state', es: 'IR en GPIO · estado de puerta' } },
@@ -565,67 +591,218 @@ export const HARDWARE = [
     repo: null,
     demo: null,
     team: null,
-    gallery: ['schematic', 'pcb', 'board'],
+    media: [
+      { type: 'video', src: 'tetris', fit: 'contain', caption: { en: 'Tetris running on the LED-matrix board', es: 'Tetris corriendo en la placa de matrices LED' } },
+      { type: 'image', src: 'board', fit: 'contain', caption: { en: 'Assembled board with its two 8×8 LED matrices', es: 'Placa ensamblada con sus dos matrices LED de 8×8' } },
+      {
+        type: 'image',
+        src: 'render',
+        fit: 'contain',
+        bg: 'light',
+        caption: { en: 'PCB 3D view: shift registers, headers and ROTATE / LEFT / RIGHT / DOWN buttons', es: 'Vista 3D de la PCB: registros de desplazamiento, conectores y botones ROTATE / LEFT / RIGHT / DOWN' },
+      },
+      { type: 'image', src: 'schematic', fit: 'contain', bg: 'light', caption: { en: 'Schematic: Arduino Uno, four 74HC595 and two 8×8 matrices', es: 'Esquemático: Arduino Uno, cuatro 74HC595 y dos matrices de 8×8' } },
+      { type: 'image', src: 'bare', fit: 'contain', caption: { en: 'Fabricated PCB, before assembly', es: 'PCB fabricada, antes del ensamble' } },
+      { type: 'image', src: 'prototype', fit: 'contain', caption: { en: 'Prototype wired to an Arduino Uno and a speaker', es: 'Prototipo conectado a un Arduino Uno y un parlante' } },
+    ],
     specs: [
       { k: 'EDA', v: 'Altium Designer' },
       { k: { en: 'Context', es: 'Contexto' }, v: { en: 'Teaching assistant · 2026', es: 'Monitoría · 2026' } },
-      { k: { en: 'Board function', es: 'Función' }, v: null }, // ⚠ PENDIENTE — qué hace cada placa
-      { k: 'MCU', v: null }, // ⚠ PENDIENTE — microcontrolador / procesador
+      // ⚠ VERIFICAR — las cuatro filas siguientes salen del render, el esquemático y el video del 25 sep 2026.
+      { k: { en: 'Board shown', es: 'Placa del video' }, v: { en: 'LED-matrix game board · Tetris', es: 'Placa de juego con matrices LED · Tetris' } },
+      { k: { en: 'Drivers', es: 'Drivers' }, v: { en: '4× 74HC595 → 2× 8×8 LED matrices', es: '4 × 74HC595 → 2 matrices LED de 8×8' } },
+      { k: { en: 'Controller', es: 'Controlador' }, v: 'Arduino Uno' },
+      { k: { en: 'Inputs', es: 'Entradas' }, v: { en: 'ROTATE · LEFT · RIGHT · DOWN buttons', es: 'Botones ROTATE · LEFT · RIGHT · DOWN' } },
       { k: { en: 'Layers', es: 'Capas' }, v: null }, // ⚠ PENDIENTE
       { k: { en: 'Units built', es: 'Unidades' }, v: null }, // ⚠ PENDIENTE — cuántas se fabricaron (y fabricante)
     ],
     en: {
-      tagline: 'Boards I designed as a teaching assistant so students could work through the course concepts on real hardware.',
+      tagline: 'Boards I designed in Altium as a teaching assistant so students could practice the course concepts on real hardware, like this LED-matrix game board running Tetris.',
       problem: 'The course needed hardware that let students experiment hands-on with its core concepts: embedded C, finite-state machines, interrupts and timing.',
       did: [
         'Designed and developed custom PCBs in Altium Designer for the course.',
+        'One of them is the game board in the photos and the video: two 8×8 LED matrices driven by four 74HC595 shift registers from an Arduino Uno, with ROTATE, LEFT, RIGHT and DOWN buttons. It runs Tetris.',
         'Supported students working on embedded C, FSMs, interrupts and timing analysis during office hours.',
       ],
     },
     es: {
-      tagline: 'Placas que diseñé como monitor para que los estudiantes trabajaran los conceptos del curso sobre hardware real.',
+      tagline: 'Placas que diseñé en Altium como monitor para que los estudiantes practicaran los conceptos del curso sobre hardware real, como esta placa de juego con matrices LED que corre Tetris.',
       problem: 'El curso necesitaba hardware para que los estudiantes experimentaran en físico con sus conceptos centrales: C embebido, máquinas de estados, interrupciones y temporización.',
       did: [
         'Diseñé y desarrollé PCB a la medida en Altium Designer para el curso.',
+        'Una de ellas es la placa de juego de las fotos y el video: dos matrices LED de 8×8 manejadas por cuatro registros de desplazamiento 74HC595 desde un Arduino Uno, con botones ROTATE, LEFT, RIGHT y DOWN. Corre Tetris.',
         'Acompañé a los estudiantes en C embebido, máquinas de estados, interrupciones y análisis de temporización durante las horas de consulta.',
       ],
     },
   },
+  // ⚠ VERIFICAR — proyecto nuevo (25 sep 2026), armado solo con lo que se ve en los videos y fotos de Nicolás
+  // (carpeta «PIC / Medición EEG y EMG»). Faltan equipo, materia, rol y cifras.
   {
-    id: 'fir-pic',
-    name: { en: 'Real-time FIR filtering on a PIC', es: 'Filtrado FIR en tiempo real sobre un PIC' },
+    id: 'eeg-emg',
+    name: { en: 'EEG & EMG biosignal acquisition', es: 'Adquisición de señales EEG y EMG' },
     year: '2025',
-    repo: 'https://github.com/NicoGomez4262/DAC-y-ADC-por-comunicaci-n-SERIAL',
+    repo: null,
     demo: null,
     team: null, // ⚠ PENDIENTE — ¿individual o en equipo? ¿de qué materia?
-    gallery: ['schematic', 'board', 'scope', 'demo'],
+    media: [
+      {
+        type: 'video',
+        src: 'emg',
+        fit: 'contain',
+        caption: { en: 'EMG from the forearm: opening and closing the hand shows up live in LabVIEW', es: 'EMG del antebrazo: abrir y cerrar la mano se ve en vivo en LabVIEW' },
+      },
+      { type: 'video', src: 'eeg-scope', caption: { en: 'The signal from the forehead electrodes on the oscilloscope', es: 'La señal de los electrodos de la frente en el osciloscopio' } },
+      {
+        type: 'video',
+        src: 'test-bench',
+        fit: 'contain',
+        caption: {
+          en: 'Test bench: the battery-powered board in its enclosure, a function generator and SINAD / THD in LabVIEW',
+          es: 'Banco de pruebas: la placa con batería en su caja, un generador de funciones y SINAD / THD en LabVIEW',
+        },
+      },
+      {
+        type: 'image',
+        src: 'board',
+        fit: 'contain',
+        caption: { en: 'Front-end board on the bench, with the NI DAQ and the function generator behind', es: 'Placa de adquisición en la mesa, con la DAQ de NI y el generador de funciones detrás' },
+      },
+      { type: 'image', src: 'scope-decode', caption: { en: 'I²C reads decoded on the oscilloscope', es: 'Lecturas I²C decodificadas en el osciloscopio' } },
+    ],
     specs: [
-      { k: 'MCU', v: 'Microchip PIC · 64 MHz' }, // ⚠ PENDIENTE — referencia exacta del PIC
-      { k: 'ADC', v: 'MAX11666 · 2-ch · 12-bit' },
-      { k: 'DAC', v: 'MCP4822 · 2-ch · 12-bit' },
-      { k: { en: 'Interfaces', es: 'Interfaces' }, v: 'SPI (shared bus) · UART' },
-      { k: { en: 'Filters', es: 'Filtros' }, v: { en: 'FIR · order 12 & 14', es: 'FIR · orden 12 y 14' } },
-      { k: { en: 'Toolchain', es: 'Herramientas' }, v: 'MPLAB X · MCC · C' },
-      { k: { en: 'Sample rate', es: 'Muestreo' }, v: null }, // ⚠ PENDIENTE — frecuencia de muestreo real
+      { k: { en: 'Electrodes', es: 'Electrodos' }, v: { en: 'Surface · forearm (EMG) and forehead (EEG)', es: 'De superficie · antebrazo (EMG) y frente (EEG)' } },
+      { k: 'Front-end', v: { en: 'Instrumentation amplifier + filter stage', es: 'Amplificador de instrumentación + etapa de filtrado' } },
+      { k: { en: 'Power', es: 'Alimentación' }, v: { en: 'LiPo battery · aluminum enclosure', es: 'Batería LiPo · caja de aluminio' } },
+      { k: { en: 'Acquisition', es: 'Adquisición' }, v: 'NI DAQ · LabVIEW' },
+      { k: { en: 'Validation', es: 'Validación' }, v: { en: 'SINAD and THD per stage', es: 'SINAD y THD por etapa' } },
+      { k: { en: 'Instruments', es: 'Instrumentos' }, v: 'Keysight 33500B · InfiniiVision DSOX2024A' },
+      { k: { en: 'Gain / band', es: 'Ganancia / banda' }, v: null }, // ⚠ PENDIENTE — ganancia y banda de paso de cada canal
     ],
     en: {
-      tagline: 'A two-channel signal chain on a microcontroller: 12-bit ADC in, FIR filter in firmware, 12-bit DAC out, reconfigurable live over UART.',
-      problem: 'Real-time DSP on a small MCU with no OS: every sample has to be read, filtered and written back before the next one arrives, with the ADC and the DAC sharing a single SPI bus.',
+      tagline: 'An acquisition chain for muscle (EMG) and brain (EEG) signals: surface electrodes on the forearm and the forehead, a battery-powered analog front-end and live analysis in LabVIEW.',
+      problem: 'Biopotentials are tiny (microvolts for EEG, millivolts for EMG), buried in noise and mains hum, and picked up through the skin. The chain has to amplify and filter them without distorting what it is trying to measure.',
       did: [
-        'Wrote SPI drivers for a MAX11666 dual-channel ADC and an MCP4822 dual DAC on one shared bus, handling chip-select and LDAC timing.',
-        'Implemented order-12 (13-tap) and order-14 (15-tap) FIR filters in C with circular sample buffers.',
-        'Built a UART command parser and state machine (FILTRO(n), IN(n), DAC(ch,sig)) to switch filter, input and output routing at runtime without reflashing.',
-        'Exposed six routable signals per DAC channel: A, B, A+B, |A−B|, scaled A·B and the filter output. IIR slots are reserved in the state machine.',
+        'Surface electrodes on the forearm (EMG) and on the forehead (EEG) feed a battery-powered analog front-end, housed in an aluminum enclosure.',
+        'Digitized the signals with an NI DAQ and plotted them live in LabVIEW, in time and in frequency, while the hand opened and closed.',
+        'Characterized the chain with a function generator: SINAD and THD after the instrumentation amplifier, after the filter and at the output.',
+        'Checked the signals, and a decoded I²C bus, on the oscilloscope.',
       ],
     },
     es: {
-      tagline: 'Cadena de señal de dos canales en un microcontrolador: ADC de 12 bits a la entrada, filtro FIR en firmware y DAC de 12 bits a la salida, reconfigurable en vivo por UART.',
-      problem: 'DSP en tiempo real sobre un microcontrolador pequeño y sin sistema operativo: cada muestra se lee, se filtra y se escribe antes de que llegue la siguiente, con el ADC y el DAC compartiendo un solo bus SPI.',
+      tagline: 'Cadena de adquisición de señales musculares (EMG) y cerebrales (EEG): electrodos de superficie en el antebrazo y la frente, un front-end analógico alimentado por batería y análisis en vivo en LabVIEW.',
+      problem: 'Los biopotenciales son muy pequeños (microvoltios en EEG, milivoltios en EMG), vienen enterrados en ruido y en la interferencia de la red eléctrica, y se captan a través de la piel. La cadena tiene que amplificarlos y filtrarlos sin deformar lo que quiere medir.',
       did: [
-        'Escribí los drivers SPI de un ADC MAX11666 de dos canales y un DAC MCP4822 doble sobre un mismo bus, manejando los tiempos de chip-select y LDAC.',
-        'Implementé filtros FIR de orden 12 (13 coeficientes) y 14 (15 coeficientes) en C con buffers circulares.',
-        'Construí un parser de comandos UART y una máquina de estados (FILTRO(n), IN(n), DAC(ch,sig)) para cambiar filtro, entrada y ruteo en ejecución, sin volver a programar.',
-        'Seis señales enrutables por canal del DAC: A, B, A+B, |A−B|, A·B escalado y la salida del filtro. La máquina de estados deja espacios reservados para filtros IIR.',
+        'Electrodos de superficie en el antebrazo (EMG) y en la frente (EEG) alimentan un front-end analógico con batería, montado en una caja de aluminio.',
+        'Digitalicé las señales con una DAQ de NI y las graficué en vivo en LabVIEW, en tiempo y en frecuencia, mientras la mano se abría y se cerraba.',
+        'Caractericé la cadena con un generador de funciones: SINAD y THD después del amplificador de instrumentación, después del filtro y a la salida.',
+        'Revisé las señales, y un bus I²C decodificado, en el osciloscopio.',
+      ],
+    },
+  },
+  // ⚠ VERIFICAR — proyecto nuevo (25 sep 2026), armado con las fotos de Nicolás (carpeta «PIC / Medición con LVDT»).
+  // Las placas dicen «Proyecto IELEC 2 · Grupo 4»; la base, «46K42 V1». Faltan integrantes, materia, rol y cifras.
+  {
+    id: 'lvdt',
+    name: { en: 'LVDT micro-fracture measurement', es: 'Medición de microfracturas con LVDT' },
+    year: '2025',
+    repo: null,
+    demo: null,
+    team: { en: 'Group project', es: 'Proyecto en grupo' }, // ⚠ PENDIENTE — nombres del equipo
+    media: [
+      {
+        type: 'image',
+        src: 'system',
+        caption: {
+          en: 'The complete setup: the LVDT on its 3D-printed jig, the conditioning board on the PIC board and the dial indicator as reference',
+          es: 'El montaje completo: el LVDT en su soporte impreso en 3D, la placa de acondicionamiento sobre la del PIC y el comparador como referencia',
+        },
+      },
+      { type: 'image', src: 'jig', caption: { en: '3D-printed jig: micrometer head, LVDT and digital dial indicator in line', es: 'Soporte impreso en 3D: tornillo micrométrico, LVDT y comparador digital en línea' } },
+      { type: 'image', src: 'pcb', fit: 'contain', caption: { en: 'Custom LVDT signal-conditioning PCB, stacked on the PIC18F46K42 board', es: 'PCB de acondicionamiento del LVDT, montada sobre la placa del PIC18F46K42' } },
+      {
+        type: 'image',
+        src: 'bench',
+        caption: {
+          en: 'Anti-aliasing filter board on the PIC board, with an MPLAB Snap debugger and a USB-serial adapter',
+          es: 'Placa del filtro antialiasing sobre la del PIC, con un depurador MPLAB Snap y un adaptador USB-serial',
+        },
+      },
+      { type: 'image', src: 'cad', fit: 'contain', bg: 'light', caption: { en: 'CAD model of the jig', es: 'Modelo CAD del soporte' } },
+    ],
+    specs: [
+      { k: 'Sensor', v: 'LVDT' },
+      { k: { en: 'Conditioning', es: 'Acondicionamiento' }, v: { en: 'Custom PCB (group design)', es: 'PCB a la medida (diseño del grupo)' } },
+      { k: { en: 'Filtering', es: 'Filtrado' }, v: { en: 'Anti-aliasing board · 2 channels', es: 'Placa antialiasing · 2 canales' } },
+      { k: 'MCU', v: 'PIC18F46K42' }, // ⚠ VERIFICAR — la placa base dice «46K42 V1»
+      { k: { en: 'Reference', es: 'Referencia' }, v: { en: 'Micrometer head · digital dial indicator', es: 'Tornillo micrométrico · comparador digital' } },
+      { k: { en: 'Mechanics', es: 'Mecánica' }, v: { en: '3D-printed jig, modeled in CAD', es: 'Soporte impreso en 3D, modelado en CAD' } },
+      { k: { en: 'Resolution', es: 'Resolución' }, v: null }, // ⚠ PENDIENTE — resolución y rango medidos
+    ],
+    en: {
+      tagline: 'A displacement-measurement system built to detect micro-fractures: an LVDT on a 3D-printed jig, a custom signal-conditioning board and a PIC microcontroller, checked against a micrometer and a dial indicator.',
+      problem: 'A micro-fracture shows up as a displacement far too small for a ruler or a caliper. The LVDT output has to be conditioned, filtered and digitized without losing that resolution, and every reading needs a trusted reference to be compared against.',
+      did: [
+        'A custom signal-conditioning PCB for the LVDT, designed by the group and stacked on a PIC18F46K42 board.',
+        'A separate two-channel anti-aliasing filter board in front of the microcontroller.',
+        'A 3D-printed jig, modeled in CAD, that holds the LVDT in line with a micrometer head and a digital dial indicator to compare readings.',
+        'The PIC programmed and debugged with an MPLAB Snap, with a USB-serial link to the computer.',
+      ],
+    },
+    es: {
+      tagline: 'Sistema de medición de desplazamiento para detectar microfracturas: un LVDT sobre un soporte impreso en 3D, una placa de acondicionamiento a la medida y un microcontrolador PIC, contrastado con un tornillo micrométrico y un comparador.',
+      problem: 'Una microfractura se manifiesta como un desplazamiento demasiado pequeño para una regla o un calibrador. La salida del LVDT hay que acondicionarla, filtrarla y digitalizarla sin perder esa resolución, y cada lectura necesita una referencia confiable con la cual compararse.',
+      did: [
+        'Una PCB de acondicionamiento a la medida para el LVDT, diseñada por el grupo y montada sobre una placa con PIC18F46K42.',
+        'Una placa aparte con un filtro antialiasing de dos canales antes del microcontrolador.',
+        'Un soporte impreso en 3D, modelado en CAD, que alinea el LVDT con un tornillo micrométrico y un comparador digital para contrastar las lecturas.',
+        'El PIC programado y depurado con un MPLAB Snap, con enlace USB-serial al computador.',
+      ],
+    },
+  },
+  {
+    id: 'conveyor',
+    name: { en: 'DC motor control for a conveyor belt', es: 'Control de motor DC para banda transportadora' },
+    year: '2025',
+    repo: 'https://github.com/NicoGomez4262/Control_BandaTransportadora',
+    demo: null,
+    team: null,
+    // ⚠ VERIFICAR — el video del 25 nov 2025 grafica RPM medidas contra una referencia (sp) con detección del tiempo
+    // de establecimiento: ¿esa versión es en lazo cerrado? ¿qué sensor mide las RPM? Si sí, actualizar «Control».
+    media: [
+      { type: 'video', src: 'belt', caption: { en: 'Turning the potentiometer that sets the belt’s speed and direction', es: 'Girando el potenciómetro que fija la velocidad y el sentido de la banda' } },
+      {
+        type: 'video',
+        src: 'rpm-plot',
+        caption: { en: 'Measured RPM against the setpoint, plotted live in Python with settling-time detection', es: 'RPM medidas contra la referencia, graficadas en vivo en Python con detección del tiempo de establecimiento' },
+      },
+      { type: 'image', src: 'setup', caption: { en: 'The conveyor model with its DC motor and the control electronics', es: 'El modelo de la banda con su motor DC y la electrónica de control' } },
+    ],
+    specs: [
+      { k: 'MCU', v: 'Arduino Uno' },
+      { k: { en: 'Driver', es: 'Driver' }, v: { en: 'L298N H-bridge', es: 'Puente H L298N' } },
+      { k: { en: 'Control', es: 'Control' }, v: { en: 'Open-loop PWM', es: 'PWM en lazo abierto' } },
+      { k: { en: 'Input', es: 'Entrada' }, v: { en: 'Potentiometer · ADC', es: 'Potenciómetro · ADC' } },
+      { k: { en: 'Telemetry', es: 'Telemetría' }, v: 'Serial (UART)' },
+      { k: { en: 'Language', es: 'Lenguaje' }, v: 'C' },
+    ],
+    en: {
+      tagline: 'Direction and speed of a DC motor from a single potentiometer, with an H-bridge, a dead zone and a friction-aware minimum PWM.',
+      problem: 'One potentiometer has to control two things at once, direction and speed, without the motor jittering at the centre or stalling from static friction.',
+      did: [
+        'Mapped one potentiometer to both direction and speed: lower half reverse, upper half forward, and a centre dead zone that stops the motor.',
+        'Drove the motor through an L298N H-bridge: two pins for direction, one PWM pin for speed.',
+        'Set a minimum PWM duty so the motor overcomes static friction at start-up instead of stalling.',
+        'Streamed telemetry over serial for live monitoring.',
+      ],
+    },
+    es: {
+      tagline: 'Dirección y velocidad de un motor DC con un solo potenciómetro, puente H, zona muerta y un PWM mínimo que tiene en cuenta la fricción.',
+      problem: 'Un potenciómetro tiene que controlar dos cosas a la vez, sentido y velocidad, sin que el motor tiemble en el centro ni se trabe por fricción estática.',
+      did: [
+        'Mapeé un potenciómetro a sentido y velocidad: mitad inferior en reversa, mitad superior hacia adelante y una zona muerta central que detiene el motor.',
+        'Manejé el motor con un puente H L298N: dos pines de dirección y uno de PWM para la velocidad.',
+        'Fijé un ciclo útil mínimo de PWM para que el motor venza la fricción estática al arrancar en lugar de trabarse.',
+        'Envié telemetría por serial para monitoreo en vivo.',
       ],
     },
   },
@@ -639,12 +816,13 @@ export const HARDWARE = [
     team: { en: 'With Ruslán Domínguez Ivanova and Luis Alberto Muñoz Rodríguez', es: 'Con Ruslán Domínguez Ivanova y Luis Alberto Muñoz Rodríguez' },
     // ⚠ VERIFICAR — nombre exacto de la materia. El repo dice "final exam of the digital systems course".
     course: { en: 'Digital Systems · final exam', es: 'Sistemas Digitales · examen final' },
-    gallery: ['board', 'demo', 'scope', 'rtl', 'schematic'],
-    captions: {
-      scope: { en: 'Joystick comparator outputs on the scope', es: 'Salidas del comparador del joystick en el osciloscopio' },
-      rtl: { en: 'Quartus RTL view of the top level', es: 'Vista RTL del nivel superior en Quartus' },
-      schematic: { en: 'Joystick interface · LM393 comparators', es: 'Interfaz del joystick · comparadores LM393' },
-    },
+    media: [
+      { type: 'video', src: 'gameplay', fit: 'contain', caption: { en: 'A rally on the VGA monitor, played with the two joysticks', es: 'Una jugada en el monitor VGA, con los dos joysticks' } },
+      { type: 'image', src: 'board', caption: { en: 'DE2-115 with the LM393 joystick interface on the breadboard', es: 'La DE2-115 con la interfaz de joysticks (LM393) en la protoboard' } },
+      { type: 'image', src: 'scope', fit: 'contain', caption: { en: 'Joystick comparator outputs on the scope', es: 'Salidas del comparador del joystick en el osciloscopio' } },
+      { type: 'image', src: 'rtl', fit: 'contain', bg: 'light', caption: { en: 'Quartus RTL view of the top level', es: 'Vista RTL del nivel superior en Quartus' } },
+      { type: 'image', src: 'schematic', fit: 'contain', bg: 'light', caption: { en: 'Joystick interface · LM393 comparators', es: 'Interfaz del joystick · comparadores LM393' } },
+    ],
     specs: [
       { k: 'FPGA', v: 'Intel Cyclone IV E · EP4CE115F29C7' },
       { k: { en: 'Board', es: 'Tarjeta' }, v: 'Terasic DE2-115' },
@@ -685,10 +863,14 @@ export const HARDWARE = [
     team: { en: 'With Ruslán Domínguez Ivanova', es: 'Con Ruslán Domínguez Ivanova' },
     // ⚠ VERIFICAR — nombre exacto de la materia. El repo dice "final project of the Signal Processing course".
     course: { en: 'Signal Processing · final project', es: 'Procesamiento de Señales · proyecto final' },
-    gallery: ['board', 'demo', 'plot'],
-    captions: {
-      plot: { en: 'Recorded X/Y/Z templates · data from the repo', es: 'Plantillas X/Y/Z grabadas · datos del repo' },
-    },
+    media: [
+      { type: 'video', src: 'cad', fit: 'contain', bg: 'light', caption: { en: 'CAD model of the wand, exploded', es: 'Modelo CAD de la varita, en vista explosionada' } },
+      { type: 'video', src: 'print', caption: { en: '3D-printing the wand', es: 'Imprimiendo la varita en 3D' } },
+      { type: 'image', src: 'wand', fit: 'contain', caption: { en: 'The finished wand showing “Leviosa” on its OLED', es: 'La varita terminada mostrando «Leviosa» en su OLED' } },
+      { type: 'image', src: 'electronics', fit: 'contain', caption: { en: 'Raspberry Pi Pico, OLED and battery during assembly', es: 'Raspberry Pi Pico, OLED y batería durante el ensamble' } },
+      { type: 'image', src: 'sensor', fit: 'contain', caption: { en: 'Perfboard with the accelerometer module and the capture button', es: 'Placa perforada con el módulo del acelerómetro y el botón de captura' } },
+      { type: 'image', src: 'plot', fit: 'contain', caption: { en: 'Recorded X/Y/Z templates · data from the repo', es: 'Plantillas X/Y/Z grabadas · datos del repo' } },
+    ],
     specs: [
       { k: 'MCU', v: 'Raspberry Pi Pico · MicroPython' }, // confirmado por Nicolás (24 sep 2026)
       { k: 'Sensor', v: { en: 'ADXL345 3-axis accelerometer · ±2 g', es: 'Acelerómetro ADXL345 de 3 ejes · ±2 g' } },
@@ -719,39 +901,50 @@ export const HARDWARE = [
     },
   },
   {
-    id: 'conveyor',
-    name: { en: 'DC motor control for a conveyor belt', es: 'Control de motor DC para banda transportadora' },
+    id: 'fir-pic',
+    name: { en: 'Real-time FIR filtering on a PIC', es: 'Filtrado FIR en tiempo real sobre un PIC' },
     year: '2025',
-    repo: 'https://github.com/NicoGomez4262/Control_BandaTransportadora',
+    repo: 'https://github.com/NicoGomez4262/DAC-y-ADC-por-comunicaci-n-SERIAL',
     demo: null,
-    team: null,
-    gallery: ['schematic', 'board', 'demo'],
+    team: null, // ⚠ PENDIENTE — ¿individual o en equipo? ¿de qué materia?
+    // Sin fotos ni video todavía: la tarjeta dibuja la cadena de señal con los datos confirmados del repo.
+    chain: {
+      title: { en: 'Signal chain', es: 'Cadena de señal' },
+      bus: 'SPI',
+      blocks: [
+        { part: 'MAX11666', role: { en: 'ADC · 12-bit', es: 'ADC · 12 bits' } },
+        { part: 'PIC', role: { en: 'FIR · order 12 / 14', es: 'FIR · orden 12 / 14' }, core: true },
+        { part: 'MCP4822', role: { en: 'DAC · 12-bit', es: 'DAC · 12 bits' } },
+      ],
+      control: { en: 'UART commands · FILTRO(n) · IN(n) · DAC(ch,sig)', es: 'Comandos por UART · FILTRO(n) · IN(n) · DAC(ch,sig)' },
+    },
     specs: [
-      { k: 'MCU', v: 'Arduino Uno' },
-      { k: { en: 'Driver', es: 'Driver' }, v: { en: 'L298N H-bridge', es: 'Puente H L298N' } },
-      { k: { en: 'Control', es: 'Control' }, v: { en: 'Open-loop PWM', es: 'PWM en lazo abierto' } },
-      { k: { en: 'Input', es: 'Entrada' }, v: { en: 'Potentiometer · ADC', es: 'Potenciómetro · ADC' } },
-      { k: { en: 'Telemetry', es: 'Telemetría' }, v: 'Serial (UART)' },
-      { k: { en: 'Language', es: 'Lenguaje' }, v: 'C' },
+      { k: 'MCU', v: 'Microchip PIC · 64 MHz' }, // ⚠ PENDIENTE — referencia exacta del PIC (¿PIC18F46K42, como en el LVDT?)
+      { k: 'ADC', v: 'MAX11666 · 2-ch · 12-bit' },
+      { k: 'DAC', v: 'MCP4822 · 2-ch · 12-bit' },
+      { k: { en: 'Interfaces', es: 'Interfaces' }, v: 'SPI (shared bus) · UART' },
+      { k: { en: 'Filters', es: 'Filtros' }, v: { en: 'FIR · order 12 & 14', es: 'FIR · orden 12 y 14' } },
+      { k: { en: 'Toolchain', es: 'Herramientas' }, v: 'MPLAB X · MCC · C' },
+      { k: { en: 'Sample rate', es: 'Muestreo' }, v: null }, // ⚠ PENDIENTE — frecuencia de muestreo real
     ],
     en: {
-      tagline: 'Direction and speed of a DC motor from a single potentiometer, with an H-bridge, a dead zone and a friction-aware minimum PWM.',
-      problem: 'One potentiometer has to control two things at once, direction and speed, without the motor jittering at the centre or stalling from static friction.',
+      tagline: 'A two-channel signal chain on a microcontroller: 12-bit ADC in, FIR filter in firmware, 12-bit DAC out, reconfigurable live over UART.',
+      problem: 'Real-time DSP on a small MCU with no OS: every sample has to be read, filtered and written back before the next one arrives, with the ADC and the DAC sharing a single SPI bus.',
       did: [
-        'Mapped one potentiometer to both direction and speed: lower half reverse, upper half forward, and a centre dead zone that stops the motor.',
-        'Drove the motor through an L298N H-bridge: two pins for direction, one PWM pin for speed.',
-        'Set a minimum PWM duty so the motor overcomes static friction at start-up instead of stalling.',
-        'Streamed telemetry over serial for live monitoring.',
+        'Wrote SPI drivers for a MAX11666 dual-channel ADC and an MCP4822 dual DAC on one shared bus, handling chip-select and LDAC timing.',
+        'Implemented order-12 (13-tap) and order-14 (15-tap) FIR filters in C with circular sample buffers.',
+        'Built a UART command parser and state machine (FILTRO(n), IN(n), DAC(ch,sig)) to switch filter, input and output routing at runtime without reflashing.',
+        'Exposed six routable signals per DAC channel: A, B, A+B, |A−B|, scaled A·B and the filter output. IIR slots are reserved in the state machine.',
       ],
     },
     es: {
-      tagline: 'Dirección y velocidad de un motor DC con un solo potenciómetro, puente H, zona muerta y un PWM mínimo que tiene en cuenta la fricción.',
-      problem: 'Un potenciómetro tiene que controlar dos cosas a la vez, sentido y velocidad, sin que el motor tiemble en el centro ni se trabe por fricción estática.',
+      tagline: 'Cadena de señal de dos canales en un microcontrolador: ADC de 12 bits a la entrada, filtro FIR en firmware y DAC de 12 bits a la salida, reconfigurable en vivo por UART.',
+      problem: 'DSP en tiempo real sobre un microcontrolador pequeño y sin sistema operativo: cada muestra se lee, se filtra y se escribe antes de que llegue la siguiente, con el ADC y el DAC compartiendo un solo bus SPI.',
       did: [
-        'Mapeé un potenciómetro a sentido y velocidad: mitad inferior en reversa, mitad superior hacia adelante y una zona muerta central que detiene el motor.',
-        'Manejé el motor con un puente H L298N: dos pines de dirección y uno de PWM para la velocidad.',
-        'Fijé un ciclo útil mínimo de PWM para que el motor venza la fricción estática al arrancar en lugar de trabarse.',
-        'Envié telemetría por serial para monitoreo en vivo.',
+        'Escribí los drivers SPI de un ADC MAX11666 de dos canales y un DAC MCP4822 doble sobre un mismo bus, manejando los tiempos de chip-select y LDAC.',
+        'Implementé filtros FIR de orden 12 (13 coeficientes) y 14 (15 coeficientes) en C con buffers circulares.',
+        'Construí un parser de comandos UART y una máquina de estados (FILTRO(n), IN(n), DAC(ch,sig)) para cambiar filtro, entrada y ruteo en ejecución, sin volver a programar.',
+        'Seis señales enrutables por canal del DAC: A, B, A+B, |A−B|, A·B escalado y la salida del filtro. La máquina de estados deja espacios reservados para filtros IIR.',
       ],
     },
   },
@@ -762,7 +955,15 @@ export const HARDWARE = [
     repo: 'https://github.com/NicoGomez4262/DreamSnake',
     demo: null,
     team: { en: 'With Juan Conrado and Felipe Useche', es: 'Con Juan Conrado y Felipe Useche' },
-    gallery: ['board', 'demo'],
+    media: [
+      // Video vertical en YouTube; el póster es un fotograma de ese video con la matriz encendida.
+      { type: 'youtube', id: 'hUZ8Faycb1c', poster: 'video', fit: 'contain', caption: { en: 'Final-build test run (YouTube)', es: 'Prueba de funcionamiento del proyecto final (YouTube)' } },
+      {
+        type: 'image',
+        src: 'prototype',
+        caption: { en: 'The breadboard build: LED matrix, 20×4 LCD with the game menu, buttons and speaker', es: 'El montaje en protoboard: matriz LED, LCD 20×4 con el menú del juego, pulsadores y parlante' },
+      },
+    ],
     specs: [
       { k: 'MCU', v: 'Arduino Mega 2560' },
       { k: { en: 'Display', es: 'Pantalla' }, v: { en: '2× MAX7219 8×8 LED · 20×4 I²C LCD', es: '2× MAX7219 LED 8×8 · LCD I²C 20×4' } },
@@ -791,8 +992,6 @@ export const HARDWARE = [
       ],
     },
   },
-  // ⚠ PENDIENTE — ranura para el próximo proyecto. Cuando exista, reemplazar por una ficha completa.
-  { id: 'next', placeholder: true },
 ]
 
 /**
@@ -886,7 +1085,6 @@ export const LAB = [
 export const SKILLS = [
   {
     id: 'pcb',
-    code: 'HW-01',
     en: 'PCB & Hardware Design',
     es: 'Diseño de PCB y hardware',
     rows: [
@@ -898,7 +1096,6 @@ export const SKILLS = [
   },
   {
     id: 'embedded',
-    code: 'HW-02',
     en: 'Embedded Systems',
     es: 'Sistemas embebidos',
     rows: [
@@ -915,7 +1112,6 @@ export const SKILLS = [
   },
   {
     id: 'digital',
-    code: 'HW-03',
     en: 'Digital Design',
     es: 'Diseño digital',
     rows: [
@@ -928,7 +1124,6 @@ export const SKILLS = [
   },
   {
     id: 'signals',
-    code: 'HW-04',
     en: 'Signals & Analysis',
     es: 'Señales y análisis',
     rows: [
@@ -941,7 +1136,6 @@ export const SKILLS = [
   },
   {
     id: 'lab',
-    code: 'HW-05',
     en: 'Lab & Instrumentation',
     es: 'Laboratorio e instrumentación',
     rows: [
@@ -952,7 +1146,6 @@ export const SKILLS = [
   },
   {
     id: 'software',
-    code: 'SW-01',
     en: 'Software',
     es: 'Software',
     rows: [
@@ -963,7 +1156,6 @@ export const SKILLS = [
   },
   {
     id: 'tools',
-    code: 'SW-02',
     en: 'Tools',
     es: 'Herramientas',
     rows: [
@@ -975,7 +1167,6 @@ export const SKILLS = [
   },
   {
     id: 'ai',
-    code: 'AI-01',
     en: 'AI',
     es: 'IA',
     rows: [

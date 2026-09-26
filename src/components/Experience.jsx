@@ -16,7 +16,7 @@ function Entry({ item, lang, t, delay }) {
           item.current ? 'border-accent bg-bg' : 'border-line bg-surface'
         }`}
       >
-        <span className={`size-1.5 rounded-full ${item.current ? 'live-dot bg-accent' : 'bg-ink-faint'}`} />
+        <span className={`size-1.5 rounded-full ${item.current ? 'bg-accent' : 'bg-ink-faint'}`} />
       </span>
 
       <Reveal delay={delay}>

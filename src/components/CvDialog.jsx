@@ -1,9 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CV_FORMATS, LANG_NAMES } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
 import { useDialog } from '../hooks/useDialog.js'
-import { cvDownloadName, cvFile, hasCv } from './ui/cv.js'
+import { cvDownloadName, cvFile, hasCv, otherLang } from './ui/cv.js'
 import Icon from './ui/Icon.jsx'
 
 const EASE = [0.22, 1, 0.36, 1]
@@ -11,14 +11,17 @@ const FORMAT_ICON = { ats: 'file', modern: 'layers' }
 
 /** Panel del diálogo: se monta al abrir, así el foco inicial y el bloqueo de scroll viven con él. */
 function CvPanel({ onClose }) {
-  const { lang, setLang, t } = useApp()
+  const { lang, t } = useApp()
   const reduced = useReducedMotion()
   const panelRef = useRef(null)
   const firstRef = useRef(null)
+  // El idioma de la hoja de vida es propio del diálogo: cambiarlo aquí no cambia el idioma del sitio.
+  // Arranca en el del sitio, o en el otro si el del sitio aún no tiene archivos.
+  const [cvLang, setCvLang] = useState(() => (!hasCv(lang) && hasCv(otherLang(lang)) ? otherLang(lang) : lang))
   useDialog(panelRef, { onClose, initialFocus: firstRef })
 
-  const other = lang === 'en' ? 'es' : 'en'
-  const files = CV_FORMATS.map((format) => ({ format, href: cvFile(lang, format) }))
+  const other = otherLang(cvLang)
+  const files = CV_FORMATS.map((format) => ({ format, href: cvFile(cvLang, format) }))
   const firstAvailable = files.find((f) => f.href)?.format
   const showFallback = !firstAvailable && hasCv(other)
 
@@ -49,7 +52,7 @@ function CvPanel({ onClose }) {
 
         <div className="flex items-start justify-between gap-4 px-5 pt-3 sm:px-7 sm:pt-6">
           <div className="min-w-0">
-            <p className="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">PDF · {lang.toUpperCase()}</p>
+            <p className="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">PDF · {cvLang.toUpperCase()}</p>
             <h2 id="cv-title" className="mt-1 text-xl font-semibold text-ink sm:text-2xl">
               {t.cvTitle}
             </h2>
@@ -78,10 +81,10 @@ function CvPanel({ onClose }) {
                   key={l}
                   type="button"
                   lang={l}
-                  aria-pressed={lang === l}
-                  onClick={() => setLang(l)}
+                  aria-pressed={cvLang === l}
+                  onClick={() => setCvLang(l)}
                   className={`h-11 min-w-[6rem] rounded-full px-4 text-sm transition ${
-                    lang === l ? 'bg-accent font-semibold text-accent-ink' : 'text-ink-dim hover:text-ink'
+                    cvLang === l ? 'bg-accent font-semibold text-accent-ink' : 'text-ink-dim hover:text-ink'
                   }`}
                 >
                   {LANG_NAMES[l]}
@@ -99,7 +102,8 @@ function CvPanel({ onClose }) {
                     <a
                       ref={format === firstAvailable ? firstRef : undefined}
                       href={href}
-                      download={cvDownloadName(lang, format)}
+                      hrefLang={cvLang}
+                      download={cvDownloadName(cvLang, format)}
                       onClick={onClose}
                       className="group flex min-h-[5rem] items-center gap-4 rounded-xl border border-line bg-surface p-4 transition hover:border-accent/60"
                     >
@@ -133,14 +137,13 @@ function CvPanel({ onClose }) {
 
           {showFallback && (
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent/30 bg-accent/5 p-4">
-              <p className="text-sm text-ink-dim">{t.cvFallback}</p>
+              <p className="text-sm text-ink-dim">{t.cvFallback[other]}</p>
               <button
                 type="button"
-                lang={other}
-                onClick={() => setLang(other)}
+                onClick={() => setCvLang(other)}
                 className="inline-flex h-11 items-center gap-2 rounded-full border border-accent/50 px-4 text-sm font-medium text-accent transition hover:bg-accent/10"
               >
-                {t.cvSwitch}
+                {t.cvSwitch[other]}
                 <Icon name="arrowRight" size={14} />
               </button>
             </div>
@@ -152,8 +155,8 @@ function CvPanel({ onClose }) {
 }
 
 /**
- * Selector de hoja de vida: pregunta el formato (ATS o moderno) antes de descargar.
- * El idioma es el del sitio, y se puede cambiar desde aquí sin cerrar.
+ * Selector de hoja de vida: pregunta el idioma y el formato (ATS o moderno) antes de descargar.
+ * Solo se abre cuando hay algo que elegir; si no, los botones descargan directo (ui/CvTrigger.jsx).
  */
 export default function CvDialog() {
   const { cvOpen, closeCv } = useApp()

@@ -21,7 +21,7 @@ const write = (key, value) => {
 
 export function AppProvider({ children }) {
   const [theme, setTheme] = useState(() => (read('ng-theme', 'dark') === 'light' ? 'light' : 'dark'))
-  const [lang, setLangState] = useState(() => (read('ng-lang', 'en') === 'es' ? 'es' : 'en'))
+  const [lang, setLang] = useState(() => (read('ng-lang', 'en') === 'es' ? 'es' : 'en'))
   const [cvOpen, setCvOpen] = useState(false)
   const cvTrigger = useRef(null)
 
@@ -37,10 +37,9 @@ export function AppProvider({ children }) {
   }, [lang])
 
   const toggleTheme = useCallback(() => setTheme((t) => (t === 'dark' ? 'light' : 'dark')), [])
-  const toggleLang = useCallback(() => setLangState((l) => (l === 'en' ? 'es' : 'en')), [])
-  const setLang = useCallback((l) => setLangState(l === 'es' ? 'es' : 'en'), [])
+  const toggleLang = useCallback(() => setLang((l) => (l === 'en' ? 'es' : 'en')), [])
 
-  // Diálogo de la hoja de vida: se abre desde cualquier botón de descarga y devuelve el foco a ese botón.
+  // Diálogo de la hoja de vida: se abre desde un botón de descarga y devuelve el foco a ese botón.
   const openCv = useCallback((trigger) => {
     cvTrigger.current = trigger ?? null
     setCvOpen(true)
@@ -52,7 +51,7 @@ export function AppProvider({ children }) {
   }, [])
 
   return (
-    <AppCtx.Provider value={{ theme, lang, toggleTheme, toggleLang, setLang, t: UI[lang], cvOpen, openCv, closeCv }}>
+    <AppCtx.Provider value={{ theme, lang, toggleTheme, toggleLang, t: UI[lang], cvOpen, openCv, closeCv }}>
       {children}
     </AppCtx.Provider>
   )

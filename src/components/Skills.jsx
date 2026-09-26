@@ -8,9 +8,8 @@ import Pending from './ui/Pending.jsx'
 function Datasheet({ group, lang, t }) {
   return (
     <div className={`card card-hover flex h-full flex-col overflow-hidden ${group.pending ? 'border-dashed' : ''}`}>
-      <div className="flex items-center justify-between gap-3 border-b border-line bg-surface-2 px-4 py-3">
+      <div className="border-b border-line bg-surface-2 px-4 py-3">
         <h3 className="font-display text-[0.95rem] font-semibold text-ink">{group[lang]}</h3>
-        <span className="font-mono text-[10px] tracking-[0.16em] text-accent">{group.code}</span>
       </div>
 
       {group.pending ? (

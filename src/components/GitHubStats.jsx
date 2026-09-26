@@ -36,7 +36,7 @@ export default function GitHubStats() {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="mb-2 flex items-center gap-2 font-mono text-[11px] tracking-[0.2em] text-accent uppercase">
-                    <span className="live-dot size-1.5 rounded-full bg-accent" />
+                    <span className="size-1.5 rounded-full bg-accent" />
                     {t.statsKicker}
                   </p>
                   <h2 id="gh-title" className="text-2xl font-semibold text-ink">

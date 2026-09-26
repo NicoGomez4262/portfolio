@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { readdirSync, statSync, existsSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { SITE_URL } from './site.config.js'
-import { PROFILE, INSTITUTIONS, CV_FILES, CV_BACKUP } from './src/data/content.js'
+import { PROFILE, INSTITUTIONS, CV_FILES } from './src/data/content.js'
 
 const PUBLIC_DIR = 'public'
 const MANIFEST_ID = 'virtual:media-manifest'
@@ -57,8 +57,8 @@ const DESCRIPTION = `Electronic Engineering student at Pontificia Universidad Ja
 function seo() {
   const assets = listPublic('assets')
   const photo = ['webp', 'jpg', 'jpeg', 'png'].map((e) => `${PROFILE.photo}.${e}`).find((p) => assets.includes(p))
-  // <noscript>: la hoja de vida EN ATS; mientras no exista, el respaldo generado (nunca un enlace roto).
-  const cvNoscript = [CV_FILES.en.ats, CV_BACKUP.en?.ats].find((p) => p && assets.includes(p)) ?? CV_FILES.en.ats
+  // <noscript>: la hoja de vida EN ATS.
+  const cvNoscript = CV_FILES.en.ats
   const org = (id, type) => ({ '@type': type, name: INSTITUTIONS[id].name, ...(INSTITUTIONS[id].url && { url: INSTITUTIONS[id].url }) })
 
   const person = {

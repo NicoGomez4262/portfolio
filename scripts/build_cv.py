@@ -1,11 +1,12 @@
 """
-Genera el CV de RESPALDO en inglés, hardware-first, formato EE. UU. y compatible con ATS.
-El sitio lo ofrece solo mientras falte el CV EN ATS propio (public/assets/cv/Nicolas_Gomez_CV_EN_ATS.pdf).
+Genera un CV de BORRADOR en inglés, hardware-first, formato EE. UU. y compatible con ATS, con los datos del sitio.
+Desde el 25 sep 2026 el sitio ya NO lo publica: sirve las 4 hojas de vida propias de public/assets/cv/.
+Queda como herramienta local (p. ej. para comparar datos o armar una versión nueva).
 
 Salidas:
   docs/cv/Nicolas_Gomez_CV.docx          versión limpia (sin marcas de pendiente)
   docs/cv/Nicolas_Gomez_CV_WORKING.docx  versión de trabajo con ⚠ resaltado en amarillo
-  public/assets/Nicolas_Gomez_CV.pdf     PDF limpio (exportado con Microsoft Word)
+  docs/cv/Nicolas_Gomez_CV.pdf           PDF limpio (exportado con Microsoft Word)
 
 El dominio sale de site.config.js; correo, teléfono, LinkedIn y promedio salen de PROFILE en src/data/content.js.
 Uso:  python scripts/build_cv.py
@@ -298,7 +299,7 @@ if __name__ == '__main__':
     working = out / 'Nicolas_Gomez_CV_WORKING.docx'
     CV(working=False).build().doc.save(clean)
     CV(working=True).build().doc.save(working)
-    pdf = ROOT / 'public' / 'assets' / 'Nicolas_Gomez_CV.pdf'
+    pdf = out / 'Nicolas_Gomez_CV.pdf'
     if '--no-pdf' not in sys.argv:
         to_pdf(str(clean), str(pdf))
     print('SITE_URL', SITE_URL, '| EMAIL', EMAIL, '| GPA', GPA, '| LINKEDIN', LINKEDIN)

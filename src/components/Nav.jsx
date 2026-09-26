@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NAV, PROFILE } from '../data/content.js'
-import { sectionVisible } from './ui/sections.js'
+import { ORDER, sectionIndex } from './ui/sections.js'
 import { useApp, useActiveSection } from '../hooks/useApp.jsx'
 import { lockScroll, unlockScroll } from '../hooks/scrollLock.js'
+import CvTrigger, { CvLangTag } from './ui/CvTrigger.jsx'
 import Icon from './ui/Icon.jsx'
 
-const ITEMS = NAV.filter((n) => sectionVisible(n.id))
-// Se observan también las secciones fuera del menú, para no dejar resaltado un enlace viejo.
-const IDS = ['top', 'about', ...ITEMS.map((n) => n.id), 'education']
+// Menú móvil: todas las secciones, en el orden de la página y con el mismo número de su encabezado.
+const MENU = NAV.filter((n) => ORDER.includes(n.id)).sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id))
+// Nav de escritorio: solo las secciones principales.
+const ITEMS = MENU.filter((n) => !n.menuOnly)
+// Se observan todas las secciones, para no dejar resaltado un enlace viejo al pasar por una que no está en la nav.
+const IDS = ['top', ...ORDER]
 
 export default function Nav() {
-  const { lang, theme, toggleLang, toggleTheme, t, openCv } = useApp()
+  const { lang, theme, toggleLang, toggleTheme, t } = useApp()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const active = useActiveSection(IDS)
@@ -64,7 +68,7 @@ export default function Nav() {
   return (
     <>
       <a
-        href="#hardware"
+        href={`#${ORDER[0]}`}
         className="sr-only z-[70] rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:inline-flex focus:h-11 focus:items-center"
       >
         {t.skip}
@@ -108,15 +112,12 @@ export default function Nav() {
 
           <div className="flex items-center gap-2">
             <div className="hidden items-center gap-2 sm:flex">{controls}</div>
-            <button
-              type="button"
-              onClick={(e) => openCv(e.currentTarget)}
-              aria-haspopup="dialog"
-              className="hidden h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-accent-ink transition hover:brightness-110 md:inline-flex"
-            >
+            {/* En contorno: el único botón relleno de la primera pantalla es el CTA principal del hero. */}
+            <CvTrigger className="hidden h-11 items-center gap-2 rounded-full border border-accent/40 px-4 text-sm font-semibold text-accent transition hover:border-accent hover:bg-accent/10 md:inline-flex">
               <Icon name="download" size={15} />
               {t.ctaCvShort}
-            </button>
+              <CvLangTag />
+            </CvTrigger>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -135,14 +136,15 @@ export default function Nav() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-40 bg-bg/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-bg/95 backdrop-blur-xl lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="flex h-full flex-col justify-center gap-1 px-6 pt-16 pb-10">
-              {ITEMS.map((item, i) => (
+            {/* min-h-full + scroll propio: en pantallas bajas (o el teléfono de lado) la lista completa se puede recorrer. */}
+            <div className="flex min-h-full flex-col justify-center gap-1 px-6 pt-16 pb-10">
+              {MENU.map((item, i) => (
                 <motion.a
                   key={item.id}
                   href={`#${item.id}`}
@@ -150,23 +152,19 @@ export default function Nav() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.03 + i * 0.04, duration: 0.3 }}
-                  className="flex items-baseline border-b border-line-soft py-4 font-display text-2xl font-medium text-ink"
+                  className="flex items-baseline border-b border-line-soft py-3.5 font-display text-2xl font-medium text-ink"
                 >
-                  <span className="mr-4 font-mono text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="mr-4 font-mono text-xs text-accent">{sectionIndex(item.id)}</span>
                   {item[lang]}
                 </motion.a>
               ))}
               <div className="mt-8 flex flex-wrap items-center gap-2">
                 {controls}
-                <button
-                  type="button"
-                  onClick={(e) => openCv(e.currentTarget)}
-                  aria-haspopup="dialog"
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink"
-                >
+                <CvTrigger className="inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink">
                   <Icon name="download" size={15} />
                   {t.ctaCvShort}
-                </button>
+                  <CvLangTag />
+                </CvTrigger>
               </div>
             </div>
           </motion.div>

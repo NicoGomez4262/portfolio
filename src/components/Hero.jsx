@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { HERO_CHIP, PROFILE, SEEKING, tx } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
 import Avatar from './ui/Avatar.jsx'
+import CvTrigger, { CvLangTag } from './ui/CvTrigger.jsx'
 import { InstLink } from './ui/InstLink.jsx'
 import Icon from './ui/Icon.jsx'
 
@@ -57,9 +58,11 @@ const PIN_Y = [110, 150, 190, 230, 270]
 
 /**
  * Bloque técnico del hero: un integrado visto desde arriba, con los pines rotulados con las
- * señales y buses que aparecen en los proyectos. Numeración de DIP: 1–5 a la izquierda, 6–10 a la derecha.
+ * señales, buses y áreas de los proyectos. Numeración de DIP: 1–5 a la izquierda, 6–10 a la derecha.
  */
-function ChipBlock({ t }) {
+function ChipBlock({ t, lang }) {
+  const left = HERO_CHIP.left.map((l) => tx(l, lang))
+  const right = HERO_CHIP.right.map((l) => tx(l, lang))
   return (
     <figure className="mx-auto w-full max-w-[20rem]">
       <div className="relative">
@@ -72,7 +75,7 @@ function ChipBlock({ t }) {
           REF · U1
         </span>
 
-        <svg viewBox="0 0 320 380" className="block h-auto w-full" role="img" aria-label={`${HERO_CHIP.part}: ${[...HERO_CHIP.left, ...HERO_CHIP.right].join(', ')}`}>
+        <svg viewBox="0 0 320 380" className="block h-auto w-full" role="img" aria-label={`${HERO_CHIP.part}: ${[...left, ...right].join(', ')}`}>
           {/* Trazas decorativas arriba y abajo del integrado */}
           <g stroke="var(--trace)" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round">
             <path d="M160 74V46L186 20H300" pathLength="1" className="trace" style={{ '--d': '0.35s' }} />
@@ -92,10 +95,10 @@ function ChipBlock({ t }) {
               <rect x={BODY.x - 22} y={y - 5} width="22" height="10" rx="1.5" fill="var(--surface-2)" stroke="var(--trace)" />
               <rect x={BODY.x + BODY.w} y={y - 5} width="22" height="10" rx="1.5" fill="var(--surface-2)" stroke="var(--trace)" />
               <text x={BODY.x - 30} y={y + 4} textAnchor="end" className="fill-ink-dim font-mono text-[12px]">
-                {HERO_CHIP.left[i]}
+                {left[i]}
               </text>
               <text x={BODY.x + BODY.w + 30} y={y + 4} className="fill-ink-dim font-mono text-[12px]">
-                {HERO_CHIP.right[i]}
+                {right[i]}
               </text>
               <text x={BODY.x + 12} y={y + 3.5} className="fill-ink-faint font-mono text-[9px]">
                 {i + 1}
@@ -130,7 +133,7 @@ function ChipBlock({ t }) {
 }
 
 export default function Hero() {
-  const { lang, t, openCv } = useApp()
+  const { lang, t } = useApp()
   const reduced = useReducedMotion()
 
   const rise = (i) =>
@@ -192,26 +195,25 @@ export default function Hero() {
           <motion.div {...rise(4)} className="mt-10 flex flex-wrap items-center gap-3">
             <a
               href="#hardware"
-              className="group inline-flex h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink transition hover:brightness-110"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink transition hover:brightness-110"
             >
               {t.ctaProjects}
               <Icon name="arrowDown" size={16} className="transition group-hover:translate-y-0.5" />
             </a>
-            <button
-              type="button"
-              onClick={(e) => openCv(e.currentTarget)}
-              aria-haspopup="dialog"
-              className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-surface px-6 text-sm font-medium text-ink transition hover:border-accent/50 hover:text-accent"
-            >
+            <CvTrigger className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-medium text-ink transition hover:border-accent/50 hover:text-accent">
               <Icon name="download" size={16} />
               {t.ctaCv}
-            </button>
-            <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconLink}>
-              <Icon name="github" size={19} />
-            </a>
-            <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconLink}>
-              <Icon name="linkedin" size={18} />
-            </a>
+              <CvLangTag />
+            </CvTrigger>
+            {/* Juntos: si no caben en la fila, bajan los dos y ninguno queda solo. */}
+            <div className="flex gap-3">
+              <a href={PROFILE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconLink}>
+                <Icon name="github" size={19} />
+              </a>
+              <a href={PROFILE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconLink}>
+                <Icon name="linkedin" size={18} />
+              </a>
+            </div>
           </motion.div>
         </div>
 
@@ -221,7 +223,7 @@ export default function Hero() {
           transition={{ delay: 0.25, duration: 0.7, ease: EASE }}
           className="hidden lg:block"
         >
-          <ChipBlock t={t} />
+          <ChipBlock t={t} lang={lang} />
         </motion.div>
       </div>
     </section>

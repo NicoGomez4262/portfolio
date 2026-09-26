@@ -5,9 +5,9 @@ portafolio. Al terminar su trabajo, cada sesión debe **reescribir este archivo*
 sesión que sigue (mismo formato), hasta que el portafolio se considere completo — en ese punto, la sesión
 lo dice explícitamente en vez de generar un prompt nuevo.
 
-**Última actualización:** 24 sep 2026, después del commit `ebf36ab` (foto del hero, equipo de VOLLEY-PONG
-y placa de CORRELACIUM confirmados). Nicolás va a soltar en `incoming/` los videos y fotos que pudo
-rescatar de cada proyecto, y los 4 CV.
+**Última actualización:** 26 sep 2026, en el commit «Add media carousels, EEG/EMG and LVDT projects, all four
+résumés and the new section order» (ver `git log`). Ese commit junta el trabajo de tres sesiones: materiales y
+carrusel, auditoría de diseño y la prueba del carrusel con el cierre.
 
 ---
 
@@ -15,95 +15,97 @@ rescatar de cada proyecto, y los 4 CV.
 
 ```
 Sigo con mi portafolio en C:\Users\nico\Portafolio (https://nicolasgomez.dev). Antes de tocar nada, lee:
-- README.md, docs/MATERIALS.md, docs/next_session.md (este archivo) y docs/kiwibot-research.md
+- README.md, docs/MATERIALS.md, docs/next_session.md (este archivo), docs/kiwibot-research.md y el bloque
+  «Estado» al inicio de docs/design-audit-2026-09-25.md
 - La memoria del proyecto en C:\Users\nico\.claude\projects\C--Users-nico-Portafolio\memory\
-- git log -5 y el contenido de incoming/ (ahí solté material: fotos, videos y los 4 CV)
+- git log -5 y el contenido de incoming/ (lo que ya estaba el 25 sep ya se procesó: ver «Ya procesado» en
+  docs/MATERIALS.md)
 
-CONTEXTO: subí a incoming/ los videos y fotos que pude rescatar de cada proyecto de hardware, y los 4 CV
-(EN/ES × ATS/Moderno). Los videos y las fotos son pesados: no les quité el audio ni les bajé la calidad,
-así que probablemente haga falta comprimirlos antes de subirlos al sitio.
+CONTEXTO (26 sep 2026): cada proyecto de hardware muestra un carrusel de fotos y videos que arranca solo, con
+puntos, controles al pasar el mouse o tras un toque, deslizar en móvil, visor ampliado y fin en pausa
+(src/components/ui/MediaCarousel.jsx y Lightbox.jsx; se prueba con scripts/carousel.mjs). Hay dos proyectos
+nuevos armados solo con mis fotos y videos (EEG/EMG y LVDT, marcados ⚠ VERIFICAR). Las 4 hojas de vida están
+publicadas, así que los botones de CV abren el selector (si un idioma quedara con un solo archivo, ese botón
+descargaría directo; lógica en src/components/ui/cv.js). El orden de las secciones es Experiencia → Hardware →
+Skills → [Lab] → Software → GitHub → Perfil → Formación → Contacto y lo define ORDER en
+src/components/ui/sections.js (de ahí salen la página, la nav y el menú móvil).
 
 Tu trabajo, en este orden:
 
-## 1) Procesar lo que subí
+## 1) Procesar lo nuevo que haya subido
 
-- Revisa incoming/ carpeta por carpeta contra las tablas de docs/MATERIALS.md (nombre de archivo, ruta
-  final, formato, dimensiones, peso objetivo).
-- Videos: quítales el audio y comprímelos a MP4 H.264 sin audio, ~1280×800, 10–20 s, < 4 MB. Si el
-  original es más largo, recorta la parte que muestra causa→efecto (qué se toca y qué pasa), no lo dejes
-  entero. Genera el poster de cada video (mismo nombre en .webp).
-  - No hay ffmpeg instalado en esta máquina. Instálalo tú mismo, sin pedir permiso interactivo, con
-    `npm i -D ffmpeg-static` (da un binario portátil vía npm, sin admin) o con
-    `winget install --id Gyan.FFmpeg -e --silent` (winget SÍ está disponible). Si ambos fallan, dime
-    exactamente qué intentaste y por qué falló, y sigue con las fotos mientras tanto.
-- Fotos: recórtalas/optimízalas a WebP en las dimensiones y peso de MATERIALS.md (1600×1000 para
-  proyectos, 1200×900 para laboratorio, 480×480 para el avatar si llegó una nueva). Quítales metadatos
-  EXIF. Si una foto no encaja claramente en ningún slot de MATERIALS.md, dime cuál es y para qué slot
-  asumiste que era, antes de moverla — no adivines en silencio.
-- Mueve cada archivo terminado a su ruta final (public/media/projects/<id>/, public/media/lab/,
-  public/assets/cv/, etc.), renombrando si el nombre no coincide exactamente con lo que espera content.js.
-- Los 4 CV: ábrelos y confirma que el texto es seleccionable (no son un escaneo). Compara su contenido
-  contra el sitio — promedio, fechas de las monitorías, LinkedIn, "Programa Tú" (no "Progrma Tu") — y
-  avísame de cualquier diferencia ANTES de darlos por buenos y conectarlos en CV_FILES.
-- Si llegó incoming/datos/respuestas.md con los ⚠ resueltos (materias, PIC exacto, IIR, THT/SMD, equipo
-  y materia de PROTEO, pies de foto del laboratorio, etc.), aplícalos en content.js y quita esa marca ⚠.
-- Actualiza también scripts/build_cv.py si algún dato fuente cambió, y regenera el CV de respaldo si
-  sigue haciendo falta para algún idioma/formato.
+- incoming/: procesa solo lo que no esté en «Ya procesado» de docs/MATERIALS.md, contra las tablas de ese
+  archivo. Fotos y videos con scripts/media.py (instrucciones y formatos en la sección «Fotos y videos» del
+  README). ffmpeg no está instalado: instálalo tú, sin pedir permiso, con
+  `npm i --prefix <tu-scratchpad>/tools ffmpeg-static` y exporta FFMPEG a ese binario; para fotos .heif,
+  `pip install --target <tu-scratchpad>/py pillow-heif` y PYTHONPATH a esa carpeta.
+- Agrega cada medio a HARDWARE[].media en src/data/content.js con su pie de foto { en, es }: videos primero,
+  luego fotos de la más llamativa a la menos; `fit: 'contain'` para verticales y capturas, `bg: 'light'` para
+  esquemáticos. Revisa que no salgan caras ni datos personales. Si algo no encaja claramente en un slot de
+  MATERIALS.md, dime cuál es y para qué slot asumiste que era, antes de moverlo.
+- Hojas de vida corregidas (en incoming/cv/ o en Descargas): ábrelas, confirma que el texto es seleccionable,
+  compáralas contra la sección 1 de MATERIALS.md y contra el sitio (promedio 4.3, fechas de las monitorías,
+  LinkedIn, «Programa Tú»), avísame de cualquier diferencia y reemplaza el PDF en public/assets/cv/ con el
+  mismo nombre.
+- Si llegó incoming/datos/respuestas.md, aplica cada respuesta en content.js y quita su marca ⚠.
 
-## 2) Revisar lo pendiente de la sesión anterior — vuelve a comprobar cada uno, no asumas que sigue igual
+## 2) Re-verificar lo pendiente — vuelve a comprobar cada uno, no asumas que sigue igual
 
-a. **Redirección www → dominio raíz en Vercel.**
-   Verificado el 24 sep 2026: YA QUEDÓ BIEN (`curl -I https://nicolasgomez.dev/` da 200 directo;
-   `curl -I https://www.nicolasgomez.dev/` da 308 hacia el apex). Confírmalo tú con los mismos comandos
-   antes de continuar, por si cambió.
+a. **CLI de Vercel** (`npx vercel whoami`): seguía «Logged out» el 26 sep 2026. No la intentes iniciar tú (pide
+   un navegador interactivo). Si sigue igual, explícame paso a paso `npx vercel login` desde mi terminal (elegir
+   el mismo método con que creé la cuenta, probablemente GitHub; autorizar en el navegador; confirmar con
+   `npx vercel whoami`). No bloquea nada: el despliegue por `git push` funciona solo.
+b. **Token de Google Apps Script** expuesto en NicoGomez4262/PROTEO_DEF (zip «PROTEO WEB - Github.zip»,
+   dashboard.html). Seguía igual el 26 sep 2026 (blob `97237fc…`). Verifícalo con
+   `gh api repos/NicoGomez4262/PROTEO_DEF/git/trees/main --jq '.tree[] | select(.path | contains("PROTEO WEB")) | .sha'`.
+   Si sigue igual, no lo arregles tú: recuérdame los pasos (propiedad ALERT_TOKEN en el Apps Script, comparar
+   contra PropertiesService, nueva versión de la implementación para invalidar el viejo, quitarlo del HTML).
+c. **Colaborador en los repos de Ruslán** (VOLLEY-PONG-VHDL y CORRELACIUM-LEVIOSA):
+   `gh api repos/RuDomiv/<repo>/contributors --jq '.[].login'`. El 26 sep 2026 solo figuraba RuDomiv.
+d. **Redirección www → dominio raíz:** resuelta desde el 24 sep (200 en el apex; 308 desde www, conservando
+   la ruta). Solo confírmala con `curl -I https://www.nicolasgomez.dev/x`.
+e. **Decisiones pendientes de la auditoría de diseño** (bloque «Estado» de docs/design-audit-2026-09-25.md:
+   O-1, O-4, O-6, O-8, E-3, E-6, E-7, U-4, D-4, D-5, T-2, T-3, T-4 y T-5). Pregúntame cuáles aplicar antes de
+   tocarlas. O-1 (diagrama de la insignia) quizá ya no haga falta: PROTEO muestra el pitch de YouTube.
 
-b. **Sesión de la CLI de Vercel** (`npx vercel whoami`).
-   Seguía "Logged out" el 24 sep 2026. Tú tampoco puedes iniciarla (pide un navegador interactivo de
-   Nicolás). Si sigue deslogueada, no lo intentes de nuevo: en tu respuesta final explícale, paso a paso,
-   cómo correr `npx vercel login` desde su terminal y qué opción elegir. Aclara que esto NO bloquea nada:
-   el despliegue por `git push` sigue funcionando solo.
-
-c. **Token de Google Apps Script expuesto** en el repo público NicoGomez4262/PROTEO_DEF (dentro del zip,
-   `dashboard.html`, variable `TOKEN = "Token_Super_Seguro_12321"`).
-   Seguía sin rotar el 24 sep 2026 (mismo blob SHA `97237fc…`). Verifica el SHA actual del archivo con
-   `gh api repos/NicoGomez4262/PROTEO_DEF/git/trees/main --jq '.tree[] | select(.path | contains("PROTEO WEB"))'`.
-   Si sigue igual, no lo arregles tú (el Apps Script vive fuera de este repo): explícale a Nicolás, paso a
-   paso, cómo generar un secreto nuevo en el proyecto de Apps Script, cómo dejar de tener el token en
-   texto plano en el HTML (moverlo a `PropertiesService` o validar el remitente del lado del servidor) y
-   cómo actualizar el HTML del repo con el nuevo valor.
-
-Para cada uno de los tres (a, b, c), di explícitamente en tu respuesta final: **resuelto**, **sigue
-pendiente** (con los pasos), o **no pude verificarlo** (y por qué).
+Para cada uno (a–e), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
+pasos), o **no pude verificarlo** (y por qué).
 
 ## 3) Deja todo funcionando
 
 - `npm run build` sin errores y `npm run lint` sin errores nuevos.
-- Verifica en vivo con `node scripts/verify.mjs https://nicolasgomez.dev <carpeta-scratch>` (Chrome
-  headless por CDP): cero scroll horizontal, cero áreas táctiles < 44 px, selector de CV y modal de
-  proyecto funcionando, sin errores de consola. Envíame las capturas de página completa con
-  SendUserFile (390, 768, 1024, 1440; oscuro y claro).
-- Al cerrar cada bloque de cambios: commit en inglés, push a main (dispara el deploy solo) y confirma con
-  `gh api repos/NicoGomez4262/portfolio/deployments...` que el deploy de ese commit quedó "success" antes
-  de seguir al siguiente bloque.
+- Si tocaste el carrusel, el visor o los medios: `node scripts/carousel.mjs` contra `npm run dev` (todas
+  deben pasar). El panel Browser suele estar oculto y ahí no corren animaciones ni observadores: prueba con
+  Chrome headless (scripts/carousel.mjs y scripts/verify.mjs).
+- Commit en inglés y push a main (dispara el deploy solo). Confirma que el deploy de ese commit quedó
+  "success": `gh api "repos/NicoGomez4262/portfolio/deployments?sha=<sha>" --jq '.[0].id'` y luego
+  `gh api repos/NicoGomez4262/portfolio/deployments/<id>/statuses --jq '.[0].state'`.
+- Verifica en vivo con `node scripts/verify.mjs https://nicolasgomez.dev <carpeta-scratch>` (y con
+  `SITE_LANG=es`): cero scroll horizontal, cero áreas táctiles < 44 px, selector de CV y modal de proyecto
+  funcionando, sin errores de consola. Une los tramos con `python scripts/stitch.py <carpeta>` y envíame las
+  capturas de página completa con SendUserFile (390, 768, 1024, 1440; oscuro y claro).
+- Si hay otra sesión trabajando en paralelo sobre el repo: repártanse los archivos por SendMessage antes de
+  editar; la última en terminar hace el commit y el push de todo junto. Usa `CDP_PORT=9334` para no chocar
+  con el Chrome headless de la otra.
 
 ## 4) Lista de lo que todavía me falta
 
-Al final, dame una lista actualizada — en tablas, con las mismas columnas que docs/MATERIALS.md (archivo,
-ruta final, formato, dimensiones, peso, qué debe mostrar) — de las fotos, videos y datos que TODAVÍA no
-entregué después de este bloque: lo que subí y no encajó en ningún slot, los proyectos que siguen sin
-video o sin foto, y cualquier ⚠ que quede en content.js. Prioriza igual que MATERIALS.md (P0/P1/P2).
-Actualiza también docs/MATERIALS.md para que refleje solo lo que sigue pendiente (tacha o quita lo ya
-resuelto, no dupliques la lista en dos archivos distintos).
+Al final, dame una lista actualizada — en tablas, con las mismas columnas que docs/MATERIALS.md — de las fotos,
+videos y datos que TODAVÍA no entregué después de este bloque: lo que subí y no encajó en ningún slot, los
+proyectos que siguen sin video o sin foto (hoy el FIR no tiene ninguno y PROTEO solo tiene el pitch), las
+correcciones de las hojas de vida «Moderno» y cualquier ⚠ que quede en content.js. Prioriza igual que
+MATERIALS.md (P0/P1/P2). Actualiza docs/MATERIALS.md para que refleje solo lo que sigue pendiente (quita lo
+resuelto y agrega lo nuevo a «Ya procesado»; no dupliques la lista en dos archivos distintos).
 
 ## 5) Cierra el ciclo
 
-Antes de terminar, reescribe docs/next_session.md con el prompt para la sesión que sigue después de esta
-(mismo formato que este archivo: instrucciones para procesar lo nuevo que suba, re-verificar qué de lo
-pendiente de HOY quedó resuelto, dejar todo funcionando con build + verificación + commit + deploy, y la
-lista actualizada de lo que falta). Sigue con este patrón sesión tras sesión. El día en que ya no quede
-nada pendiente en la lista del punto 4 ni en el punto 2, dilo explícitamente en tu respuesta y en
-docs/next_session.md — en vez de un prompt nuevo, escribe que el portafolio se considera completo y por
-qué, y deja de regenerar este archivo.
+Antes de terminar, actualiza la memoria del proyecto si cambió algo que valga la pena recordar, y reescribe
+docs/next_session.md con el prompt para la sesión que sigue (mismo formato que este archivo: procesar lo nuevo,
+re-verificar lo pendiente de HOY, dejar todo funcionando con build + pruebas + commit + deploy + verificación en
+vivo, y la lista actualizada de lo que falta). Sigue con este patrón sesión tras sesión. El día en que ya no
+quede nada pendiente en la lista del punto 4 ni en el punto 2, dilo explícitamente en tu respuesta y en
+docs/next_session.md — en vez de un prompt nuevo, escribe que el portafolio se considera completo y por qué,
+y deja de regenerar este archivo.
 ```
 
 ---
@@ -115,3 +117,15 @@ qué, y deja de regenerar este archivo.
   CORRELACIUM-LEVIOSA documentados desde sus repos, contacto con WhatsApp, avatar con foto real).
   Pendiente para la siguiente sesión: procesar `incoming/`, y volver a revisar la redirección de `www`
   (ya resuelta), la sesión de la CLI de Vercel y el token expuesto en PROTEO_DEF.
+- **25–26 sep 2026** (un solo commit con el trabajo de tres sesiones):
+  - *Materiales:* 10 videos y 19 fotos procesados con `scripts/media.py`; carrusel en cada tarjeta y visor
+    ampliado; proyectos nuevos EEG/EMG y LVDT; pitch de PROTEO y video de DreamSnake desde YouTube; CV ATS EN y ES.
+  - *Auditoría de diseño* (`docs/design-audit-2026-09-25.md`): orden nuevo con Experiencia primero (`ORDER`),
+    un solo botón relleno por pantalla, CV con descarga directa o selector con idioma propio, menú móvil
+    numerado, WhatsApp que abre WhatsApp.
+  - *Cierre:* carrusel probado en Chrome headless y corregido (un clic o un toque ya no lo congelan, el póster
+    de YouTube es un botón de reproducir, el foco vuelve a «Ampliar», las flechas del visor no chocan con los
+    controles del video); `scripts/carousel.mjs`; CV «Moderno» EN y ES publicados (con correcciones pendientes,
+    ver MATERIALS.md §1); se quitó el CV de respaldo generado.
+  - Pendiente: Vercel CLI, token de PROTEO_DEF, colaborador en los repos de Ruslán, decisiones de la auditoría,
+    material de PROTEO y del FIR, y los datos ⚠ de MATERIALS.md §5.

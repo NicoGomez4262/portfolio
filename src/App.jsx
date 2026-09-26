@@ -1,5 +1,6 @@
+import { Fragment } from 'react'
 import { AppProvider } from './hooks/useApp.jsx'
-import { sectionVisible } from './components/ui/sections.js'
+import { ORDER, sectionIndex } from './components/ui/sections.js'
 import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import Credentials from './components/Credentials.jsx'
@@ -15,12 +16,17 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import CvDialog from './components/CvDialog.jsx'
 
-/**
- * Orden pensado para un reclutador de hardware (Kiwibot / robot.com):
- * prueba técnica primero, contexto después.
- */
-const ORDER = ['hardware', 'experience', 'skills', 'lab', 'software', 'education', 'contact'].filter(sectionVisible)
-const idx = (id) => String(ORDER.indexOf(id) + 1).padStart(2, '0')
+/** Componente de cada sección numerada. El orden lo da ORDER (ui/sections.js). */
+const COMPONENTS = {
+  experience: Experience,
+  hardware: HardwareProjects,
+  skills: Skills,
+  lab: Lab,
+  software: Software,
+  about: About,
+  education: Education,
+  contact: Contact,
+}
 
 export default function App() {
   return (
@@ -29,15 +35,16 @@ export default function App() {
       <main>
         <Hero />
         <Credentials />
-        <About index="00" />
-        <HardwareProjects index={idx('hardware')} />
-        <Experience index={idx('experience')} />
-        <Skills index={idx('skills')} />
-        {sectionVisible('lab') && <Lab index={idx('lab')} />}
-        <Software index={idx('software')} />
-        <GitHubStats />
-        <Education index={idx('education')} />
-        <Contact index={idx('contact')} />
+        {ORDER.map((id) => {
+          const Section = COMPONENTS[id]
+          return (
+            <Fragment key={id}>
+              <Section index={sectionIndex(id)} />
+              {/* La actividad de GitHub acompaña al software y no lleva número propio. */}
+              {id === 'software' && <GitHubStats />}
+            </Fragment>
+          )
+        })}
       </main>
       <Footer />
       <CvDialog />
