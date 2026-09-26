@@ -50,8 +50,9 @@ function mediaManifest() {
   }
 }
 
-const TITLE = 'Nicolás Gómez — Electronics & Hardware Engineering Intern Portfolio'
-const DESCRIPTION = `Electronic Engineering student at Pontificia Universidad Javeriana (GPA ${PROFILE.gpa}/${PROFILE.gpaScale}) seeking a hardware / electrical engineering internship. Embedded C, custom PCBs in Altium, FPGA design in VHDL and IoT on Raspberry Pi.`
+// Es lo que se ve al compartir el enlace. Sin «intern» a propósito (ver SHARE en content.js).
+const TITLE = 'Nicolás Gómez — Hardware & Embedded Systems Portfolio'
+const DESCRIPTION = `Electronic Engineering student at Pontificia Universidad Javeriana (GPA ${PROFILE.gpa}/${PROFILE.gpaScale}). Custom PCBs in Altium, embedded C, FPGA design in VHDL, IoT on Raspberry Pi and the web apps behind them.`
 
 /** Metadatos, JSON-LD, robots.txt y sitemap.xml, todos derivados de SITE_URL y PROFILE. */
 function seo() {

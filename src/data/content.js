@@ -65,6 +65,13 @@ export const SEEKING = {
   dates: null, // ⚠ PENDIENTE — ej. { en: 'Summer 2027', es: 'Verano 2027' }
 }
 
+/**
+ * Vista previa al compartir el enlace: badge de la imagen public/og.png (se regenera con `node scripts/og.mjs`).
+ * El título y la descripción están en vite.config.js. Sin «intern» a propósito (pedido de Nicolás, 26 sep 2026):
+ * el enlace también se comparte fuera de las postulaciones.
+ */
+export const SHARE = { badge: 'Hardware · Firmware · Software' }
+
 /** Interruptores de secciones. */
 export const SECTIONS = {
   // 'auto' = la galería aparece sola cuando hay al menos 3 fotos en public/media/lab/, mostrando solo esas.
@@ -119,7 +126,7 @@ export const UI = {
 
     hwKicker: 'Featured hardware',
     hwTitle: 'Boards, firmware and signals',
-    hwIntro: 'Embedded, instrumentation, FPGA and signal-processing projects, designed, wired, programmed and debugged. Each card plays its photos and videos; open it for parts, interfaces and the full build log.',
+    hwIntro: 'Embedded, instrumentation, FPGA and signal-processing projects, designed, wired, programmed and debugged. Each card plays its photos and videos. Open one to see the parts, the interfaces and the full build log.',
     problemLabel: 'Problem',
     didLabel: 'What I did',
     didTeamLabel: 'What we built',
@@ -157,18 +164,18 @@ export const UI = {
 
     skillsKicker: 'Skills',
     skillsTitle: 'Technical datasheet',
-    skillsIntro: 'Grouped the way a datasheet groups features: hardware first, then the tools around it.',
+    skillsIntro: 'Grouped the way a datasheet groups features, with the hardware first and the tools around it after.',
     paramLabel: 'Parameter',
     valueLabel: 'Value',
 
     labKicker: 'Hardware lab',
     labTitle: 'On the bench',
-    labIntro: 'Prototypes, soldering, boards and instruments: the physical side of the work.',
+    labIntro: 'The physical side of the work, with prototypes, soldering, boards and instruments.',
     labPhoto: 'Lab photo',
 
-    swKicker: 'Software that talks to hardware',
-    swTitle: 'The code around the circuit',
-    swIntro: 'I also build the software around the hardware: web apps in production with real users and clients, from the dashboard that commands the PROTEO locker to EV-charging metering and camera-based perception.',
+    swKicker: 'Software',
+    swTitle: 'I love software too, and it often backs up my hardware',
+    swIntro: 'I build web apps that run in production with real users and clients. Some talk straight to my hardware, like the dashboard that commands the PROTEO locker, and others go further, with EV-charging metering and camera-based perception.',
     privateNote: 'Private code (client agreement)',
     wip: 'In progress',
 
@@ -248,7 +255,7 @@ export const UI = {
 
     hwKicker: 'Hardware destacado',
     hwTitle: 'Placas, firmware y señales',
-    hwIntro: 'Proyectos embebidos, de instrumentación, en FPGA y de procesamiento de señales, diseñados, cableados, programados y depurados. Cada tarjeta reproduce sus fotos y videos; ábrela para ver componentes, interfaces y la bitácora completa.',
+    hwIntro: 'Proyectos embebidos, de instrumentación, en FPGA y de procesamiento de señales, diseñados, cableados, programados y depurados. Cada tarjeta reproduce sus fotos y videos. Abre una para ver los componentes, las interfaces y la bitácora completa.',
     problemLabel: 'Problema',
     didLabel: 'Qué hice',
     didTeamLabel: 'Qué construimos',
@@ -286,18 +293,18 @@ export const UI = {
 
     skillsKicker: 'Habilidades',
     skillsTitle: 'Hoja de datos técnica',
-    skillsIntro: 'Agrupadas como agrupa una hoja de datos: primero el hardware, después las herramientas que lo rodean.',
+    skillsIntro: 'Agrupadas como agrupa una hoja de datos, con el hardware primero y después las herramientas que lo rodean.',
     paramLabel: 'Parámetro',
     valueLabel: 'Valor',
 
     labKicker: 'Laboratorio',
     labTitle: 'En la mesa de trabajo',
-    labIntro: 'Prototipos, soldadura, placas e instrumentos: el lado físico del trabajo.',
+    labIntro: 'El lado físico del trabajo, con prototipos, soldadura, placas e instrumentos.',
     labPhoto: 'Foto de laboratorio',
 
-    swKicker: 'Software que habla con el hardware',
-    swTitle: 'El código alrededor del circuito',
-    swIntro: 'También construyo el software alrededor del hardware: aplicaciones web en producción con usuarios y clientes reales, desde el tablero que comanda el casillero PROTEO hasta la medición de carga de vehículos eléctricos y la percepción por cámara.',
+    swKicker: 'Software',
+    swTitle: 'También me encanta el software, y muchas veces respalda mi hardware',
+    swIntro: 'Construyo aplicaciones web que están en producción con usuarios y clientes reales. Algunas hablan directo con mi hardware, como el tablero que comanda el casillero PROTEO, y otras van más allá, con medición de carga de vehículos eléctricos y percepción por cámara.',
     privateNote: 'Código privado (acuerdo con el cliente)',
     wip: 'En construcción',
 
@@ -365,7 +372,7 @@ export const ABOUT = {
     body: [
       "I'm an Electronic Engineering student with a background in hardware design, embedded systems and digital electronics. I have experience programming in several languages, developing PCBs, designing digital systems and rapid prototyping.",
       "I'm interested in building and training artificial-intelligence models, in signal processing, and in IoT applications for smart, connected devices. I bring creativity, innovation, responsibility and commitment to each project's goals, along with the analytical skills to work through information, spot opportunities and propose solutions.",
-      'I communicate clearly, negotiate well and work with self-confidence, which helps me adapt to different environments and make decisions under pressure. I also enjoy cooperative teamwork: contributing ideas, listening to other perspectives and helping every project reach its goals.',
+      'I communicate clearly, negotiate well and work with self-confidence, which helps me adapt to different environments and make decisions under pressure. I also enjoy working in a team, where I contribute ideas, listen to other points of view and help every project reach its goals.',
     ],
     focus: ['IoT', 'Embedded programming', 'PCB design', 'Rapid prototyping', 'Signal processing', 'Digital design', 'Artificial Intelligence'],
   },
@@ -396,7 +403,7 @@ export const EXPERIENCE = [
     en: {
       role: 'Teaching Assistant — Processor-Based Systems Design',
       bullets: [
-        'Designed and developed custom PCBs for the course, enabling hands-on experimentation with its concepts.',
+        'Designed and developed custom PCBs for the course so students can experiment hands-on with its concepts.',
         'Support course projects in embedded systems and microprocessors.',
         'Resolve office-hours questions on embedded C, finite-state machines, interrupts and timing analysis.',
         'Help students understand digital-system architectures and their implementation strategies.',
@@ -426,7 +433,7 @@ export const EXPERIENCE = [
       bullets: [
         'Guided undergraduate students through sensors, actuators and peripheral devices on the Arduino platform.',
         'Mentored student projects from system design through implementation.',
-        'Supported students in C and embedded systems: debugging, memory management and code optimization.',
+        'Helped students with C and embedded systems, including debugging, memory management and code optimization.',
       ],
     },
     es: {
@@ -434,7 +441,7 @@ export const EXPERIENCE = [
       bullets: [
         'Guié a estudiantes de pregrado en el uso de sensores, actuadores y periféricos sobre la plataforma Arduino.',
         'Acompañé proyectos de estudiantes desde el diseño del sistema hasta su implementación.',
-        'Di soporte en C y sistemas embebidos: depuración, manejo de memoria y optimización de código.',
+        'Apoyé a los estudiantes en C y sistemas embebidos con la depuración, el manejo de memoria y la optimización de código.',
       ],
     },
   },
@@ -521,8 +528,8 @@ export const LANGUAGES = [
 
 /**
  * Proyectos de hardware y embebidos, en el orden en que se muestran (define los códigos HW-0X).
- * Orden (25 sep 2026): primero lo más fuerte para una práctica de hardware y con mejor material visual;
- * los que no tienen fotos ni video van al final.
+ * Orden (25 sep 2026): primero lo más fuerte para una práctica de hardware y con mejor material visual, y al
+ * final la tarjeta «Próximamente» de la tesis (el FIR sobre un PIC se quitó el 26 sep 2026).
  *
  * `media` = carrusel de la tarjeta y bitácora del modal, en orden: videos primero, luego fotos de la más
  *   llamativa a la menos. Archivos en public/media/projects/<id>/ (ver README y scripts/media.py):
@@ -532,6 +539,7 @@ export const LANGUAGES = [
  *   `fit: 'contain'` = se ve completo sobre un fondo desenfocado (verticales, capturas); `bg: 'light'` =
  *   fondo blanco (diagramas). `caption` = pie de foto { en, es }. Un archivo que no existe se omite solo.
  * `chain` = cadena de señal dibujada en lugar de medios, para proyectos sin fotos ni video.
+ * `soon: true` = tarjeta «Próximamente»: solo `name` y `tagline`, sin medios, specs ni modal.
  * `specs[].v` en null = pendiente (se ve como hueco). `v` puede ser texto o { en, es }.
  * `software` = id del proyecto de SOFTWARE enlazado.
  */
@@ -551,7 +559,7 @@ export const HARDWARE = [
         type: 'youtube',
         id: '6g7JhK-fa98',
         poster: 'locker',
-        caption: { en: 'Pitch video: the problem, the locker prototype and the business model', es: 'Video pitch: el problema, el prototipo del casillero y el modelo de negocio' },
+        caption: { en: 'Pitch video covering the problem, the locker prototype and the business model', es: 'Video pitch con el problema, el prototipo del casillero y el modelo de negocio' },
       },
     ],
     specs: [
@@ -564,23 +572,23 @@ export const HARDWARE = [
       { k: { en: 'Software', es: 'Software' }, v: 'Python · JavaScript' },
     ],
     en: {
-      tagline: 'A smart luggage locker for hotels: a Raspberry Pi node that senses tampering, drives the lock and stays in sync with a live web dashboard.',
+      tagline: 'A smart luggage locker for hotels. Its Raspberry Pi node senses tampering, drives the lock and stays in sync with a live web dashboard.',
       problem: 'Guests often arrive before check-in or leave hours after check-out with nowhere safe for their bags. A connected locker has to open from a phone, report every opening and flag tampering, reliably and across the network.',
       did: [
-        'Wrote the Raspberry Pi node in Python: an IR sensor on GPIO publishes to MQTT (QoS 1) only when its state changes, on per-device topics.',
+        'Wrote the Raspberry Pi node in Python. An IR sensor on GPIO publishes to MQTT (QoS 1) on per-device topics, and only when its state changes.',
         'Drove the servo latch from MQTT commands with microsecond pulse widths through pigpio, with per-position trim and an optional hold mode to stop servo buzz.',
         'Added a retained Last-Will status topic (online / offline) so the dashboard knows the moment the node drops.',
-        'Final prototype: node and dashboard share a Firestore command document. Unlock (FIT0620 solenoid) and photo requests go down; door state, IR readings and camera photos come back in real time.',
+        'In the final prototype, the node and the dashboard share a Firestore command document. Unlock (FIT0620 solenoid) and photo requests go down to the node, and the door state, IR readings and camera photos come back in real time.',
       ],
     },
     es: {
-      tagline: 'Guardaequipajes inteligente para hoteles: un nodo en Raspberry Pi que detecta manipulación, acciona el seguro y se mantiene sincronizado con un tablero web en vivo.',
+      tagline: 'Guardaequipajes inteligente para hoteles. Su nodo en Raspberry Pi detecta manipulación, acciona el seguro y se mantiene sincronizado con un tablero web en vivo.',
       problem: 'Muchos huéspedes llegan antes del check-in o se van horas después del check-out sin un lugar seguro para sus maletas. Un casillero conectado tiene que abrirse desde el celular, reportar cada apertura y alertar ante manipulación, de forma confiable y a través de la red.',
       did: [
-        'Escribí el nodo en Python sobre Raspberry Pi: un sensor IR en GPIO publica en MQTT (QoS 1) solo cuando cambia su estado, en topics por dispositivo.',
+        'Escribí el nodo en Python sobre Raspberry Pi. Un sensor IR en GPIO publica en MQTT (QoS 1), en topics por dispositivo, y solo cuando cambia su estado.',
         'Controlé el pestillo con servo desde comandos MQTT, con anchos de pulso en microsegundos vía pigpio, ajuste fino por posición y un modo de retención opcional para eliminar el zumbido.',
         'Agregué un topic de estado con Last Will retenido (online / offline) para que el tablero sepa en el momento en que se cae el nodo.',
-        'Prototipo final: nodo y tablero comparten un documento de comandos en Firestore. Bajan la apertura (solenoide FIT0620) y las solicitudes de foto; suben el estado de la puerta, las lecturas IR y las fotos de la cámara, en tiempo real.',
+        'En el prototipo final, el nodo y el tablero comparten un documento de comandos en Firestore. Al nodo bajan la apertura (solenoide FIT0620) y las solicitudes de foto, y de vuelta suben en tiempo real el estado de la puerta, las lecturas IR y las fotos de la cámara.',
       ],
     },
   },
@@ -599,9 +607,9 @@ export const HARDWARE = [
         src: 'render',
         fit: 'contain',
         bg: 'light',
-        caption: { en: 'PCB 3D view: shift registers, headers and ROTATE / LEFT / RIGHT / DOWN buttons', es: 'Vista 3D de la PCB: registros de desplazamiento, conectores y botones ROTATE / LEFT / RIGHT / DOWN' },
+        caption: { en: '3D view of the PCB with its shift registers, headers and ROTATE / LEFT / RIGHT / DOWN buttons', es: 'Vista 3D de la PCB con sus registros de desplazamiento, conectores y botones ROTATE / LEFT / RIGHT / DOWN' },
       },
-      { type: 'image', src: 'schematic', fit: 'contain', bg: 'light', caption: { en: 'Schematic: Arduino Uno, four 74HC595 and two 8×8 matrices', es: 'Esquemático: Arduino Uno, cuatro 74HC595 y dos matrices de 8×8' } },
+      { type: 'image', src: 'schematic', fit: 'contain', bg: 'light', caption: { en: 'Schematic with the Arduino Uno, four 74HC595 and two 8×8 matrices', es: 'Esquemático con el Arduino Uno, cuatro 74HC595 y dos matrices de 8×8' } },
       { type: 'image', src: 'bare', fit: 'contain', caption: { en: 'Fabricated PCB, before assembly', es: 'PCB fabricada, antes del ensamble' } },
       { type: 'image', src: 'prototype', fit: 'contain', caption: { en: 'Prototype wired to an Arduino Uno and a speaker', es: 'Prototipo conectado a un Arduino Uno y un parlante' } },
     ],
@@ -618,19 +626,19 @@ export const HARDWARE = [
     ],
     en: {
       tagline: 'Boards I designed in Altium as a teaching assistant so students could practice the course concepts on real hardware, like this LED-matrix game board running Tetris.',
-      problem: 'The course needed hardware that let students experiment hands-on with its core concepts: embedded C, finite-state machines, interrupts and timing.',
+      problem: 'Students in the course needed real hardware to practice embedded C, finite-state machines, interrupts and timing, the core concepts of the class.',
       did: [
         'Designed and developed custom PCBs in Altium Designer for the course.',
-        'One of them is the game board in the photos and the video: two 8×8 LED matrices driven by four 74HC595 shift registers from an Arduino Uno, with ROTATE, LEFT, RIGHT and DOWN buttons. It runs Tetris.',
+        'One of them is the game board in the photos and the video. Four 74HC595 shift registers drive its two 8×8 LED matrices from an Arduino Uno, it has ROTATE, LEFT, RIGHT and DOWN buttons, and it runs Tetris.',
         'Supported students working on embedded C, FSMs, interrupts and timing analysis during office hours.',
       ],
     },
     es: {
       tagline: 'Placas que diseñé en Altium como monitor para que los estudiantes practicaran los conceptos del curso sobre hardware real, como esta placa de juego con matrices LED que corre Tetris.',
-      problem: 'El curso necesitaba hardware para que los estudiantes experimentaran en físico con sus conceptos centrales: C embebido, máquinas de estados, interrupciones y temporización.',
+      problem: 'Los estudiantes del curso necesitaban hardware real para practicar C embebido, máquinas de estados, interrupciones y temporización, los conceptos centrales de la materia.',
       did: [
         'Diseñé y desarrollé PCB a la medida en Altium Designer para el curso.',
-        'Una de ellas es la placa de juego de las fotos y el video: dos matrices LED de 8×8 manejadas por cuatro registros de desplazamiento 74HC595 desde un Arduino Uno, con botones ROTATE, LEFT, RIGHT y DOWN. Corre Tetris.',
+        'Una de ellas es la placa de juego de las fotos y el video. Cuatro registros de desplazamiento 74HC595 manejan sus dos matrices LED de 8×8 desde un Arduino Uno, tiene botones ROTATE, LEFT, RIGHT y DOWN, y corre Tetris.',
         'Acompañé a los estudiantes en C embebido, máquinas de estados, interrupciones y análisis de temporización durante las horas de consulta.',
       ],
     },
@@ -649,7 +657,7 @@ export const HARDWARE = [
         type: 'video',
         src: 'emg',
         fit: 'contain',
-        caption: { en: 'EMG from the forearm: opening and closing the hand shows up live in LabVIEW', es: 'EMG del antebrazo: abrir y cerrar la mano se ve en vivo en LabVIEW' },
+        caption: { en: 'Opening and closing the hand shows up live in LabVIEW as forearm EMG', es: 'Abrir y cerrar la mano se ve en vivo en LabVIEW como EMG del antebrazo' },
       },
       { type: 'video', src: 'eeg-scope', caption: { en: 'The signal from the forehead electrodes on the oscilloscope', es: 'La señal de los electrodos de la frente en el osciloscopio' } },
       {
@@ -657,8 +665,8 @@ export const HARDWARE = [
         src: 'test-bench',
         fit: 'contain',
         caption: {
-          en: 'Test bench: the battery-powered board in its enclosure, a function generator and SINAD / THD in LabVIEW',
-          es: 'Banco de pruebas: la placa con batería en su caja, un generador de funciones y SINAD / THD en LabVIEW',
+          en: 'Test bench with the battery-powered board in its enclosure, a function generator and SINAD / THD in LabVIEW',
+          es: 'Banco de pruebas con la placa alimentada por batería en su caja, un generador de funciones y SINAD / THD en LabVIEW',
         },
       },
       {
@@ -679,22 +687,22 @@ export const HARDWARE = [
       { k: { en: 'Gain / band', es: 'Ganancia / banda' }, v: null }, // ⚠ PENDIENTE — ganancia y banda de paso de cada canal
     ],
     en: {
-      tagline: 'An acquisition chain for muscle (EMG) and brain (EEG) signals: surface electrodes on the forearm and the forehead, a battery-powered analog front-end and live analysis in LabVIEW.',
+      tagline: 'An acquisition chain for muscle (EMG) and brain (EEG) signals, with surface electrodes on the forearm and the forehead, a battery-powered analog front-end and live analysis in LabVIEW.',
       problem: 'Biopotentials are tiny (microvolts for EEG, millivolts for EMG), buried in noise and mains hum, and picked up through the skin. The chain has to amplify and filter them without distorting what it is trying to measure.',
       did: [
         'Surface electrodes on the forearm (EMG) and on the forehead (EEG) feed a battery-powered analog front-end, housed in an aluminum enclosure.',
         'Digitized the signals with an NI DAQ and plotted them live in LabVIEW, in time and in frequency, while the hand opened and closed.',
-        'Characterized the chain with a function generator: SINAD and THD after the instrumentation amplifier, after the filter and at the output.',
+        'Characterized the chain with a function generator, measuring SINAD and THD after the instrumentation amplifier, after the filter and at the output.',
         'Checked the signals, and a decoded I²C bus, on the oscilloscope.',
       ],
     },
     es: {
-      tagline: 'Cadena de adquisición de señales musculares (EMG) y cerebrales (EEG): electrodos de superficie en el antebrazo y la frente, un front-end analógico alimentado por batería y análisis en vivo en LabVIEW.',
+      tagline: 'Cadena de adquisición de señales musculares (EMG) y cerebrales (EEG), con electrodos de superficie en el antebrazo y la frente, un front-end analógico alimentado por batería y análisis en vivo en LabVIEW.',
       problem: 'Los biopotenciales son muy pequeños (microvoltios en EEG, milivoltios en EMG), vienen enterrados en ruido y en la interferencia de la red eléctrica, y se captan a través de la piel. La cadena tiene que amplificarlos y filtrarlos sin deformar lo que quiere medir.',
       did: [
         'Electrodos de superficie en el antebrazo (EMG) y en la frente (EEG) alimentan un front-end analógico con batería, montado en una caja de aluminio.',
         'Digitalicé las señales con una DAQ de NI y las graficué en vivo en LabVIEW, en tiempo y en frecuencia, mientras la mano se abría y se cerraba.',
-        'Caractericé la cadena con un generador de funciones: SINAD y THD después del amplificador de instrumentación, después del filtro y a la salida.',
+        'Caractericé la cadena con un generador de funciones y medí SINAD y THD después del amplificador de instrumentación, después del filtro y a la salida.',
         'Revisé las señales, y un bus I²C decodificado, en el osciloscopio.',
       ],
     },
@@ -713,11 +721,11 @@ export const HARDWARE = [
         type: 'image',
         src: 'system',
         caption: {
-          en: 'The complete setup: the LVDT on its 3D-printed jig, the conditioning board on the PIC board and the dial indicator as reference',
-          es: 'El montaje completo: el LVDT en su soporte impreso en 3D, la placa de acondicionamiento sobre la del PIC y el comparador como referencia',
+          en: 'The complete setup, with the LVDT on its 3D-printed jig, the conditioning board on top of the PIC board and the dial indicator as the reference',
+          es: 'El montaje completo, con el LVDT en su soporte impreso en 3D, la placa de acondicionamiento sobre la del PIC y el comparador como referencia',
         },
       },
-      { type: 'image', src: 'jig', caption: { en: '3D-printed jig: micrometer head, LVDT and digital dial indicator in line', es: 'Soporte impreso en 3D: tornillo micrométrico, LVDT y comparador digital en línea' } },
+      { type: 'image', src: 'jig', caption: { en: '3D-printed jig that lines up the micrometer head, the LVDT and the digital dial indicator', es: 'Soporte impreso en 3D que alinea el tornillo micrométrico, el LVDT y el comparador digital' } },
       { type: 'image', src: 'pcb', fit: 'contain', caption: { en: 'Custom LVDT signal-conditioning PCB, stacked on the PIC18F46K42 board', es: 'PCB de acondicionamiento del LVDT, montada sobre la placa del PIC18F46K42' } },
       {
         type: 'image',
@@ -739,7 +747,7 @@ export const HARDWARE = [
       { k: { en: 'Resolution', es: 'Resolución' }, v: null }, // ⚠ PENDIENTE — resolución y rango medidos
     ],
     en: {
-      tagline: 'A displacement-measurement system built to detect micro-fractures: an LVDT on a 3D-printed jig, a custom signal-conditioning board and a PIC microcontroller, checked against a micrometer and a dial indicator.',
+      tagline: 'A displacement-measurement system built to detect micro-fractures. It pairs an LVDT on a 3D-printed jig with a custom signal-conditioning board and a PIC microcontroller, and checks the readings against a micrometer and a dial indicator.',
       problem: 'A micro-fracture shows up as a displacement far too small for a ruler or a caliper. The LVDT output has to be conditioned, filtered and digitized without losing that resolution, and every reading needs a trusted reference to be compared against.',
       did: [
         'A custom signal-conditioning PCB for the LVDT, designed by the group and stacked on a PIC18F46K42 board.',
@@ -749,7 +757,7 @@ export const HARDWARE = [
       ],
     },
     es: {
-      tagline: 'Sistema de medición de desplazamiento para detectar microfracturas: un LVDT sobre un soporte impreso en 3D, una placa de acondicionamiento a la medida y un microcontrolador PIC, contrastado con un tornillo micrométrico y un comparador.',
+      tagline: 'Sistema de medición de desplazamiento para detectar microfracturas. Combina un LVDT sobre un soporte impreso en 3D con una placa de acondicionamiento a la medida y un microcontrolador PIC, y contrasta las lecturas con un tornillo micrométrico y un comparador.',
       problem: 'Una microfractura se manifiesta como un desplazamiento demasiado pequeño para una regla o un calibrador. La salida del LVDT hay que acondicionarla, filtrarla y digitalizarla sin perder esa resolución, y cada lectura necesita una referencia confiable con la cual compararse.',
       did: [
         'Una PCB de acondicionamiento a la medida para el LVDT, diseñada por el grupo y montada sobre una placa con PIC18F46K42.',
@@ -789,8 +797,8 @@ export const HARDWARE = [
       tagline: 'Direction and speed of a DC motor from a single potentiometer, with an H-bridge, a dead zone and a friction-aware minimum PWM.',
       problem: 'One potentiometer has to control two things at once, direction and speed, without the motor jittering at the centre or stalling from static friction.',
       did: [
-        'Mapped one potentiometer to both direction and speed: lower half reverse, upper half forward, and a centre dead zone that stops the motor.',
-        'Drove the motor through an L298N H-bridge: two pins for direction, one PWM pin for speed.',
+        'Mapped one potentiometer to both direction and speed. The lower half runs the motor in reverse, the upper half runs it forward, and a dead zone in the middle stops it.',
+        'Drove the motor through an L298N H-bridge, with two pins for direction and one PWM pin for speed.',
         'Set a minimum PWM duty so the motor overcomes static friction at start-up instead of stalling.',
         'Streamed telemetry over serial for live monitoring.',
       ],
@@ -799,8 +807,8 @@ export const HARDWARE = [
       tagline: 'Dirección y velocidad de un motor DC con un solo potenciómetro, puente H, zona muerta y un PWM mínimo que tiene en cuenta la fricción.',
       problem: 'Un potenciómetro tiene que controlar dos cosas a la vez, sentido y velocidad, sin que el motor tiemble en el centro ni se trabe por fricción estática.',
       did: [
-        'Mapeé un potenciómetro a sentido y velocidad: mitad inferior en reversa, mitad superior hacia adelante y una zona muerta central que detiene el motor.',
-        'Manejé el motor con un puente H L298N: dos pines de dirección y uno de PWM para la velocidad.',
+        'Mapeé un potenciómetro a sentido y velocidad. La mitad inferior mueve el motor en reversa, la superior hacia adelante y una zona muerta en el centro lo detiene.',
+        'Manejé el motor a través de un puente H L298N, con dos pines para el sentido y uno de PWM para la velocidad.',
         'Fijé un ciclo útil mínimo de PWM para que el motor venza la fricción estática al arrancar en lugar de trabarse.',
         'Envié telemetría por serial para monitoreo en vivo.',
       ],
@@ -834,22 +842,22 @@ export const HARDWARE = [
       { k: { en: 'Techniques', es: 'Técnicas' }, v: { en: 'Counters · clock-enable dividers · edge detection · fixed-point math', es: 'Contadores · divisores por habilitación · detección de flancos · aritmética en punto fijo' } },
     ],
     en: {
-      tagline: 'Volleyball-style Pong in pure VHDL on a DE2-115: SVGA video, ball physics with gravity, a boost meter and first-to-7 scoring, played with two joysticks.',
+      tagline: 'Volleyball-style Pong in pure VHDL on a DE2-115, played with two joysticks. It has SVGA video, ball physics with gravity, a boost meter and first-to-7 scoring.',
       problem: 'Everything a video game needs (video timing, physics, collisions, scoring and graphics) has to be built as parallel digital hardware, with no processor and no frame buffer, in step with a 50 MHz pixel clock.',
       did: [
-        'Built the video pipeline in VHDL: an 800×600 sync generator (H/V counters, porches and retrace) driving 24-bit RGB to the board’s VGA port, with line timing checked in a ModelSim testbench (21.1 µs per line).',
-        'Implemented the ball physics in hardware with fixed-point integer math: gravity, bounces off walls, ceiling, net and paddles, and a return angle that depends on where the ball hits the paddle.',
-        'Added a per-player boost (15 % faster return, 8 s recharge) and first-to-7 scoring with edge-detected single pulses; the serve side comes from the parity of a free-running counter.',
+        'Built the video pipeline in VHDL around an 800×600 sync generator (H/V counters, porches and retrace) that drives 24-bit RGB to the board’s VGA port, and checked the line timing in a ModelSim testbench (21.1 µs per line).',
+        'Implemented the ball physics in hardware with fixed-point integer math. It handles gravity, bounces off the walls, ceiling, net and paddles, and a return angle that depends on where the ball hits the paddle.',
+        'Added a per-player boost (15 % faster return, 8 s recharge) and first-to-7 scoring with edge-detected single pulses. The serve side comes from the parity of a free-running counter.',
         'Drew every object from sprite ROMs (8 bits per channel) through a per-pixel priority multiplexer, and read the joysticks through LM393 comparators, checked on the oscilloscope.',
       ],
     },
     es: {
-      tagline: 'Pong estilo voleibol en VHDL puro sobre una DE2-115: video SVGA, física de la pelota con gravedad, medidor de boost y marcador a 7 puntos, con dos joysticks.',
+      tagline: 'Pong estilo voleibol en VHDL puro sobre una DE2-115, para jugar con dos joysticks. Tiene video SVGA, física de la pelota con gravedad, medidor de boost y marcador a 7 puntos.',
       problem: 'Todo lo que necesita un videojuego (temporización de video, física, colisiones, marcador y gráficos) tiene que construirse como hardware digital en paralelo, sin procesador ni frame buffer, al ritmo de un reloj de píxel de 50 MHz.',
       did: [
-        'Construimos el pipeline de video en VHDL: un generador de sincronía de 800×600 (contadores H/V, porches y retrazo) que entrega RGB de 24 bits al puerto VGA de la tarjeta, con la temporización de línea verificada en un testbench de ModelSim (21,1 µs por línea).',
-        'Implementamos la física de la pelota en hardware con aritmética entera en punto fijo: gravedad, rebotes contra paredes, techo, red y paletas, y un ángulo de salida que depende de dónde golpea la pelota en la paleta.',
-        'Agregamos un boost por jugador (15 % más de velocidad, recarga de 8 s) y un marcador a 7 puntos con pulsos únicos por detección de flanco; el lado del saque sale de la paridad de un contador libre.',
+        'Construimos el pipeline de video en VHDL alrededor de un generador de sincronía de 800×600 (contadores H/V, porches y retrazo) que entrega RGB de 24 bits al puerto VGA de la tarjeta, y verificamos la temporización de línea en un testbench de ModelSim (21,1 µs por línea).',
+        'Implementamos la física de la pelota en hardware con aritmética entera en punto fijo. Maneja la gravedad, los rebotes contra paredes, techo, red y paletas, y un ángulo de salida que depende de dónde golpea la pelota en la paleta.',
+        'Agregamos un boost por jugador (15 % más de velocidad, recarga de 8 s) y un marcador a 7 puntos con pulsos únicos por detección de flanco. El lado del saque sale de la paridad de un contador libre.',
         'Dibujamos cada objeto desde ROM de sprites (8 bits por canal) con un multiplexor de prioridad por píxel, y leímos los joysticks con comparadores LM393, verificados en el osciloscopio.',
       ],
     },
@@ -880,71 +888,23 @@ export const HARDWARE = [
       { k: { en: 'Technique', es: 'Técnica' }, v: { en: 'Correlation vs. recorded templates', es: 'Correlación con plantillas grabadas' } },
     ],
     en: {
-      tagline: 'A wand that recognizes four Harry Potter spells from its motion: 3-axis acceleration sampled at 100 Hz, matched by correlation against recorded templates, with the result on an OLED.',
-      problem: 'Recognizing a gesture from raw acceleration on a microcontroller, in real time and without a trained model: the signal is noisy, no two casts are identical, and the system still has to decide which spell it saw.',
+      tagline: 'A wand that recognizes four Harry Potter spells from its motion. It samples 3-axis acceleration at 100 Hz, matches it by correlation against recorded templates and shows the result on an OLED.',
+      problem: 'The wand has to recognize a gesture from raw acceleration on a microcontroller, in real time and without a trained model. The signal is noisy and no two casts are identical, but the system still has to decide which spell it saw.',
       did: [
         'Set up an ADXL345 accelerometer over I²C (400 kHz, ±2 g, full resolution) and sampled all three axes at 100 Hz from a periodic timer into 100-sample sliding windows.',
-        'Wrote a capture script: a push-button on a GPIO with pull-up starts a one-second recording and saves the X/Y/Z template to a file.',
+        'Wrote a capture script. A push-button on a GPIO with pull-up starts a one-second recording and saves the X/Y/Z template to a file.',
         'Recorded templates for four spells (Leviosa, Expelliarmus, Lumos and Expecto Patronus) and scored every window by correlation on each axis, with a tuned threshold per spell.',
         'Showed the last detected spell on a 128×64 SSD1306 OLED that shares the same I²C bus.',
       ],
     },
     es: {
-      tagline: 'Una varita que reconoce cuatro hechizos de Harry Potter por su movimiento: aceleración en 3 ejes muestreada a 100 Hz y comparada por correlación con plantillas grabadas, con el resultado en una OLED.',
-      problem: 'Reconocer un gesto a partir de la aceleración cruda en un microcontrolador, en tiempo real y sin un modelo entrenado: la señal es ruidosa, ningún lanzamiento es idéntico y aun así el sistema tiene que decidir qué hechizo vio.',
+      tagline: 'Una varita que reconoce cuatro hechizos de Harry Potter por su movimiento. Toma la aceleración en 3 ejes a 100 Hz, la compara por correlación con plantillas grabadas y muestra el resultado en una OLED.',
+      problem: 'La varita tiene que reconocer un gesto a partir de la aceleración cruda en un microcontrolador, en tiempo real y sin un modelo entrenado. La señal es ruidosa y ningún lanzamiento es idéntico, pero aun así el sistema tiene que decidir qué hechizo vio.',
       did: [
         'Configuramos un acelerómetro ADXL345 por I²C (400 kHz, ±2 g, resolución completa) y muestreamos los tres ejes a 100 Hz con un timer periódico, en ventanas deslizantes de 100 muestras.',
-        'Escribimos un script de captura: un pulsador en un GPIO con pull-up inicia una grabación de un segundo y guarda la plantilla X/Y/Z en un archivo.',
+        'Escribimos un script de captura. Un pulsador en un GPIO con pull-up inicia una grabación de un segundo y guarda la plantilla X/Y/Z en un archivo.',
         'Grabamos plantillas de cuatro hechizos (Leviosa, Expelliarmus, Lumos y Expecto Patronus) y puntuamos cada ventana por correlación en cada eje, con un umbral ajustado por hechizo.',
         'Mostramos el último hechizo detectado en una OLED SSD1306 de 128×64 que comparte el mismo bus I²C.',
-      ],
-    },
-  },
-  {
-    id: 'fir-pic',
-    name: { en: 'Real-time FIR filtering on a PIC', es: 'Filtrado FIR en tiempo real sobre un PIC' },
-    year: '2025',
-    repo: 'https://github.com/NicoGomez4262/DAC-y-ADC-por-comunicaci-n-SERIAL',
-    demo: null,
-    team: null, // ⚠ PENDIENTE — ¿individual o en equipo? ¿de qué materia?
-    // Sin fotos ni video todavía: la tarjeta dibuja la cadena de señal con los datos confirmados del repo.
-    chain: {
-      title: { en: 'Signal chain', es: 'Cadena de señal' },
-      bus: 'SPI',
-      blocks: [
-        { part: 'MAX11666', role: { en: 'ADC · 12-bit', es: 'ADC · 12 bits' } },
-        { part: 'PIC', role: { en: 'FIR · order 12 / 14', es: 'FIR · orden 12 / 14' }, core: true },
-        { part: 'MCP4822', role: { en: 'DAC · 12-bit', es: 'DAC · 12 bits' } },
-      ],
-      control: { en: 'UART commands · FILTRO(n) · IN(n) · DAC(ch,sig)', es: 'Comandos por UART · FILTRO(n) · IN(n) · DAC(ch,sig)' },
-    },
-    specs: [
-      { k: 'MCU', v: 'Microchip PIC · 64 MHz' }, // ⚠ PENDIENTE — referencia exacta del PIC (¿PIC18F46K42, como en el LVDT?)
-      { k: 'ADC', v: 'MAX11666 · 2-ch · 12-bit' },
-      { k: 'DAC', v: 'MCP4822 · 2-ch · 12-bit' },
-      { k: { en: 'Interfaces', es: 'Interfaces' }, v: 'SPI (shared bus) · UART' },
-      { k: { en: 'Filters', es: 'Filtros' }, v: { en: 'FIR · order 12 & 14', es: 'FIR · orden 12 y 14' } },
-      { k: { en: 'Toolchain', es: 'Herramientas' }, v: 'MPLAB X · MCC · C' },
-      { k: { en: 'Sample rate', es: 'Muestreo' }, v: null }, // ⚠ PENDIENTE — frecuencia de muestreo real
-    ],
-    en: {
-      tagline: 'A two-channel signal chain on a microcontroller: 12-bit ADC in, FIR filter in firmware, 12-bit DAC out, reconfigurable live over UART.',
-      problem: 'Real-time DSP on a small MCU with no OS: every sample has to be read, filtered and written back before the next one arrives, with the ADC and the DAC sharing a single SPI bus.',
-      did: [
-        'Wrote SPI drivers for a MAX11666 dual-channel ADC and an MCP4822 dual DAC on one shared bus, handling chip-select and LDAC timing.',
-        'Implemented order-12 (13-tap) and order-14 (15-tap) FIR filters in C with circular sample buffers.',
-        'Built a UART command parser and state machine (FILTRO(n), IN(n), DAC(ch,sig)) to switch filter, input and output routing at runtime without reflashing.',
-        'Exposed six routable signals per DAC channel: A, B, A+B, |A−B|, scaled A·B and the filter output. IIR slots are reserved in the state machine.',
-      ],
-    },
-    es: {
-      tagline: 'Cadena de señal de dos canales en un microcontrolador: ADC de 12 bits a la entrada, filtro FIR en firmware y DAC de 12 bits a la salida, reconfigurable en vivo por UART.',
-      problem: 'DSP en tiempo real sobre un microcontrolador pequeño y sin sistema operativo: cada muestra se lee, se filtra y se escribe antes de que llegue la siguiente, con el ADC y el DAC compartiendo un solo bus SPI.',
-      did: [
-        'Escribí los drivers SPI de un ADC MAX11666 de dos canales y un DAC MCP4822 doble sobre un mismo bus, manejando los tiempos de chip-select y LDAC.',
-        'Implementé filtros FIR de orden 12 (13 coeficientes) y 14 (15 coeficientes) en C con buffers circulares.',
-        'Construí un parser de comandos UART y una máquina de estados (FILTRO(n), IN(n), DAC(ch,sig)) para cambiar filtro, entrada y ruteo en ejecución, sin volver a programar.',
-        'Seis señales enrutables por canal del DAC: A, B, A+B, |A−B|, A·B escalado y la salida del filtro. La máquina de estados deja espacios reservados para filtros IIR.',
       ],
     },
   },
@@ -961,7 +921,7 @@ export const HARDWARE = [
       {
         type: 'image',
         src: 'prototype',
-        caption: { en: 'The breadboard build: LED matrix, 20×4 LCD with the game menu, buttons and speaker', es: 'El montaje en protoboard: matriz LED, LCD 20×4 con el menú del juego, pulsadores y parlante' },
+        caption: { en: 'The breadboard build with the LED matrix, the 20×4 LCD showing the game menu, the buttons and the speaker', es: 'El montaje en protoboard con la matriz LED, la LCD 20×4 con el menú del juego, los pulsadores y el parlante' },
       },
     ],
     specs: [
@@ -991,6 +951,15 @@ export const HARDWARE = [
         'Publicamos el código abierto como material de estudio para otros estudiantes.',
       ],
     },
+  },
+  // Próximamente (26 sep 2026, pedido de Nicolás): la tesis de grado, a propósito solo con el nombre, para que
+  // quede a la intriga. `soon: true` = tarjeta «Próximamente» sin medios, specs ni modal; no cuenta en HARDWARE_COUNT.
+  {
+    id: 'thesis',
+    soon: true,
+    name: { en: 'Graduation thesis', es: 'Tesis de grado' },
+    en: { tagline: 'Interactive IoT LED façade.' },
+    es: { tagline: 'Fachada LED interactiva IoT.' },
   },
 ]
 
@@ -1024,11 +993,11 @@ export const SOFTWARE = [
     demo: 'https://voltio-red.web.app',
     stack: ['JavaScript', 'Firebase', 'PWA'],
     en: {
-      tagline: 'Shared EV-charging infrastructure for a residential complex: kWh metering from a photo of the meter, host-confirmed bookings and monthly per-tower consumption reports.',
+      tagline: 'Shared EV-charging infrastructure for a residential complex, with kWh metering from a photo of the meter, host-confirmed bookings and monthly consumption reports per tower.',
       facts: 'Pilot · 3 towers · 96 apartments',
     },
     es: {
-      tagline: 'Infraestructura de carga compartida para vehículos eléctricos en un conjunto residencial: medición de kWh con una foto del contador, reservas confirmadas por el anfitrión y reportes mensuales de consumo por torre.',
+      tagline: 'Infraestructura de carga compartida para vehículos eléctricos en un conjunto residencial, con medición de kWh a partir de una foto del contador, reservas confirmadas por el anfitrión y reportes mensuales de consumo por torre.',
       facts: 'Piloto · 3 torres · 96 apartamentos',
     },
   },
@@ -1041,11 +1010,11 @@ export const SOFTWARE = [
     demo: null,
     stack: ['TypeScript', 'Computer vision', 'Web Audio'],
     en: {
-      tagline: 'Camera-based perception mapped to actions: a loop station driven by hand and body tracking. Started from an 11-document engineering plan with a latency analysis and ADRs.',
+      tagline: 'A loop station driven by hand and body tracking, where camera-based perception turns into actions. It started from an 11-document engineering plan with a latency analysis and ADRs.',
       facts: null,
     },
     es: {
-      tagline: 'Percepción por cámara convertida en acciones: una loop station controlada por seguimiento de manos y cuerpo. Arrancó con un plan de ingeniería de 11 documentos, con análisis de latencia y ADRs.',
+      tagline: 'Una loop station controlada por seguimiento de manos y cuerpo, en la que la percepción por cámara se convierte en acciones. Arrancó con un plan de ingeniería de 11 documentos, con análisis de latencia y ADRs.',
       facts: null,
     },
   },
@@ -1103,7 +1072,7 @@ export const SKILLS = [
       { k: { en: 'Embedded Linux', es: 'Linux embebido' }, v: 'Raspberry Pi (ARM) · Python · GPIO' },
       { k: { en: 'Buses', es: 'Buses' }, v: 'SPI · UART · I²C · 1-Wire' },
       { k: 'Firmware', v: { en: 'C · C++ · MicroPython · interrupts · timing', es: 'C · C++ · MicroPython · interrupciones · temporización' } },
-      { k: 'FSM', v: { en: 'Finite-state machines: UART command parser, tune sequencer', es: 'Máquinas de estados finitos: parser de comandos UART, secuenciador de melodía' } },
+      { k: 'FSM', v: { en: 'UART command parser · tune sequencer', es: 'Parser de comandos UART · secuenciador de melodía' } },
       { k: { en: 'Sensors', es: 'Sensores' }, v: { en: 'IR · ADXL345 accelerometer · analog via ADC · external 12-bit ADC', es: 'IR · acelerómetro ADXL345 · analógicos por ADC · ADC externo de 12 bits' } },
       { k: { en: 'Displays', es: 'Pantallas' }, v: { en: 'SSD1306 OLED · 20×4 I²C LCD · MAX7219 LED matrices', es: 'OLED SSD1306 · LCD I²C 20×4 · matrices LED MAX7219' } },
       { k: { en: 'Motor control', es: 'Control de motores' }, v: { en: 'DC · PWM + H-bridge · servo pulses', es: 'DC · PWM + puente H · pulsos de servo' } },
@@ -1181,4 +1150,4 @@ export const tx = (value, lang) =>
   value && typeof value === 'object' && !Array.isArray(value) ? value[lang] ?? value.en : value
 
 /** Cantidad real de proyectos de hardware (sin contar la ranura vacía). */
-export const HARDWARE_COUNT = HARDWARE.filter((p) => !p.placeholder).length
+export const HARDWARE_COUNT = HARDWARE.filter((p) => !p.soon).length

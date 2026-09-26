@@ -7,12 +7,12 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { SITE_URL } from '../site.config.js'
-import { INSTITUTIONS, PROFILE, SEEKING, UI } from '../src/data/content.js'
+import { INSTITUTIONS, PROFILE, SHARE, UI } from '../src/data/content.js'
 import { launch } from './cdp.mjs'
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 const values = {
-  seeking: SEEKING.en,
+  badge: SHARE.badge,
   name: PROFILE.shortName,
   role: UI.en.role,
   focus: UI.en.roleFocus,

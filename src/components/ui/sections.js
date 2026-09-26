@@ -16,11 +16,11 @@ export const LAB_MODE =
 export const sectionVisible = (id) => (id === 'lab' ? LAB_MODE !== 'hidden' : SECTIONS[id] !== false)
 
 /**
- * Orden de las secciones numeradas, pensado para un reclutador de hardware (Kiwibot / robot.com):
- * experiencia primero, después la prueba técnica, y el perfil y la formación como contexto al final.
+ * Orden de las secciones numeradas: el perfil primero (pedido de Nicolás, 26 sep 2026), después la experiencia
+ * y la prueba técnica, y la formación como contexto al final.
  * La página, la nav, el menú móvil y el número de cada encabezado salen de aquí.
  */
-export const ORDER = ['experience', 'hardware', 'skills', 'lab', 'software', 'about', 'education', 'contact'].filter(sectionVisible)
+export const ORDER = ['about', 'experience', 'hardware', 'skills', 'lab', 'software', 'education', 'contact'].filter(sectionVisible)
 
 /** Número de una sección ("01", "02"…) según su posición en ORDER. */
 export const sectionIndex = (id) => String(ORDER.indexOf(id) + 1).padStart(2, '0')

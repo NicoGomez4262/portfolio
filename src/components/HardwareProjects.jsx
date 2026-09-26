@@ -99,6 +99,61 @@ function SignalChain({ chain, lang, label }) {
   )
 }
 
+/**
+ * Fachada de LEDs para la tarjeta «Próximamente»: una franja de luz fija que cruza la retícula en diagonal, con
+ * algunos LEDs cobre sueltos. Es decorativa y no se anima (el único punto que late en el sitio es el del hero).
+ */
+const FACADE_COLS = 18
+const FACADE_ROWS = 8
+const FACADE_SPARKS = new Set(['15,1', '2,6', '16,5', '5,0', '11,7'])
+const FACADE = Array.from({ length: FACADE_ROWS * FACADE_COLS }, (_, i) => {
+  const x = i % FACADE_COLS
+  const y = Math.floor(i / FACADE_COLS)
+  if (FACADE_SPARKS.has(`${x},${y}`)) return 'bg-copper shadow-[0_0_8px_var(--copper)]'
+  const glow = 1 - Math.abs(x - (3 + y * 1.4)) / 3
+  if (glow > 0.66) return 'bg-accent shadow-[0_0_8px_var(--accent)]'
+  if (glow > 0.33) return 'bg-accent/60'
+  if (glow > 0) return 'bg-accent/25'
+  return 'bg-line'
+})
+
+function Facade() {
+  return (
+    <div aria-hidden className="pcb-dots relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden bg-surface-2">
+      {['left-2 top-2 border-l border-t', 'right-2 top-2 border-r border-t', 'left-2 bottom-2 border-b border-l', 'right-2 bottom-2 border-b border-r'].map((pos) => (
+        <span key={pos} className={`absolute size-3 border-accent/50 ${pos}`} />
+      ))}
+      <div className="grid w-[64%] grid-cols-[repeat(18,minmax(0,1fr))] gap-1.5 rounded-md border border-line bg-bg/40 p-3 sm:gap-2 sm:p-4">
+        {FACADE.map((led, i) => (
+          <span key={i} className={`aspect-square rounded-full ${led}`} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** Tarjeta «Próximamente» (la tesis): la fachada, el nombre y una línea. Sin specs ni modal: que quede a la intriga. */
+function SoonCard({ project, index, lang, t }) {
+  return (
+    <Reveal delay={(index % 2) * 0.06}>
+      <article id={`hw-${project.id}`} className="card flex h-full scroll-mt-24 flex-col overflow-hidden">
+        <div className="border-b border-line">
+          <Facade />
+        </div>
+        <div className="flex flex-1 flex-col p-5 sm:p-7">
+          <div className="mb-3 flex items-center gap-3 font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
+            <span className="text-accent">{code(index)}</span>
+            <span className="text-copper">{t.soon}</span>
+            <span aria-hidden className="h-px flex-1 bg-line-soft" />
+          </div>
+          <h3 className="text-xl font-semibold text-ink sm:text-2xl">{tx(project.name, lang)}</h3>
+          <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-dim">{project[lang].tagline}</p>
+        </div>
+      </article>
+    </Reveal>
+  )
+}
+
 function ProjectCard({ project, index, lang, t, onOpen, onExpand }) {
   const copy = project[lang]
   const star = project.star
@@ -325,9 +380,13 @@ export default function HardwareProjects({ index }) {
   return (
     <Section id="hardware" index={index} kicker={t.hwKicker} title={t.hwTitle} intro={t.hwIntro}>
       <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
-        {HARDWARE.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} lang={lang} t={t} onOpen={openProject} onExpand={openViewer} />
-        ))}
+        {HARDWARE.map((p, i) =>
+          p.soon ? (
+            <SoonCard key={p.id} project={p} index={i} lang={lang} t={t} />
+          ) : (
+            <ProjectCard key={p.id} project={p} index={i} lang={lang} t={t} onOpen={openProject} onExpand={openViewer} />
+          ),
+        )}
       </div>
 
       <AnimatePresence>

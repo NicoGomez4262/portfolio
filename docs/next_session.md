@@ -5,9 +5,10 @@ portafolio. Al terminar su trabajo, cada sesión debe **reescribir este archivo*
 sesión que sigue (mismo formato), hasta que el portafolio se considere completo — en ese punto, la sesión
 lo dice explícitamente en vez de generar un prompt nuevo.
 
-**Última actualización:** 26 sep 2026, en el commit «Add media carousels, EEG/EMG and LVDT projects, all four
-résumés and the new section order» (ver `git log`). Ese commit junta el trabajo de tres sesiones: materiales y
-carrusel, auditoría de diseño y la prueba del carrusel con el cierre.
+**Última actualización:** 26 sep 2026, en el commit que pone el Perfil primero, quita «intern» de la vista previa
+al compartir, cambia el título de Software, pasa los textos a una redacción más natural y reemplaza el FIR por la
+tarjeta «Próximamente» de la tesis (ver `git log`). El commit anterior (`a14e58b`) juntó el carrusel, la
+auditoría de diseño y los 4 CV.
 
 ---
 
@@ -26,9 +27,13 @@ puntos, controles al pasar el mouse o tras un toque, deslizar en móvil, visor a
 (src/components/ui/MediaCarousel.jsx y Lightbox.jsx; se prueba con scripts/carousel.mjs). Hay dos proyectos
 nuevos armados solo con mis fotos y videos (EEG/EMG y LVDT, marcados ⚠ VERIFICAR). Las 4 hojas de vida están
 publicadas, así que los botones de CV abren el selector (si un idioma quedara con un solo archivo, ese botón
-descargaría directo; lógica en src/components/ui/cv.js). El orden de las secciones es Experiencia → Hardware →
-Skills → [Lab] → Software → GitHub → Perfil → Formación → Contacto y lo define ORDER en
-src/components/ui/sections.js (de ahí salen la página, la nav y el menú móvil).
+descargaría directo; lógica en src/components/ui/cv.js). El orden de las secciones es Perfil → Experiencia →
+Hardware → Skills → [Lab] → Software → GitHub → Formación → Contacto y lo define ORDER en
+src/components/ui/sections.js (de ahí salen la página, la nav y el menú móvil). La última tarjeta de hardware
+es mi tesis (fachada LED interactiva IoT) como «Próximamente», a propósito sin detalles; el FIR se quitó.
+La vista previa al compartir el enlace no dice «intern» (TITLE y DESCRIPTION en vite.config.js, SHARE en
+content.js y public/og.png). Los textos se escriben como los escribiría una persona: casi sin «:» ni «;», sin
+rayas largas en la prosa y sin relleno (ver «Cómo se escribe» en el README).
 
 Tu trabajo, en este orden:
 
@@ -74,6 +79,7 @@ pasos), o **no pude verificarlo** (y por qué).
 ## 3) Deja todo funcionando
 
 - `npm run build` sin errores y `npm run lint` sin errores nuevos.
+- Si escribiste o cambiaste textos: que no queden «:» ni «;» de más y que suenen escritos por una persona.
 - Si tocaste el carrusel, el visor o los medios: `node scripts/carousel.mjs` contra `npm run dev` (todas
   deben pasar). El panel Browser suele estar oculto y ahí no corren animaciones ni observadores: prueba con
   Chrome headless (scripts/carousel.mjs y scripts/verify.mjs).
@@ -92,8 +98,10 @@ pasos), o **no pude verificarlo** (y por qué).
 
 Al final, dame una lista actualizada — en tablas, con las mismas columnas que docs/MATERIALS.md — de las fotos,
 videos y datos que TODAVÍA no entregué después de este bloque: lo que subí y no encajó en ningún slot, los
-proyectos que siguen sin video o sin foto (hoy el FIR no tiene ninguno y PROTEO solo tiene el pitch), las
-correcciones de las hojas de vida «Moderno» y cualquier ⚠ que quede en content.js. Prioriza igual que
+proyectos que siguen sin video o sin foto (hoy PROTEO solo tiene el pitch, y el video de DreamSnake en YouTube
+se ve diminuto porque se subió vertical), las diferencias anotadas de las hojas de vida «Moderno» (Nicolás
+las dio por finales; es opcional) y cualquier ⚠ que quede
+en content.js. Prioriza igual que
 MATERIALS.md (P0/P1/P2). Actualiza docs/MATERIALS.md para que refleje solo lo que sigue pendiente (quita lo
 resuelto y agrega lo nuevo a «Ya procesado»; no dupliques la lista en dos archivos distintos).
 
@@ -129,3 +137,8 @@ y deja de regenerar este archivo.
     ver MATERIALS.md §1); se quitó el CV de respaldo generado.
   - Pendiente: Vercel CLI, token de PROTEO_DEF, colaborador en los repos de Ruslán, decisiones de la auditoría,
     material de PROTEO y del FIR, y los datos ⚠ de MATERIALS.md §5.
+- **26 sep 2026** (segundo commit, pedidos de Nicolás): el Perfil pasa a ser la primera sección; la vista previa
+  al compartir (título, descripción y og.png) ya no dice «intern»; Software se titula «I love software too, and
+  it often backs up my hardware» / «También me encanta el software, y muchas veces respalda mi hardware»; todos
+  los textos quedaron sin «:» ni «;» y con una redacción más natural; el FIR sobre un PIC se quitó y al final
+  quedó la tarjeta «Próximamente» de la tesis (Fachada LED interactiva IoT).

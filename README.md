@@ -49,7 +49,7 @@ despliega a producción. Respaldo manual: `npx vercel --prod` (requiere `npx ver
 | **Fotos y videos de un proyecto** | `content.js` → `HARDWARE[].media` (los archivos, en `public/media/projects/<id>/`). |
 | **Todo el texto** (EN y ES) | `src/data/content.js` |
 | **Orden de las secciones** (página, nav, menú móvil y número de cada encabezado) | `src/components/ui/sections.js` → `ORDER` |
-| Título y descripción SEO | `vite.config.js` → `TITLE`, `DESCRIPTION` |
+| **Vista previa al compartir** (título, descripción e imagen) | `vite.config.js` → `TITLE`, `DESCRIPTION`; badge de la imagen en `content.js` → `SHARE`, y `node scripts/og.mjs` para regenerar `public/og.png`. Sin «intern» a propósito. |
 | Colores y tipografía | `src/index.css` (tokens por tema) |
 
 Constantes de `content.js`:
@@ -60,20 +60,25 @@ Constantes de `content.js`:
 | `PROFILE` | Nombre, correo, teléfono, WhatsApp, GitHub, LinkedIn, foto, promedio, PCB diseñadas |
 | `CV_FILES`, `CV_FORMATS` | Rutas de las 4 hojas de vida (idioma × formato) |
 | `SEEKING` | Badge del hero y fechas de disponibilidad |
+| `SHARE` | Badge de la imagen para compartir (`og.png`) |
 | `SECTIONS` | Interruptores de secciones (`lab: 'auto'` la muestra con 3+ fotos) |
 | `NAV` | Etiquetas de la navegación; `menuOnly: true` = solo en el menú móvil (el orden sale de `ORDER`) |
 | `HERO_CHIP` | Rótulos de los pines del integrado del hero |
 | `UI` | Textos de interfaz, `en` y `es` (incluye el mensaje prellenado de WhatsApp) |
 | `ABOUT` | Perfil y áreas de enfoque |
 | `EXPERIENCE` | Experiencia; `kind: 'academic' \| 'professional'` la separa en dos bloques |
-| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo |
-| `SOFTWARE` | Bloque "Software that talks to hardware" (`hardware` enlaza con su tarjeta de hardware) |
+| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo. `soon: true` = tarjeta «Próximamente» (hoy, la tesis) |
+| `SOFTWARE` | Bloque de software, «I love software too, and it often backs up my hardware» (`hardware` enlaza con su tarjeta de hardware) |
 | `LAB` | 9 fotos del laboratorio con su pie de foto |
 | `EDUCATION`, `LANGUAGES`, `SKILLS` | Lo que dice su nombre |
 
 **Datos pendientes:** se marcan con `⚠ PENDIENTE` (o `⚠ VERIFICAR`) y valen `null`. El sitio los muestra como un
 hueco de diseño rayado ("To be confirmed" / "Coming soon"), nunca como texto inventado.
 La lista completa de lo que falta entregar está en [`docs/MATERIALS.md`](docs/MATERIALS.md).
+
+**Cómo se escribe** (pedido de Nicolás, 26 sep 2026): que suene escrito por una persona. Casi sin «:» ni «;» en
+los textos (se prefiere punto o coma), sin rayas largas en medio de la prosa y sin frases de relleno. Nada
+inventado: lo que no está confirmado queda como hueco.
 
 ---
 
@@ -120,7 +125,9 @@ media: [
 - `bg: 'light'` = fondo blanco en vez del desenfoque (esquemáticos, renders, vistas RTL).
 - Un archivo que no existe se omite solo: el manifiesto de `vite.config.js` sabe qué hay en `public/`, así que no
   queda hueco ni sale un 404. En `npm run dev` se recarga solo al agregar o borrar archivos.
-- Un proyecto sin ningún medio muestra su `chain` (cadena de señal dibujada con datos confirmados), como el FIR.
+- Un proyecto sin ningún medio puede mostrar su `chain` (cadena de señal dibujada con datos confirmados).
+- `soon: true` es la tarjeta «Próximamente» (la tesis, al final): una fachada de LEDs dibujada, el nombre y una
+  línea, sin medios, specs ni modal, y no cuenta en el número de proyectos del hero.
 
 **Cómo se comporta** (`src/components/ui/MediaCarousel.jsx` y `Lightbox.jsx`):
 
@@ -186,7 +193,7 @@ public/
     └── lab/01 … 09               ← galería «On the bench»: aparece sola con 3 o más fotos
 ```
 
-`fir-pic` todavía no tiene medios: su tarjeta dibuja la cadena de señal. El laboratorio y las capturas de
+El laboratorio y las capturas de
 software usan el componente `<Media>`, que busca por ruta base sin extensión (`.mp4` → `.webp` → `.jpg` →
 `.jpeg` → `.png`) y muestra un placeholder diseñado si no hay archivo. Pies de foto del laboratorio: `LAB[].caption`.
 
@@ -200,7 +207,9 @@ software usan el componente `<Media>`, que busca por ruta base sin extensión (`
 - **JSON-LD `Person`**: teléfono, `sameAs` (GitHub y LinkedIn), `alumniOf` con la URL oficial de cada institución, `knowsLanguage`.
 - `<noscript>` enlaza el CV EN ATS.
 - `robots.txt` y `sitemap.xml` se generan en el build a partir de `SITE_URL`.
-- Imagen Open Graph / Twitter: `public/og.png` (1200 × 630), generada con `node scripts/og.mjs`.
+- Imagen Open Graph / Twitter: `public/og.png` (1200 × 630), generada con `node scripts/og.mjs`. Su badge sale de
+  `SHARE.badge`. WhatsApp, LinkedIn y demás guardan la vista previa en caché: tras cambiarla, LinkedIn se refresca
+  en su Post Inspector y WhatsApp puede tardar días (o compartir el enlace con `?v=2`).
 - Favicons: `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `site.webmanifest`.
 - `public/404.html` es la página de error; Vercel la sirve con estado 404 real.
 
