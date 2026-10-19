@@ -80,7 +80,9 @@ f. **Control de carga EVSE:** revisa en «Control de carga - Carro» (repo contr
    existe (NEXT_SESSION.md y docs/PLAN_FASES.md de ese repo dicen la fase). Si avanzó, actualiza la fila
    «Estado» de sus specs y la línea del tagline, y si llegaron fotos o un render 3D, cámbialos por los cortes del
    esquemático (las fotos primero). Si el repo tiene cambios sin subir, pregúntame antes de hacer commit allá.
-   Los fuentes de Altium viven fuera del repo (C:/Nicolas/UNIVERSIDAD - 2026/...); pregúntame si los quiero subir.
+   Desde el 19 oct 2026 el repo tiene el proyecto de Altium en altium/, como espejo del original
+   (C:/Nicolas/UNIVERSIDAD - 2026/...). Compara con `python docs/tools/sincronizar_altium.py` (sin --commit solo
+   copia y dice qué cambió); si hay cambios sin subir, avísame antes de correrlo con --commit.
 
 Para cada uno (a–f), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
 pasos), o **no pude verificarlo** (y por qué).
