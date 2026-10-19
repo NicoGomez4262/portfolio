@@ -1,4 +1,4 @@
-import { SOFTWARE } from '../data/content.js'
+import { SOFTWARE, tx } from '../data/content.js'
 import { useApp } from '../hooks/useApp.jsx'
 import Section from './ui/Section.jsx'
 import { RevealGroup, RevealItem } from './ui/Reveal.jsx'
@@ -7,6 +7,7 @@ import Media, { resolveMedia } from './ui/Media.jsx'
 
 function SoftwareCard({ p, lang, t }) {
   const copy = p[lang]
+  const name = tx(p.name, lang)
   const link = 'inline-flex h-11 items-center gap-1.5 rounded-full border px-3.5 font-mono text-[11px] tracking-wide transition'
   // Captura opcional: public/media/software/<id>/screen.webp. Sin archivo, la tarjeta no muestra hueco.
   const shot = `/media/software/${p.id}/screen`
@@ -14,10 +15,10 @@ function SoftwareCard({ p, lang, t }) {
 
   return (
     <article id={`sw-${p.id}`} className="xlink card card-hover flex h-full scroll-mt-24 flex-col overflow-hidden">
-      {hasShot && <Media base={shot} alt={p.name} video={false} className="border-b border-line" />}
+      {hasShot && <Media base={shot} alt={name} video={false} className="border-b border-line" />}
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-lg font-semibold text-ink">{p.name}</h3>
+          <h3 className="text-lg font-semibold text-ink">{name}</h3>
           {p.wip && (
             <span className="rounded-full border border-copper/40 bg-copper/10 px-2 py-0.5 font-mono text-[10px] tracking-wide text-copper">{t.wip}</span>
           )}

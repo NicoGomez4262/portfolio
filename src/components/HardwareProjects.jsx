@@ -132,21 +132,26 @@ function Facade() {
   )
 }
 
-/** Tarjeta «Próximamente» (la tesis): la fachada, el nombre y una línea. Sin specs ni modal: que quede a la intriga. */
-function SoonCard({ project, index, lang, t }) {
+/**
+ * Tarjeta «Próximamente» (la tesis): su carrusel (o la fachada dibujada si no tiene medios), el nombre y una línea.
+ * Sin specs ni modal: que quede a la intriga. Ocupa el ancho completo y cierra la sección, como la insignia la abre.
+ */
+function SoonCard({ project, index, lang, t, onExpand }) {
+  const items = MEDIA[project.id]
+  const name = tx(project.name, lang)
   return (
-    <Reveal delay={(index % 2) * 0.06}>
-      <article id={`hw-${project.id}`} className="card flex h-full scroll-mt-24 flex-col overflow-hidden">
-        <div className="border-b border-line">
-          <Facade />
+    <Reveal className="md:col-span-2">
+      <article id={`hw-${project.id}`} className="card flex h-full scroll-mt-24 flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+        <div className="border-b border-line lg:border-r lg:border-b-0">
+          {items.length > 0 ? <MediaCarousel items={items} label={name} lang={lang} t={t} onExpand={(v) => onExpand(project, v)} /> : <Facade />}
         </div>
-        <div className="flex flex-1 flex-col p-5 sm:p-7">
+        <div className="flex flex-1 flex-col p-5 sm:p-7 lg:justify-center lg:p-10">
           <div className="mb-3 flex items-center gap-3 font-mono text-[11px] tracking-[0.14em] text-ink-faint uppercase">
             <span className="text-accent">{code(index)}</span>
             <span className="text-copper">{t.soon}</span>
             <span aria-hidden className="h-px flex-1 bg-line-soft" />
           </div>
-          <h3 className="text-xl font-semibold text-ink sm:text-2xl">{tx(project.name, lang)}</h3>
+          <h3 className="text-xl font-semibold text-ink sm:text-2xl">{name}</h3>
           <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-dim">{project[lang].tagline}</p>
         </div>
       </article>
@@ -186,6 +191,7 @@ function ProjectCard({ project, index, lang, t, onOpen, onExpand }) {
                 {t.starLabel}
               </span>
             )}
+            {project.wip && <span className="text-copper">{t.wip}</span>}
             <span aria-hidden className="h-px flex-1 bg-line-soft" />
             <span className="tabular">{project.year}</span>
           </div>
@@ -245,6 +251,7 @@ function ProjectModal({ project, index, lang, t, onClose, onView }) {
             <div className="min-w-0">
               <p className="font-mono text-[11px] tracking-[0.16em] text-accent uppercase">
                 {code(index)} · {project.year}
+                {project.wip && <span className="text-copper"> · {t.wip}</span>}
               </p>
               <h3 id="project-modal-title" className="mt-1 text-xl font-semibold text-ink sm:text-2xl">
                 {name}
@@ -382,7 +389,7 @@ export default function HardwareProjects({ index }) {
       <div className="grid gap-5 md:grid-cols-2 lg:gap-6">
         {HARDWARE.map((p, i) =>
           p.soon ? (
-            <SoonCard key={p.id} project={p} index={i} lang={lang} t={t} />
+            <SoonCard key={p.id} project={p} index={i} lang={lang} t={t} onExpand={openViewer} />
           ) : (
             <ProjectCard key={p.id} project={p} index={i} lang={lang} t={t} onOpen={openProject} onExpand={openViewer} />
           ),

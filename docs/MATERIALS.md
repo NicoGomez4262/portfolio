@@ -1,6 +1,6 @@
 # Materiales que faltan — qué entregar, dónde y cómo
 
-_Actualizado el 26 sep 2026. Sitio en vivo: <https://nicolasgomez.dev>._
+_Actualizado el 19 oct 2026. Sitio en vivo: <https://nicolasgomez.dev>._
 
 Este archivo lista **solo lo que sigue pendiente**. Lo ya entregado se quita de aquí (queda en el historial de git).
 
@@ -12,8 +12,8 @@ a su ruta final, se compila, se hace commit y se despliega.
 incoming/
 ├── cv/                      ← hojas de vida corregidas (PDF), con el mismo nombre de archivo
 ├── foto/                    ← la foto editada con Higgsfield (opcional)
-├── projects/<id>/           ← proteo · custom-pcbs · eeg-emg · lvdt · conveyor · volley-pong · correlacium · dreamsnake · thesis
-├── software/<id>/           ← proteo-web · voltio-residencial · video-dj · psicosentir (opcional)
+├── projects/<id>/           ← proteo · custom-pcbs · evse · eeg-emg · lvdt · conveyor · volley-pong · correlacium · dreamsnake · thesis
+├── software/<id>/           ← proteo-web · voltio-residencial · face-anonymizer · video-dj · psicosentir (opcional)
 ├── lab/                     ← fotos del laboratorio 01 … 09
 └── datos/                   ← respuestas.md con los datos pendientes (sección 5)
 ```
@@ -56,8 +56,9 @@ Para reemplazar una: expórtala de nuevo desde Canva y suéltala en `incoming/cv
 
 ## 2. Fotos y videos de proyectos de hardware
 
-Los 8 proyectos tienen medios en su carrusel. El FIR sobre un PIC se quitó del sitio el 26 sep 2026, y la última
-tarjeta es la tesis como «Próximamente», a propósito sin fotos ni datos.
+Los 9 proyectos tienen medios en su carrusel. El control de carga EVSE (HW-03, desde el 19 oct 2026) muestra por
+ahora cortes del esquemático. La última tarjeta es la tesis como «Próximamente», con los dos renders del concepto y
+una línea, a propósito sin más datos.
 
 ### 2.1 PROTEO (HW-01, insignia) — `projects/proteo/` — P0
 
@@ -73,13 +74,14 @@ Hoy la tarjeta solo tiene el video pitch de YouTube. Falta ver el hardware de ce
 
 | # | Proyecto | Archivo | Entrega | Ruta final | Formato | Tamaño final | Peso final | Qué debe mostrar | Prioridad |
 |---|---|---|---|---|---|---|---|---|---|
+| 2.2.0 | Control de carga EVSE (HW-03) | `pcb.jpg`, `demo.mp4` | `incoming/projects/evse/` | `public/media/projects/evse/pcb.webp`, `demo.mp4` + `demo.webp` | WebP / MP4 sin audio | 1600 px / 1280 px de ancho | < 250 KB / < 2,5 MB | Cuando exista la PCB, la placa ensamblada y un video midiendo una carga real (o en el banco). Mientras tanto se ven cortes del esquemático. También sirve el render 3D o el layout de Altium cuando esté ruteada. | P1 |
 | 2.2.1 | PCB a la medida (HW-02) | `board-<n>.jpg` | `incoming/projects/custom-pcbs/` | `public/media/projects/custom-pcbs/board-<n>.webp` | WebP | lado largo 1600 px | < 250 KB | Las **otras** placas que diseñaste (hoy solo se ve la de matrices LED), con una línea de qué hace cada una. | P1 |
 | 2.2.2 | PCB a la medida (HW-02) | `layout.png` | `incoming/projects/custom-pcbs/` | `public/media/projects/custom-pcbs/layout.webp` | WebP | lado largo 1600 px | < 300 KB | Captura del layout 2D en Altium con las capas visibles (ya están el render 3D y el esquemático). | P2 |
-| 2.2.3 | CORRELACIUM (HW-07) | `demo.mp4` | `incoming/projects/correlacium/` | `public/media/projects/correlacium/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 5–15 s | < 2,5 MB | Hacer un hechizo con la varita y ver su nombre en la OLED. **Sin caras** (por eso se descartó el video del 21 nov 2024). | P1 |
-| 2.2.4 | LVDT (HW-04) | `demo.mp4` | `incoming/projects/lvdt/` | `public/media/projects/lvdt/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | Girar el tornillo micrométrico y ver cómo cambia la lectura del PIC junto al comparador. | P1 |
-| 2.2.5 | EEG/EMG (HW-03) | `schematic.png` | `incoming/projects/eeg-emg/` | `public/media/projects/eeg-emg/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Esquemático del front-end: amplificador de instrumentación y etapa de filtros. | P2 |
-| 2.2.6 | Banda transportadora (HW-05) | `schematic.png` | `incoming/projects/conveyor/` | `public/media/projects/conveyor/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Arduino + L298N + motor + potenciómetro (y el sensor de RPM, si lo hay). | P2 |
-| 2.2.7 | DreamSnake (HW-08) | el video original | `incoming/projects/dreamsnake/` | `public/media/projects/dreamsnake/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | El mismo video de YouTube pero horizontal. El de YouTube se subió vertical con el clip horizontal adentro, así que en la tarjeta el juego se ve diminuto. | P2 |
+| 2.2.3 | CORRELACIUM (HW-08) | `demo.mp4` | `incoming/projects/correlacium/` | `public/media/projects/correlacium/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 5–15 s | < 2,5 MB | Hacer un hechizo con la varita y ver su nombre en la OLED. **Sin caras** (por eso se descartó el video del 21 nov 2024). | P1 |
+| 2.2.4 | LVDT (HW-05) | `demo.mp4` | `incoming/projects/lvdt/` | `public/media/projects/lvdt/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | Girar el tornillo micrométrico y ver cómo cambia la lectura del PIC junto al comparador. | P1 |
+| 2.2.5 | EEG/EMG (HW-04) | `schematic.png` | `incoming/projects/eeg-emg/` | `public/media/projects/eeg-emg/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Esquemático del front-end: amplificador de instrumentación y etapa de filtros. | P2 |
+| 2.2.6 | Banda transportadora (HW-06) | `schematic.png` | `incoming/projects/conveyor/` | `public/media/projects/conveyor/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Arduino + L298N + motor + potenciómetro (y el sensor de RPM, si lo hay). | P2 |
+| 2.2.7 | DreamSnake (HW-09) | el video original | `incoming/projects/dreamsnake/` | `public/media/projects/dreamsnake/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | El mismo video de YouTube pero horizontal. El de YouTube se subió vertical con el clip horizontal adentro, así que en la tarjeta el juego se ve diminuto. | P2 |
 
 VOLLEY-PONG está completo.
 
@@ -111,6 +113,7 @@ necesita un pie de foto corto en inglés y en español (escríbelos en `incoming
 | 4.1 | `foto.jpg` (opcional) | `incoming/foto/` | `public/assets/foto.webp` + `public/assets/foto.jpg` | WebP + JPG de respaldo | 480 × 480 (cuadrada) | < 80 KB cada una | **Ya hay foto en el sitio** (de `Foto_CV.png`, fondo crema). Solo si quieres la versión con fondo pizarra oscuro hecha con Higgsfield: cara y ropa intactas, rostro centrado con margen. |
 | 4.2 | `screen.png` | `incoming/software/proteo-web/` | `public/media/software/proteo-web/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Tablero del cliente con el estado del casillero (no la pantalla de login). |
 | 4.3 | `screen.png` | `incoming/software/voltio-residencial/` | `public/media/software/voltio-residencial/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Pantalla principal (reserva o reporte de consumo). |
+| 4.3b | `screen.png` | `incoming/software/face-anonymizer/` | `public/media/software/face-anonymizer/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Un cuadro antes y después del desenfoque, **solo con caras sintéticas o de alguien que lo autorice** (nada de los videos de la investigación). |
 | 4.4 | `screen.png` | `incoming/software/video-dj/` | `public/media/software/video-dj/screen.webp` | WebP | 1600 × 1000 | < 250 KB | La loop station con el seguimiento de manos visible. |
 | 4.5 | `screen.png` | `incoming/software/psicosentir/` | `public/media/software/psicosentir/screen.webp` | WebP | 1600 × 1000 | < 250 KB | Solo páginas públicas (proyecto de cliente). |
 
@@ -131,19 +134,20 @@ está marcado `⚠ PENDIENTE` o `⚠ VERIFICAR`.
 | 5.3 | **PROTEO:** materia, integrantes del equipo (el pitch muestra 3 personas) y tu rol. ¿El código de la Raspberry del prototipo final (solenoide, cámara) está en algún repo? | HW-01 | P0 |
 | 5.4 | **PCB a la medida:** número de capas, unidades fabricadas y fabricante; qué hace cada una de las otras placas | HW-02 | P0 |
 | 5.5 | **¿Diseñaste filtros IIR?** (hoy la hoja de datos dice «FIR / IIR design») | Skills | P0 |
-| 5.6 | **EEG/EMG:** ¿individual o en equipo? ¿De qué materia? Tu rol, y la ganancia y banda de paso de cada canal | HW-03 | P1 |
-| 5.7 | **LVDT:** integrantes del grupo (las placas dicen «Proyecto IELEC 2 · Grupo 4»), qué materia es «IELEC 2», tu rol, y la resolución y el rango medidos | HW-04 | P1 |
-| 5.8 | **PIC del LVDT:** ¿es el PIC18F46K42 (la placa base dice «46K42 V1»)? ¿La foto del 9 oct 2025 (placa antialiasing) es del LVDT? | HW-04 | P1 |
-| 5.9 | **Banda transportadora:** el video del 25 nov 2025 grafica RPM medidas contra una referencia: ¿esa versión es en lazo cerrado? ¿Con qué sensor mide las RPM? (hoy la ficha dice «PWM en lazo abierto») | HW-05 | P1 |
-| 5.10 | **VOLLEY-PONG:** nombre exacto de la materia («Sistemas Digitales»?). El equipo ya está confirmado. | HW-06 | P1 |
-| 5.11 | **CORRELACIUM:** nombre exacto de la materia («Procesamiento de Señales»?). | HW-07 | P1 |
+| 5.6 | **EEG/EMG:** ¿individual o en equipo? ¿De qué materia? Tu rol, y la ganancia y banda de paso de cada canal | HW-04 | P1 |
+| 5.7 | **LVDT:** integrantes del grupo (las placas dicen «Proyecto IELEC 2 · Grupo 4»), qué materia es «IELEC 2», tu rol, y la resolución y el rango medidos | HW-05 | P1 |
+| 5.8 | **PIC del LVDT:** ¿es el PIC18F46K42 (la placa base dice «46K42 V1»)? ¿La foto del 9 oct 2025 (placa antialiasing) es del LVDT? | HW-05 | P1 |
+| 5.9 | **Banda transportadora:** el video del 25 nov 2025 grafica RPM medidas contra una referencia: ¿esa versión es en lazo cerrado? ¿Con qué sensor mide las RPM? (hoy la ficha dice «PWM en lazo abierto») | HW-06 | P1 |
+| 5.10 | **VOLLEY-PONG:** nombre exacto de la materia («Sistemas Digitales»?). El equipo ya está confirmado. | HW-07 | P1 |
+| 5.11 | **CORRELACIUM:** nombre exacto de la materia («Procesamiento de Señales»?). | HW-08 | P1 |
 | 5.12 | **Soldadura:** ¿THT, SMD o ambas? | Skills | P1 |
 | 5.13 | **Materias relevantes** con su nombre exacto (EN y ES), 5–8 como máximo | Formación | P1 |
 | 5.14 | **Pies de foto del laboratorio** 01–09, en EN y ES | Laboratorio | P1 (con las fotos) |
 | 5.15 | **Serigrafía de la PCB de matrices LED:** ¿se deja visible la frase «Shit happens, but light up the world one bit at a time» en las fotos del sitio? | HW-02 | P2 |
 | 5.16 | **Estudiantes por monitoría** (Diseño de Sistemas Basados en Procesadores y Arduino 101), solo si es un número exacto | Experiencia | P2 |
 | 5.17 | **Correo del dominio** (ej. `hola@nicolasgomez.dev`), si lo vas a crear. Vercel no aloja correo: hace falta un proveedor (Google Workspace, Zoho, ImprovMX…) | `PROFILE.email` | P2 |
-| 5.18 | **Tesis (fachada LED interactiva IoT):** cuando quieras mostrarla, fotos, video y datos. Hoy es la tarjeta «Próximamente» del final, a propósito sin detalles. | HW-09 | P2 |
+| 5.18 | **Tesis (fachada LED interactiva IoT):** cuando quieras mostrarla completa, fotos del panel real, video y datos. Hoy es la tarjeta «Próximamente» del final con los dos renders del concepto y una línea. ¿Se puede mencionar que la propuesta quedó seleccionada en FING FUTURE 2026? | HW-10 | P2 |
+| 5.20 | **Control de carga EVSE:** ¿individual o en equipo? ¿La materia es «Hardware en IoT» (así se llama la carpeta del proyecto)? | HW-03 | P1 |
 | 5.19 | **Nivel de inglés:** ¿se queda «Upper-Intermediate · B2 (Berlitz 2026)» o se agrega el puntaje del EF SET? | Idiomas, CV | P2 |
 
 Resuelto desde la versión anterior de esta lista: las 4 hojas de vida, los medios de los 8 proyectos, el

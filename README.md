@@ -67,8 +67,8 @@ Constantes de `content.js`:
 | `UI` | Textos de interfaz, `en` y `es` (incluye el mensaje prellenado de WhatsApp) |
 | `ABOUT` | Perfil y áreas de enfoque |
 | `EXPERIENCE` | Experiencia; `kind: 'academic' \| 'professional'` la separa en dos bloques |
-| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo. `soon: true` = tarjeta «Próximamente» (hoy, la tesis) |
-| `SOFTWARE` | Bloque de software, «I love software too, and it often backs up my hardware» (`hardware` enlaza con su tarjeta de hardware) |
+| `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo. `soon: true` = tarjeta «Próximamente» (hoy, la tesis) · `wip: true` = etiqueta «En proceso» (hoy, el control de carga EVSE) |
+| `SOFTWARE` | Bloque de software, «Software, too» / «También software» (`name` es texto o { en, es }; `hardware` enlaza con su tarjeta de hardware) |
 | `LAB` | 9 fotos del laboratorio con su pie de foto |
 | `EDUCATION`, `LANGUAGES`, `SKILLS` | Lo que dice su nombre |
 
@@ -126,8 +126,10 @@ media: [
 - Un archivo que no existe se omite solo: el manifiesto de `vite.config.js` sabe qué hay en `public/`, así que no
   queda hueco ni sale un 404. En `npm run dev` se recarga solo al agregar o borrar archivos.
 - Un proyecto sin ningún medio puede mostrar su `chain` (cadena de señal dibujada con datos confirmados).
-- `soon: true` es la tarjeta «Próximamente» (la tesis, al final): una fachada de LEDs dibujada, el nombre y una
-  línea, sin medios, specs ni modal, y no cuenta en el número de proyectos del hero.
+- `soon: true` es la tarjeta «Próximamente» (la tesis, al final y a ancho completo): su carrusel (sin medios, una
+  fachada de LEDs dibujada), el nombre y una línea, sin specs ni modal, y no cuenta en el número de proyectos del hero.
+- `wip: true` pone la etiqueta «In progress» / «En proceso» en la tarjeta y en el modal (hoy, el control de carga
+  EVSE, que muestra cortes del esquemático mientras llegan las fotos de la PCB).
 
 **Cómo se comporta** (`src/components/ui/MediaCarousel.jsx` y `Lightbox.jsx`):
 
@@ -183,13 +185,15 @@ public/
     ├── projects/<id>/            ← medios del carrusel (HARDWARE[].media)
     │   ├── proteo/        locker (póster del pitch, que vive en YouTube)
     │   ├── custom-pcbs/   tetris.mp4 · board · render · schematic · bare · prototype
+    │   ├── evse/          measurement · top · power · mcu (cortes del esquemático de Altium)
     │   ├── eeg-emg/       emg.mp4 · eeg-scope.mp4 · test-bench.mp4 · board · scope-decode
     │   ├── lvdt/          system · jig · pcb · bench · cad
     │   ├── conveyor/      belt.mp4 · rpm-plot.mp4 · setup
     │   ├── volley-pong/   gameplay.mp4 · board · scope · rtl · schematic
     │   ├── correlacium/   cad.mp4 · print.mp4 · wand · electronics · sensor · plot
-    │   └── dreamsnake/    video (póster del video de YouTube) · prototype
-    ├── software/<id>/screen      ← captura opcional (proteo-web, voltio-residencial, video-dj, psicosentir)
+    │   ├── dreamsnake/    video (póster del video de YouTube) · prototype
+    │   └── thesis/        facade · modes (renders del concepto)
+    ├── software/<id>/screen      ← captura opcional (proteo-web, voltio-residencial, face-anonymizer, video-dj, psicosentir)
     └── lab/01 … 09               ← galería «On the bench»: aparece sola con 3 o más fotos
 ```
 

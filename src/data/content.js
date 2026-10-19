@@ -174,8 +174,8 @@ export const UI = {
     labPhoto: 'Lab photo',
 
     swKicker: 'Software',
-    swTitle: 'I love software too, and it often backs up my hardware',
-    swIntro: 'I build web apps that run in production with real users and clients. Some talk straight to my hardware, like the dashboard that commands the PROTEO locker, and others go further, with EV-charging metering and camera-based perception.',
+    swTitle: 'Software, too',
+    swIntro: 'Apps and tools with real users and clients. Some talk straight to the hardware, like the dashboard that commands the PROTEO locker, and others go further, with EV-charging metering and computer vision.',
     privateNote: 'Private code (client agreement)',
     wip: 'In progress',
 
@@ -303,10 +303,10 @@ export const UI = {
     labPhoto: 'Foto de laboratorio',
 
     swKicker: 'Software',
-    swTitle: 'También me encanta el software, y muchas veces respalda mi hardware',
-    swIntro: 'Construyo aplicaciones web que están en producción con usuarios y clientes reales. Algunas hablan directo con mi hardware, como el tablero que comanda el casillero PROTEO, y otras van más allá, con medición de carga de vehículos eléctricos y percepción por cámara.',
+    swTitle: 'También software',
+    swIntro: 'Aplicaciones y herramientas con usuarios y clientes reales. Algunas hablan directo con el hardware, como el tablero que comanda el casillero PROTEO, y otras van más allá, con medición de carga de vehículos eléctricos y visión por computador.',
     privateNote: 'Código privado (acuerdo con el cliente)',
-    wip: 'En construcción',
+    wip: 'En proceso',
 
     statsKicker: 'En vivo',
     statsTitle: 'Actividad en GitHub',
@@ -529,7 +529,8 @@ export const LANGUAGES = [
 /**
  * Proyectos de hardware y embebidos, en el orden en que se muestran (define los códigos HW-0X).
  * Orden (25 sep 2026): primero lo más fuerte para una práctica de hardware y con mejor material visual, y al
- * final la tarjeta «Próximamente» de la tesis (el FIR sobre un PIC se quitó el 26 sep 2026).
+ * final la tarjeta «Próximamente» de la tesis (el FIR sobre un PIC se quitó el 26 sep 2026). El control de carga
+ * EVSE entró tercero el 19 oct 2026, en proceso.
  *
  * `media` = carrusel de la tarjeta y bitácora del modal, en orden: videos primero, luego fotos de la más
  *   llamativa a la menos. Archivos en public/media/projects/<id>/ (ver README y scripts/media.py):
@@ -539,7 +540,9 @@ export const LANGUAGES = [
  *   `fit: 'contain'` = se ve completo sobre un fondo desenfocado (verticales, capturas); `bg: 'light'` =
  *   fondo blanco (diagramas). `caption` = pie de foto { en, es }. Un archivo que no existe se omite solo.
  * `chain` = cadena de señal dibujada en lugar de medios, para proyectos sin fotos ni video.
- * `soon: true` = tarjeta «Próximamente»: solo `name` y `tagline`, sin medios, specs ni modal.
+ * `soon: true` = tarjeta «Próximamente»: `name`, `tagline` y, si tiene `media`, su carrusel (sin medios, la
+ *   fachada dibujada). Sin specs ni modal, y no cuenta en HARDWARE_COUNT.
+ * `wip: true` = proyecto en proceso: la tarjeta y el modal llevan la etiqueta «En proceso».
  * `specs[].v` en null = pendiente (se ve como hueco). `v` puede ser texto o { en, es }.
  * `software` = id del proyecto de SOFTWARE enlazado.
  */
@@ -640,6 +643,86 @@ export const HARDWARE = [
         'Diseñé y desarrollé PCB a la medida en Altium Designer para el curso.',
         'Una de ellas es la placa de juego de las fotos y el video. Cuatro registros de desplazamiento 74HC595 manejan sus dos matrices LED de 8×8 desde un Arduino Uno, tiene botones ROTATE, LEFT, RIGHT y DOWN, y corre Tetris.',
         'Acompañé a los estudiantes en C embebido, máquinas de estados, interrupciones y análisis de temporización durante las horas de consulta.',
+      ],
+    },
+  },
+  // En proceso (19 oct 2026, pedido de Nicolás). El esquemático de las 6 hojas está cerrado (fase 6 de 8); faltan la
+  // BOM, el ruteo y la fabricación en PCBWay. Mientras llegan las fotos de la placa, el carrusel muestra cortes del
+  // esquemático (PROYECTO_F6.pdf y 03_MEDICION_despues_scripts_F4.png del repo).
+  // ⚠ VERIFICAR — si es individual y la materia (la ruta del proyecto dice «Hardware en IoT»).
+  {
+    id: 'evse',
+    wip: true,
+    name: { en: 'IoT charge controller for an electric car', es: 'Control de carga IoT para carro eléctrico' },
+    year: '2026',
+    repo: 'https://github.com/NicoGomez4262/control-carga-evse',
+    demo: null,
+    team: null, // ⚠ PENDIENTE — ¿individual o en equipo?
+    media: [
+      {
+        type: 'image',
+        src: 'measurement',
+        fit: 'contain',
+        bg: 'light',
+        caption: {
+          en: 'Measurement sheet. The red zone is wired to the mains (HV_AC class) and the green ones carry the analog signals',
+          es: 'Hoja de medición. La zona roja va conectada a la red (clase HV_AC) y las verdes llevan las señales analógicas',
+        },
+      },
+      {
+        type: 'image',
+        src: 'top',
+        fit: 'contain',
+        bg: 'light',
+        caption: { en: 'Top sheet of the hierarchical schematic, with the power, measurement, MCU, sensor and actuation blocks', es: 'Hoja superior del esquemático jerárquico, con los bloques de alimentación, medición, MCU, sensores y actuación' },
+      },
+      {
+        type: 'image',
+        src: 'power',
+        fit: 'contain',
+        bg: 'light',
+        caption: { en: 'Mains input with fuses, a varistor and the isolated Mean Well IRM-20-12, plus a 12 V bench input', es: 'Entrada de red con fusibles, varistor y la fuente aislada Mean Well IRM-20-12, más una entrada de banco de 12 V' },
+      },
+      {
+        type: 'image',
+        src: 'mcu',
+        fit: 'contain',
+        bg: 'light',
+        caption: { en: 'ESP32-S3 with a CH340C USB-UART bridge, two-transistor auto-reset and USB-C with ESD protection', es: 'ESP32-S3 con puente USB-UART CH340C, auto-reset de dos transistores y USB-C con protección ESD' },
+      },
+    ],
+    specs: [
+      { k: 'MCU', v: 'ESP32-S3-WROOM-1 · WiFi' },
+      { k: { en: 'Metering', es: 'Medición' }, v: { en: 'ATM90E26 · V, I, P and energy over SPI', es: 'ATM90E26 · V, I, P y energía por SPI' } },
+      { k: { en: 'Voltage', es: 'Tensión' }, v: { en: 'Divider + AMC3330 isolated amplifier', es: 'Divisor + amplificador aislado AMC3330' } },
+      { k: { en: 'Current', es: 'Corriente' }, v: { en: 'Split-core CT · SCT-013', es: 'CT de núcleo partido · SCT-013' } },
+      { k: { en: 'Mains', es: 'Red' }, v: { en: '120 V L–N or 240 V L1–L2', es: '120 V L–N o 240 V L1–L2' } },
+      { k: { en: 'Isolation', es: 'Aislamiento' }, v: { en: 'Reinforced · creepage ≥ 6.4 mm', es: 'Reforzado · creepage ≥ 6,4 mm' } },
+      { k: { en: 'Actuation', es: 'Actuación' }, v: 'PhotoMOS AQY414EHAX · NC · 5000 Vrms' },
+      { k: { en: 'Sensors', es: 'Sensores' }, v: 'DS18B20 · AHT20 · DS3231' },
+      { k: 'EDA', v: { en: 'Altium Designer · 6 hierarchical sheets', es: 'Altium Designer · 6 hojas jerárquicas' } },
+      { k: { en: 'Status', es: 'Estado' }, v: { en: 'Schematic done · BOM and layout next', es: 'Esquemático listo · siguen la BOM y el ruteo' } },
+    ],
+    en: {
+      tagline: 'A board that lives next to an electric car’s charger. It meters every charge, can stop it from an app and keeps the 120–240 V mains and the 3.3 V electronics apart with reinforced isolation. The schematic is done and the PCB is on its way.',
+      problem: 'Charging an electric car at home or in a shared garage leaves open questions, like how much energy went in, what it cost and whether it can be stopped remotely. Answering them means measuring right on the mains, at 120 or 240 V, without any of it reaching the USB port, the sensors or the person who plugs in the car.',
+      did: [
+        'Drew the hierarchical schematic in Altium across six sheets (power, measurement, microcontroller, sensors, actuation and the top sheet that ties them together), choosing every part by comparing two or three options against its datasheet and the real stock at Sigma Electrónica and PCBWay.',
+        'Designed voltage sensing with a resistive divider and a TI AMC3330 isolated amplifier, and current sensing with a split-core CT on L1. Both feed an ATM90E26 energy-metering IC that reports to the ESP32-S3 over SPI.',
+        'Left the contactor out. A PhotoMOS (AQY414EHAX, normally closed, 5000 Vrms) opens the charger’s enable terminals, so the board never switches the charging current itself.',
+        'Set the isolation rules at creepage ≥ 6.4 mm and clearance ≥ 5.5 mm. Only three parts cross the barrier, the isolated AC-DC module, the AMC3330 and the PhotoMOS.',
+        'Kept the protections on the board. The ESP32-S3 decides the over-temperature and fault cut-offs without internet, buffers readings in flash when WiFi drops and talks to the app over an outbound TLS connection.',
+      ],
+    },
+    es: {
+      tagline: 'Una placa que vive junto al cargador de un carro eléctrico. Mide cada carga, puede detenerla desde una app y separa la red de 120–240 V de la electrónica de 3,3 V con aislamiento reforzado. El esquemático está listo y la PCB viene en camino.',
+      problem: 'Cargar un carro eléctrico en casa o en un parqueadero compartido deja preguntas abiertas, como cuánta energía entró, cuánto costó y si se puede detener a distancia. Responderlas exige medir directo sobre la red, a 120 o 240 V, sin que nada de eso llegue al puerto USB, a los sensores ni a quien conecta el carro.',
+      did: [
+        'Dibujé el esquemático jerárquico en Altium, en seis hojas (alimentación, medición, microcontrolador, sensores, actuación y la superior que las une), y elegí cada pieza comparando dos o tres opciones contra su datasheet y el stock real en Sigma Electrónica y PCBWay.',
+        'Diseñé la medición de tensión con un divisor resistivo y un amplificador aislado TI AMC3330, y la de corriente con un CT de núcleo partido en L1. Las dos llegan a un ATM90E26, un integrado de medición de energía que le reporta a la ESP32-S3 por SPI.',
+        'Dejé por fuera el contactor. Un PhotoMOS (AQY414EHAX, normalmente cerrado, 5000 Vrms) abre los bornes de habilitación del cargador, así que la placa nunca conmuta la corriente de carga.',
+        'Fijé las reglas de aislamiento en creepage ≥ 6,4 mm y clearance ≥ 5,5 mm. Solo tres piezas cruzan la barrera, el módulo AC-DC aislado, el AMC3330 y el PhotoMOS.',
+        'Dejé las protecciones en la placa. La ESP32-S3 decide los cortes por temperatura y por falla sin internet, guarda las lecturas en su flash si se cae el WiFi y habla con la app por una conexión TLS saliente.',
       ],
     },
   },
@@ -952,20 +1035,25 @@ export const HARDWARE = [
       ],
     },
   },
-  // Próximamente (26 sep 2026, pedido de Nicolás): la tesis de grado, a propósito solo con el nombre, para que
-  // quede a la intriga. `soon: true` = tarjeta «Próximamente» sin medios, specs ni modal; no cuenta en HARDWARE_COUNT.
+  // Próximamente (26 sep 2026, pedido de Nicolás): la tesis de grado, a propósito con poco detalle para que quede a
+  // la intriga. Desde el 19 oct 2026 lleva un carrusel con los dos renders del concepto que mandó Nicolás y una
+  // línea corta. Sigue sin specs ni modal y no cuenta en HARDWARE_COUNT.
   {
     id: 'thesis',
     soon: true,
     name: { en: 'Graduation thesis', es: 'Tesis de grado' },
-    en: { tagline: 'Interactive IoT LED façade.' },
-    es: { tagline: 'Fachada LED interactiva IoT.' },
+    media: [
+      { type: 'image', src: 'facade', fit: 'contain', caption: { en: 'Concept render · Tetris on the façade', es: 'Render del concepto · Tetris en la fachada' } },
+      { type: 'image', src: 'modes', fit: 'contain', bg: 'light', caption: { en: 'Three modes · Tetris, Píxel Javeriano and Jave Momento', es: 'Tres modos · Tetris, Píxel Javeriano y Jave Momento' } },
+    ],
+    en: { tagline: 'Tetris at building scale. An LED façade that anyone can control from their phone, in real time.' },
+    es: { tagline: 'Tetris a escala de edificio. Una fachada LED que cualquiera puede controlar desde su celular, en tiempo real.' },
   },
 ]
 
 /**
  * Software secundario: compacto, enmarcado desde su relación con el hardware.
- * `hardware` = id del proyecto de HARDWARE enlazado.
+ * `name` es texto o { en, es }. `hardware` = id del proyecto de HARDWARE enlazado.
  */
 export const SOFTWARE = [
   {
@@ -999,6 +1087,23 @@ export const SOFTWARE = [
     es: {
       tagline: 'Infraestructura de carga compartida para vehículos eléctricos en un conjunto residencial, con medición de kWh a partir de una foto del contador, reservas confirmadas por el anfitrión y reportes mensuales de consumo por torre.',
       facts: 'Piloto · 3 torres · 96 apartamentos',
+    },
+  },
+  // Repo nuevo del 19 oct 2026. Todo sale de su README.
+  {
+    id: 'face-anonymizer',
+    name: { en: 'Video face anonymizer', es: 'Anonimizador de caras en video' },
+    year: '2026',
+    repo: 'https://github.com/NicoGomez4262/face-anonymizer-video',
+    demo: null,
+    stack: ['Python', 'ONNX Runtime', 'OpenVINO', 'FFmpeg'],
+    en: {
+      tagline: 'Finds the faces and heads in a video and blurs them beyond recovery, on the local machine and with no cloud. Three detectors check each other so fisheye, overhead and low-light cameras are covered too, and every output is verified against the original before it is saved.',
+      facts: '3 detectors · PSNR ≥ 30 dB outside the blur · SHA-256 log per video',
+    },
+    es: {
+      tagline: 'Encuentra las caras y cabezas de un video y las desenfoca sin vuelta atrás, en el propio equipo y sin nube. Tres detectores se revisan entre sí para cubrir también cámaras ojo de pez, cenitales y con poca luz, y cada salida se verifica contra el original antes de guardarse.',
+      facts: '3 detectores · PSNR ≥ 30 dB fuera del desenfoque · registro SHA-256 por video',
     },
   },
   {

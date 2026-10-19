@@ -5,10 +5,9 @@ portafolio. Al terminar su trabajo, cada sesión debe **reescribir este archivo*
 sesión que sigue (mismo formato), hasta que el portafolio se considere completo — en ese punto, la sesión
 lo dice explícitamente en vez de generar un prompt nuevo.
 
-**Última actualización:** 26 sep 2026, en el commit que pone el Perfil primero, quita «intern» de la vista previa
-al compartir, cambia el título de Software, pasa los textos a una redacción más natural y reemplaza el FIR por la
-tarjeta «Próximamente» de la tesis (ver `git log`). El commit anterior (`a14e58b`) juntó el carrusel, la
-auditoría de diseño y los 4 CV.
+**Última actualización:** 19 oct 2026, en el commit que agrega el control de carga EVSE (en proceso, con su repo
+nuevo `control-carga-evse`), el anonimizador de caras en Software, el carrusel y la línea corta de la tesis, y el
+título nuevo de Software («Software, too» / «También software»). Ver `git log`.
 
 ---
 
@@ -32,7 +31,12 @@ Hardware → Skills → [Lab] → Software → GitHub → Formación → Contact
 src/components/ui/sections.js (de ahí salen la página, la nav y el menú móvil). La última tarjeta de hardware
 es mi tesis (fachada LED interactiva IoT) como «Próximamente», a propósito sin detalles; el FIR se quitó.
 La vista previa al compartir el enlace no dice «intern» (TITLE y DESCRIPTION en vite.config.js, SHARE en
-content.js y public/og.png). Los textos se escriben como los escribiría una persona: casi sin «:» ni «;», sin
+content.js y public/og.png). Desde el 19 oct 2026 hay un proyecto en proceso, el control de carga EVSE (HW-03,
+`wip: true`, repo NicoGomez4262/control-carga-evse), que muestra cortes del esquemático de Altium hasta que exista
+la PCB. La tesis (HW-10, `soon: true`) va a ancho completo con dos renders del concepto y una línea corta, sin
+modal. Software tiene el anonimizador de caras (repo face-anonymizer-video) y se titula «Software, too» /
+«También software». Los textos que no son de un proyecto ni de presentación van en tono impersonal («hablan
+directo con el hardware», no «con mi hardware»). Los textos se escriben como los escribiría una persona: casi sin «:» ni «;», sin
 rayas largas en la prosa y sin relleno (ver «Cómo se escribe» en el README).
 
 Tu trabajo, en este orden:
@@ -72,8 +76,13 @@ d. **Redirección www → dominio raíz:** resuelta desde el 24 sep (200 en el a
 e. **Decisiones pendientes de la auditoría de diseño** (bloque «Estado» de docs/design-audit-2026-09-25.md:
    O-1, O-4, O-6, O-8, E-3, E-6, E-7, U-4, D-4, D-5, T-2, T-3, T-4 y T-5). Pregúntame cuáles aplicar antes de
    tocarlas. O-1 (diagrama de la insignia) quizá ya no haga falta: PROTEO muestra el pitch de YouTube.
+f. **Control de carga EVSE:** revisa en «Control de carga - Carro» (repo control-carga-evse) si la PCB ya
+   existe (NEXT_SESSION.md y docs/PLAN_FASES.md de ese repo dicen la fase). Si avanzó, actualiza la fila
+   «Estado» de sus specs y la línea del tagline, y si llegaron fotos o un render 3D, cámbialos por los cortes del
+   esquemático (las fotos primero). Si el repo tiene cambios sin subir, pregúntame antes de hacer commit allá.
+   Los fuentes de Altium viven fuera del repo (C:/Nicolas/UNIVERSIDAD - 2026/...); pregúntame si los quiero subir.
 
-Para cada uno (a–e), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
+Para cada uno (a–f), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
 pasos), o **no pude verificarlo** (y por qué).
 
 ## 3) Deja todo funcionando
@@ -142,3 +151,9 @@ y deja de regenerar este archivo.
   it often backs up my hardware» / «También me encanta el software, y muchas veces respalda mi hardware»; todos
   los textos quedaron sin «:» ni «;» y con una redacción más natural; el FIR sobre un PIC se quitó y al final
   quedó la tarjeta «Próximamente» de la tesis (Fachada LED interactiva IoT).
+- **19 oct 2026** (pedidos de Nicolás): repo nuevo y público `NicoGomez4262/control-carga-evse` con la
+  documentación del medidor IoT para el cargador del carro (esquemático de 6 hojas cerrado, sin datasheets de
+  terceros ni respaldos); tarjeta HW-03 «En proceso» con cuatro cortes del esquemático; el anonimizador de caras
+  (`face-anonymizer-video`) en Software; la tesis con carrusel de dos renders, una línea intrigante y ancho
+  completo; Software pasa a «Software, too» / «También software» con una intro impersonal.
+  Pendiente: fotos de la PCB del EVSE cuando exista, equipo y materia del EVSE, y lo de la lista anterior.
