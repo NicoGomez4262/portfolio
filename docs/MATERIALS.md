@@ -22,6 +22,8 @@ incoming/
 > `public/`. Se descartaron 4 archivos: el video `VID-20241121-WA0055` de CORRELACIUM (salen caras y tiene ~2 s
 > útiles), `My movie 2.mp4` de EEG/EMG (repite otro video), dos fotos repetidas de la varita y una foto de
 > VOLLEY-PONG con personas al fondo. Al video del osciloscopio del EEG se le quitó el último segundo (sale una cara).
+> El 23 oct 2026 el video de DreamSnake se rehízo desde YouTube (hUZ8Faycb1c) como MP4 horizontal con audio
+> (`dreamsnake/video.mp4`), así que ya no hace falta el original.
 
 **Reglas de entrega**
 
@@ -81,7 +83,6 @@ Hoy la tarjeta solo tiene el video pitch de YouTube. Falta ver el hardware de ce
 | 2.2.4 | LVDT (HW-05) | `demo.mp4` | `incoming/projects/lvdt/` | `public/media/projects/lvdt/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | Girar el tornillo micrométrico y ver cómo cambia la lectura del PIC junto al comparador. | P1 |
 | 2.2.5 | EEG/EMG (HW-04) | `schematic.png` | `incoming/projects/eeg-emg/` | `public/media/projects/eeg-emg/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Esquemático del front-end: amplificador de instrumentación y etapa de filtros. | P2 |
 | 2.2.6 | Banda transportadora (HW-06) | `schematic.png` | `incoming/projects/conveyor/` | `public/media/projects/conveyor/schematic.webp` | WebP, fondo claro | lado largo 1600 px | < 300 KB | Arduino + L298N + motor + potenciómetro (y el sensor de RPM, si lo hay). | P2 |
-| 2.2.7 | DreamSnake (HW-09) | el video original | `incoming/projects/dreamsnake/` | `public/media/projects/dreamsnake/demo.mp4` + `demo.webp` | MP4, sin audio | 1280 px de ancho, 10–20 s | < 2,5 MB | El mismo video de YouTube pero horizontal. El de YouTube se subió vertical con el clip horizontal adentro, así que en la tarjeta el juego se ve diminuto. | P2 |
 
 VOLLEY-PONG está completo.
 

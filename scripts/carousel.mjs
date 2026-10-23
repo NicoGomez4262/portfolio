@@ -254,7 +254,8 @@ try {
   await sleep(600)
   const t0 = await m.eval(STATE(I))
   await tap(m, mid(t0.rect))
-  await sleep(250)
+  // El fundido de la capa de controles dura 0,35 s (.media-layer en index.css).
+  await sleep(450)
   const t1 = await m.eval(STATE(I))
   check('mob · a tap shows the controls and does not open the viewer', t1.controls === 'on' && t1.overlayOpacity === '1.00' && !t1.viewer, { controls: t1.controls, viewer: t1.viewer })
   await sleep(3600)

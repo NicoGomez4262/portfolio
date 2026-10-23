@@ -4,6 +4,10 @@ import { useGitHub } from '../hooks/useGitHub.js'
 import Reveal from './ui/Reveal.jsx'
 import Counter from './ui/Counter.jsx'
 import Icon from './ui/Icon.jsx'
+import { LANGS, inkOn } from './ui/langs.js'
+
+/** Color de un lenguaje que no está en LANGS (el cian del sitio). */
+const FALLBACK = '#22d3ee'
 
 export default function GitHubStats() {
   const { lang, t } = useApp()
@@ -74,13 +78,41 @@ export default function GitHubStats() {
                   {data.languages.length > 0 && (
                     <div className="mt-9">
                       <p className="mb-3 font-mono text-[11px] tracking-[0.16em] text-ink-faint uppercase">{t.statsStack}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {data.languages.map((l) => (
-                          <span key={l.name} className="inline-flex items-center gap-2 rounded-full border border-line bg-bg px-3.5 py-1.5 text-sm text-ink-dim">
-                            {l.name}
-                            <span className="font-mono text-[11px] text-accent">×{l.count}</span>
-                          </span>
-                        ))}
+                      <div className="flex flex-wrap gap-x-2.5">
+                        {data.languages.map((l) => {
+                          const { color = FALLBACK, logo } = LANGS[l.name] ?? {}
+                          const repos = `${l.count} repo${l.count === 1 ? '' : 's'}`
+                          return (
+                            <a
+                              key={l.name}
+                              href={`${PROFILE.github}?tab=repositories&language=${encodeURIComponent(l.name.toLowerCase())}`}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              aria-label={`${l.name} · ${repos}`}
+                              className="group/badge inline-flex h-11 items-center"
+                            >
+                              {/* Badge al estilo de shields.io: etiqueta gris con el logo y valor con el color del lenguaje. */}
+                              <span
+                                aria-hidden
+                                className="relative inline-flex h-6 overflow-hidden rounded-[4px] text-[12px] leading-none shadow-[0_1px_2px_rgba(0,0,0,0.25)] transition duration-200 group-hover/badge:-translate-y-0.5 group-hover/badge:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.45)]"
+                                style={{ fontFamily: 'Verdana, "DejaVu Sans", Geneva, sans-serif' }}
+                              >
+                                <span className="inline-flex items-center gap-1.5 bg-[#555] px-2 text-white [text-shadow:0_1px_0_rgba(1,1,1,0.3)]">
+                                  {logo && (
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" focusable="false">
+                                      <path d={logo} />
+                                    </svg>
+                                  )}
+                                  {l.name}
+                                </span>
+                                <span className="inline-flex items-center px-2 tabular" style={{ background: color, color: inkOn(color) }}>
+                                  {repos}
+                                </span>
+                                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 to-black/10" />
+                              </span>
+                            </a>
+                          )
+                        })}
                       </div>
                     </div>
                   )}

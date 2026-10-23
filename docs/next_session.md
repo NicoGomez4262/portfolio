@@ -5,7 +5,13 @@ portafolio. Al terminar su trabajo, cada sesión debe **reescribir este archivo*
 sesión que sigue (mismo formato), hasta que el portafolio se considere completo — en ese punto, la sesión
 lo dice explícitamente en vez de generar un prompt nuevo.
 
-**Última actualización:** 23 oct 2026. El carrusel del EVSE ahora abre con un video de las 6 hojas del esquemático
+**Última actualización:** 23 oct 2026 (tarde). La hoja de datos técnica ahora tiene pestañas por área con su
+cantidad, una vista general con lo esencial de cada área y el detalle en chips (src/components/Skills.jsx). Los
+lenguajes de «Actividad en GitHub» son badges al estilo de shields.io (ui/langs.js). Los controles del carrusel entran
+con un fundido y se deslizan desde su borde. El video de DreamSnake se rehízo desde YouTube como MP4 horizontal con
+audio. El repo control-carga-evse tiene README nuevo, y los dos repos tienen el sitio como página. Falta el sitio en el
+perfil de GitHub (necesita el permiso `user` de gh) y el video de fondo con circuitos, que Nicolás está generando.
+Antes, también el 23 oct, el carrusel del EVSE ahora abre con un video de las 6 hojas del esquemático
 (`media.py slides` sobre `PROYECTO_F7.pdf`), el render 3D y el layout 2D (QR desenfocado; la cara de abajo nunca se
 muestra), y el contador del hero dice 5+ PCB. Siguen pendientes los videos y fotos de la placa midiendo en campo, que
 irán de primeros en ese carrusel. Antes de eso, 19 oct 2026, en el commit que agrega el control de carga EVSE (en proceso, con su repo
@@ -86,8 +92,13 @@ f. **Control de carga EVSE:** revisa en «Control de carga - Carro» (repo contr
    Desde el 19 oct 2026 el repo tiene el proyecto de Altium en altium/, como espejo del original
    (C:/Nicolas/UNIVERSIDAD - 2026/...). Compara con `python docs/tools/sincronizar_altium.py` (sin --commit solo
    copia y dice qué cambió); si hay cambios sin subir, avísame antes de correrlo con --commit.
+g. **Sitio en el perfil de GitHub:** `gh api user --jq .blog` debe decir https://nicolasgomez.dev. El 23 oct 2026
+   quedó vacío porque el token de gh no tiene el permiso `user`. Si sigue vacío, recuérdame correr
+   `gh auth refresh -h github.com -s user` (o ponerlo a mano en github.com/settings/profile) y luego lo pones tú.
+h. **Video de fondo con circuitos:** si llegó en incoming/fondo/, conviértelo (WebM VP9 + MP4 H.264, sin audio,
+   uno claro y uno oscuro, y una versión liviana para celular) y ponlo detrás de las secciones acordadas.
 
-Para cada uno (a–f), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
+Para cada uno (a–h), di explícitamente en tu respuesta final: **resuelto**, **sigue pendiente** (con los
 pasos), o **no pude verificarlo** (y por qué).
 
 ## 3) Deja todo funcionando
@@ -112,8 +123,7 @@ pasos), o **no pude verificarlo** (y por qué).
 
 Al final, dame una lista actualizada — en tablas, con las mismas columnas que docs/MATERIALS.md — de las fotos,
 videos y datos que TODAVÍA no entregué después de este bloque: lo que subí y no encajó en ningún slot, los
-proyectos que siguen sin video o sin foto (hoy PROTEO solo tiene el pitch, y el video de DreamSnake en YouTube
-se ve diminuto porque se subió vertical), las diferencias anotadas de las hojas de vida «Moderno» (Nicolás
+proyectos que siguen sin video o sin foto (hoy PROTEO solo tiene el pitch), las diferencias anotadas de las hojas de vida «Moderno» (Nicolás
 las dio por finales; es opcional) y cualquier ⚠ que quede
 en content.js. Prioriza igual que
 MATERIALS.md (P0/P1/P2). Actualiza docs/MATERIALS.md para que refleje solo lo que sigue pendiente (quita lo
@@ -162,3 +172,7 @@ y deja de regenerar este archivo.
   (`face-anonymizer-video`) en Software; la tesis con carrusel de dos renders, una línea intrigante y ancho
   completo; Software pasa a «Software, too» / «También software» con una intro impersonal.
   Pendiente: fotos de la PCB del EVSE cuando exista, equipo y materia del EVSE, y lo de la lista anterior.
+- **23 oct 2026, tarde** (pedidos de Nicolás): hoja de datos con pestañas y chips, badges de lenguajes estilo
+  shields.io, controles del carrusel que entran suaves, DreamSnake como MP4 horizontal con audio, README nuevo en
+  control-carga-evse y el sitio como página de los repos portfolio y control-carga-evse. Pendiente: el sitio en el
+  perfil de GitHub y el video de fondo.

@@ -497,7 +497,7 @@ export default function MediaCarousel({ items, label, lang, t, onExpand, eager =
   const caption = (it) => tx(it.caption, lang) ?? label
   const youtube = item.type === 'youtube'
   const ctl =
-    'pointer-events-none grid size-11 place-items-center rounded-full bg-black/55 text-white backdrop-blur-sm transition-colors hover:bg-black/80 group-hover/media:pointer-events-auto group-data-[controls=on]/media:pointer-events-auto'
+    'media-ctl pointer-events-none grid size-11 place-items-center rounded-full bg-black/55 text-white backdrop-blur-sm hover:bg-black/80 group-hover/media:pointer-events-auto group-data-[controls=on]/media:pointer-events-auto'
   const play = {
     playing: { icon: 'pause', label: t.mediaPause },
     ended: { icon: 'replay', label: t.mediaReplay },
@@ -517,7 +517,7 @@ export default function MediaCarousel({ items, label, lang, t, onExpand, eager =
       <div
         ref={frameRef}
         data-controls={controls ? 'on' : 'off'}
-        className={`group/media relative aspect-[16/10] w-full touch-pan-y overflow-hidden bg-surface-2 select-none ${youtube ? '' : 'cursor-zoom-in'}`}
+        className={`media-frame group/media relative aspect-[16/10] w-full touch-pan-y overflow-hidden bg-surface-2 select-none ${youtube ? '' : 'cursor-zoom-in'}`}
         // Solo el mouse cuenta como hover: tras un toque, el navegador emite un mouseenter de compatibilidad
         // que dejaría el carrusel en pausa hasta tocar en otra parte.
         onPointerEnter={(e) => e.pointerType === 'mouse' && (hoverRef.current = true)}
@@ -553,34 +553,35 @@ export default function MediaCarousel({ items, label, lang, t, onExpand, eager =
           </motion.div>
         </AnimatePresence>
 
-        {/* Controles: con el mouse encima, con el foco de teclado dentro o tras un toque. Nunca tapan el medio en reposo. */}
-        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover/media:opacity-100 group-has-[:focus-visible]/media:opacity-100 group-data-[controls=on]/media:opacity-100">
+        {/* Controles: con el mouse encima, con el foco de teclado dentro o tras un toque. Nunca tapan el medio en reposo.
+            La capa hace el fundido y cada control entra deslizándose desde su borde (.media-ctl en index.css). */}
+        <div className="media-layer pointer-events-none absolute inset-0 opacity-0 group-hover/media:opacity-100 group-has-[:focus-visible]/media:opacity-100 group-data-[controls=on]/media:opacity-100">
           {!youtube && (
             <>
               <div aria-hidden className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/45 to-transparent" />
               <div aria-hidden className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
-              <span aria-hidden className="absolute top-3 left-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] tracking-[0.14em] text-white tabular">
+              <span aria-hidden className="media-ctl absolute top-3 left-3 rounded-full [--ctl-x:-6px] [--ctl-y:-6px] bg-black/55 px-2.5 py-1 font-mono text-[11px] tracking-[0.14em] text-white tabular">
                 {pad2(index + 1)} / {pad2(n)}
               </span>
               {onExpand && (
-                <button ref={expandRef} type="button" onClick={(e) => expand(e.currentTarget)} aria-label={t.mediaEnlarge} aria-haspopup="dialog" className={`${ctl} absolute top-1.5 right-1.5`}>
+                <button ref={expandRef} type="button" onClick={(e) => expand(e.currentTarget)} aria-label={t.mediaEnlarge} aria-haspopup="dialog" className={`${ctl} absolute top-1.5 right-1.5 [--ctl-x:6px] [--ctl-y:-6px]`}>
                   <Icon name="expand" size={17} />
                 </button>
               )}
-              <button type="button" onClick={toggle} aria-label={play.label} className={`${ctl} absolute bottom-1.5 left-1.5`}>
+              <button type="button" onClick={toggle} aria-label={play.label} className={`${ctl} absolute bottom-1.5 left-1.5 [--ctl-x:-6px] [--ctl-y:6px]`}>
                 <Icon name={play.icon} size={16} />
               </button>
-              <p aria-hidden className="absolute right-4 bottom-4 left-16 truncate text-right font-mono text-[11px] tracking-wide text-white/90">
+              <p aria-hidden className="media-ctl absolute right-4 bottom-4 left-16 truncate [--ctl-y:6px] text-right font-mono text-[11px] tracking-wide text-white/90">
                 {caption(item)}
               </p>
             </>
           )}
           {n > 1 && (
             <>
-              <button type="button" onClick={() => goTo(index - 1)} aria-label={t.mediaPrev} className={`${ctl} absolute top-1/2 left-1.5 -translate-y-1/2`}>
+              <button type="button" onClick={() => goTo(index - 1)} aria-label={t.mediaPrev} className={`${ctl} absolute top-1/2 left-1.5 -translate-y-1/2 [--ctl-x:-12px]`}>
                 <Icon name="chevronLeft" size={20} />
               </button>
-              <button type="button" onClick={() => goTo(index + 1)} aria-label={t.mediaNext} className={`${ctl} absolute top-1/2 right-1.5 -translate-y-1/2`}>
+              <button type="button" onClick={() => goTo(index + 1)} aria-label={t.mediaNext} className={`${ctl} absolute top-1/2 right-1.5 -translate-y-1/2 [--ctl-x:12px]`}>
                 <Icon name="chevronRight" size={20} />
               </button>
             </>

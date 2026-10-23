@@ -164,7 +164,11 @@ export const UI = {
 
     skillsKicker: 'Skills',
     skillsTitle: 'Technical datasheet',
-    skillsIntro: 'Grouped the way a datasheet groups features, with the hardware first and the tools around it after.',
+    skillsIntro: 'Hardware first, then the tools around it. Pick an area to see the detail.',
+    skillsAll: 'All',
+    skillsAreas: 'Areas',
+    skillsSee: 'See all',
+    skillsBack: 'All areas',
     paramLabel: 'Parameter',
     valueLabel: 'Value',
 
@@ -293,7 +297,11 @@ export const UI = {
 
     skillsKicker: 'Habilidades',
     skillsTitle: 'Hoja de datos técnica',
-    skillsIntro: 'Agrupadas como agrupa una hoja de datos, con el hardware primero y después las herramientas que lo rodean.',
+    skillsIntro: 'Primero el hardware y después las herramientas que lo rodean. Elige un área para ver el detalle.',
+    skillsAll: 'Todo',
+    skillsAreas: 'Áreas',
+    skillsSee: 'Ver todo',
+    skillsBack: 'Todas las áreas',
     paramLabel: 'Parámetro',
     valueLabel: 'Valor',
 
@@ -1026,8 +1034,10 @@ export const HARDWARE = [
     demo: null,
     team: { en: 'With Juan Conrado and Felipe Useche', es: 'Con Juan Conrado y Felipe Useche' },
     media: [
-      // Video vertical en YouTube; el póster es un fotograma de ese video con la matriz encendida.
-      { type: 'youtube', id: 'hUZ8Faycb1c', poster: 'video', fit: 'contain', caption: { en: 'Final-build test run (YouTube)', es: 'Prueba de funcionamiento del proyecto final (YouTube)' } },
+      // Sale del video de YouTube hUZ8Faycb1c (23 oct 2026). Allá se subió vertical con un clip horizontal adentro:
+      // los primeros 85 s se recortaron al clip y el tramo vertical del final va sobre su propio fondo desenfocado.
+      // Conserva el audio (la melodía), que se oye en el visor ampliado.
+      { type: 'video', src: 'video', caption: { en: 'Final-build test run', es: 'Prueba de funcionamiento del proyecto final' } },
       {
         type: 'image',
         src: 'prototype',
@@ -1183,20 +1193,31 @@ export const LAB = [
  * Habilidades como hoja de datos: grupo → filas parámetro / valor.
  * `pending: true` = grupo sin confirmar; se ve como hueco, sin listar nada como hecho.
  */
+/**
+ * Hoja de datos de habilidades. Cada valor se parte en chips por « · » (EN y ES en el mismo orden).
+ * `short` es el nombre de la pestaña, `icon` sale de Icon.jsx y `top` lista, por su texto en inglés,
+ * los chips que se ven en la vista general y que van resaltados en el detalle.
+ */
 export const SKILLS = [
   {
     id: 'pcb',
+    icon: 'pcb',
+    short: { en: 'PCB', es: 'PCB' },
+    top: ['Altium Designer', 'LTspice', '5+ custom PCBs', '3D design & printing'],
     en: 'PCB & Hardware Design',
     es: 'Diseño de PCB y hardware',
     rows: [
       { k: 'EDA', v: 'Altium Designer' },
       { k: { en: 'Simulation', es: 'Simulación' }, v: 'LTspice' },
-      { k: { en: 'Boards designed', es: 'Placas diseñadas' }, v: { en: '5+ custom PCBs to date', es: 'Más de 5 PCB a la medida hasta hoy' } },
+      { k: { en: 'Boards designed', es: 'Placas diseñadas' }, v: { en: '5+ custom PCBs', es: '5+ PCB a la medida' } },
       { k: { en: 'Mechanical', es: 'Mecánica' }, v: { en: '3D design & printing', es: 'Diseño e impresión 3D' } },
     ],
   },
   {
     id: 'embedded',
+    icon: 'chip',
+    short: { en: 'Embedded', es: 'Embebidos' },
+    top: ['PIC (MPLAB)', 'Arduino Uno / Mega 2560', 'Raspberry Pi (ARM)', 'C', 'I²C', 'MQTT (QoS, LWT)'],
     en: 'Embedded Systems',
     es: 'Sistemas embebidos',
     rows: [
@@ -1213,6 +1234,9 @@ export const SKILLS = [
   },
   {
     id: 'digital',
+    icon: 'gate',
+    short: { en: 'Digital', es: 'Digital' },
+    top: ['VHDL', 'Verilog', 'Intel Cyclone IV E (DE2-115)', 'Intel Quartus'],
     en: 'Digital Design',
     es: 'Diseño digital',
     rows: [
@@ -1225,6 +1249,9 @@ export const SKILLS = [
   },
   {
     id: 'signals',
+    icon: 'wave',
+    short: { en: 'Signals', es: 'Señales' },
+    top: ['MATLAB', 'FIR / IIR design', 'Analog filter design', '12-bit ADC / DAC over SPI'],
     en: 'Signals & Analysis',
     es: 'Señales y análisis',
     rows: [
@@ -1237,6 +1264,9 @@ export const SKILLS = [
   },
   {
     id: 'lab',
+    icon: 'scope',
+    short: { en: 'Lab', es: 'Laboratorio' },
+    top: ['Oscilloscope', 'Function generator', 'Soldering'],
     en: 'Lab & Instrumentation',
     es: 'Laboratorio e instrumentación',
     rows: [
@@ -1247,6 +1277,9 @@ export const SKILLS = [
   },
   {
     id: 'software',
+    icon: 'code',
+    short: { en: 'Software', es: 'Software' },
+    top: ['Python', 'C++', 'React', 'Next.js', 'Firebase'],
     en: 'Software',
     es: 'Software',
     rows: [
@@ -1257,6 +1290,9 @@ export const SKILLS = [
   },
   {
     id: 'tools',
+    icon: 'wrench',
+    short: { en: 'Tools', es: 'Herramientas' },
+    top: ['Linux', 'Git', 'MPLAB X', 'Vercel'],
     en: 'Tools',
     es: 'Herramientas',
     rows: [
@@ -1268,6 +1304,9 @@ export const SKILLS = [
   },
   {
     id: 'ai',
+    icon: 'sparkle',
+    short: { en: 'AI', es: 'IA' },
+    top: ['Claude Code', 'Codex', 'Higgsfield'],
     en: 'AI',
     es: 'IA',
     rows: [

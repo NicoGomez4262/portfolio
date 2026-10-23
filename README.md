@@ -70,7 +70,8 @@ Constantes de `content.js`:
 | `HARDWARE` | Proyectos de hardware en orden (define HW-0X): medios del carrusel con sus pies de foto, specs, "qué hice", materia y equipo. `soon: true` = tarjeta «Próximamente» (hoy, la tesis) · `wip: true` = etiqueta «En proceso» (hoy, el control de carga EVSE) |
 | `SOFTWARE` | Bloque de software, «Software, too» / «También software» (`name` es texto o { en, es }; `hardware` enlaza con su tarjeta de hardware) |
 | `LAB` | 9 fotos del laboratorio con su pie de foto |
-| `EDUCATION`, `LANGUAGES`, `SKILLS` | Lo que dice su nombre |
+| `EDUCATION`, `LANGUAGES` | Lo que dice su nombre |
+| `SKILLS` | Hoja de datos por área. Cada valor se parte en chips por « · »; `short` es la pestaña, `icon` el ícono y `top` los chips de la vista general (por su texto en inglés) |
 
 **Datos pendientes:** se marcan con `⚠ PENDIENTE` (o `⚠ VERIFICAR`) y valen `null`. El sitio los muestra como un
 hueco de diseño rayado ("To be confirmed" / "Coming soon"), nunca como texto inventado.
@@ -140,7 +141,7 @@ media: [
 | Avance | Cada video hasta el final (sin sonido) y cada foto 5 s. El punto activo se llena con el avance. |
 | Fin | Al terminar el último vuelve al primero y **se queda en pausa** (botón «Volver a reproducir»). |
 | Se detiene | Fuera de pantalla, con la pestaña oculta o con un diálogo encima. Las fotos, además, con el mouse encima o con el foco de teclado dentro (un clic no lo congela). |
-| Controles | Contador, ampliar, pausa, flechas y pie de foto aparecen solo con el mouse encima, con foco de teclado o 3 s tras un toque. Debajo, un punto por medio. |
+| Controles | Contador, ampliar, pausa, flechas y pie de foto aparecen solo con el mouse encima, con foco de teclado o 3 s tras un toque. Entran con un fundido y se deslizan desde su borde (`.media-ctl` en `index.css`). Debajo, un punto por medio. |
 | Táctil | Un toque muestra los controles (no amplía); deslizar cambia de medio. |
 | Teclado | ← → con el foco dentro del carrusel. |
 | Visor ampliado | Clic en el medio o botón «Ampliar»: pantalla completa, el video sigue en el mismo segundo, ← → / deslizar / puntos y Escape. Al cerrar, la tarjeta queda en el medio que se estaba viendo y el foco vuelve a «Ampliar». |
@@ -197,7 +198,7 @@ public/
     │   ├── conveyor/      belt.mp4 · rpm-plot.mp4 · setup
     │   ├── volley-pong/   gameplay.mp4 · board · scope · rtl · schematic
     │   ├── correlacium/   cad.mp4 · print.mp4 · wand · electronics · sensor · plot
-    │   ├── dreamsnake/    video (póster del video de YouTube) · prototype
+    │   ├── dreamsnake/    video (rehecho desde YouTube, horizontal y con audio) · prototype
     │   └── thesis/        facade · modes (renders del concepto)
     ├── software/<id>/screen      ← captura opcional (proteo-web, voltio-residencial, face-anonymizer, video-dj, psicosentir)
     └── lab/01 … 09               ← galería «On the bench»: aparece sola con 3 o más fotos
@@ -239,5 +240,5 @@ a `nicolasgomez.dev`, y no al revés.
 - **Animación:** solo `transform`/`opacity` (más las trazas del hero con `stroke-dashoffset`, una vez, ≤ 1.2 s).
   Todo respeta `prefers-reduced-motion`. Si el `IntersectionObserver` no existe o la pestaña está oculta,
   el contenido se muestra directamente.
-- **GitHub en vivo:** API pública sin token, caché de 6 h; los valores en 0 no se muestran.
+- **GitHub en vivo:** API pública sin token, caché de 6 h; los valores en 0 no se muestran. Los lenguajes salen como badges al estilo de shields.io, con el color de GitHub Linguist y el logo de Simple Icons (`ui/langs.js`), y cada uno lleva a los repos de ese lenguaje.
 - **Contraste AA** verificado en ambos temas; áreas táctiles de al menos 44 px.

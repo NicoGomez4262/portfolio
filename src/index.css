@@ -197,6 +197,28 @@
   animation-delay: var(--d, .9s);
 }
 
+/* Controles del carrusel: con el mouse encima, con foco de teclado o tras un toque entran deslizándose
+   desde su borde (--ctl-x / --ctl-y) mientras la capa hace el fundido; al irse lo hacen un poco más rápido.
+   Usa transform porque `translate` ya lo ocupan las utilidades que los centran. */
+.media-ctl {
+  transform: translate3d(var(--ctl-x, 0), var(--ctl-y, 0), 0) scale(.9);
+  transition: transform .2s cubic-bezier(.4, 0, 1, 1), background-color .2s ease;
+}
+.media-layer {
+  transition: opacity .2s ease-in;
+}
+@media (hover: hover) {
+  .media-frame:hover .media-ctl { transform: none; transition: transform .45s cubic-bezier(.22, 1, .36, 1) .04s, background-color .2s ease; }
+  .media-frame:hover .media-layer { transition: opacity .35s cubic-bezier(.22, 1, .36, 1); }
+}
+:is(.media-frame[data-controls="on"], .media-frame:has(:focus-visible)) .media-ctl {
+  transform: none;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1) .04s, background-color .2s ease;
+}
+:is(.media-frame[data-controls="on"], .media-frame:has(:focus-visible)) .media-layer {
+  transition: opacity .35s cubic-bezier(.22, 1, .36, 1);
+}
+
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%      { opacity: .45; transform: scale(.8); }
