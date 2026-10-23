@@ -43,7 +43,7 @@ export const PROFILE = {
   gpa: '4.3',
   gpaScale: '5.0',
   graduation: '2027',
-  pcbs: 4, // "más de 4 PCB a la medida hasta hoy" (dato de Nicolás)
+  pcbs: 5, // "5+ PCB diseñadas" (dato de Nicolás, 23 oct 2026; antes 4+)
   university: 'puj', // clave en INSTITUTIONS
 }
 
@@ -646,9 +646,10 @@ export const HARDWARE = [
       ],
     },
   },
-  // En proceso (19 oct 2026, pedido de Nicolás). El esquemático de las 6 hojas está cerrado (fase 6 de 8); faltan la
-  // BOM, el ruteo y la fabricación en PCBWay. Mientras llegan las fotos de la placa, el carrusel muestra cortes del
-  // esquemático (PROYECTO_F6.pdf y 03_MEDICION_despues_scripts_F4.png del repo).
+  // En proceso (19 oct 2026, pedido de Nicolás). Desde el 22 oct la PCB está ruteada y verificada (F8) y va el pedido
+  // a PCBWay (F9). Mientras llegan los videos y fotos de la placa midiendo en campo, el carrusel muestra un video de
+  // las 6 hojas del esquemático (PROYECTO_F7.pdf con `media.py slides`), el render 3D y el layout 2D de Altium, y
+  // cortes del esquemático. La cara de abajo nunca se muestra (tiene el QR); en el layout 2D el QR va desenfocado.
   // ⚠ VERIFICAR — si es individual y la materia (la ruta del proyecto dice «Hardware en IoT»).
   {
     id: 'evse',
@@ -659,6 +660,31 @@ export const HARDWARE = [
     demo: null,
     team: null, // ⚠ PENDIENTE — ¿individual o en equipo?
     media: [
+      {
+        type: 'video',
+        src: 'schematic',
+        fit: 'contain',
+        bg: 'light',
+        caption: { en: 'The six sheets of the schematic in Altium, one after another', es: 'Las seis hojas del esquemático en Altium, una tras otra' },
+      },
+      {
+        type: 'image',
+        src: 'render',
+        fit: 'contain',
+        caption: {
+          en: '3D render of the routed board. The mains zone on the left is kept apart from the ESP32-S3 and the low-voltage side',
+          es: 'Render 3D de la placa ruteada. La zona de red a la izquierda queda separada de la ESP32-S3 y del lado de baja tensión',
+        },
+      },
+      {
+        type: 'image',
+        src: 'layout',
+        fit: 'contain',
+        caption: {
+          en: '2D layout in Altium, 130 × 100 mm on two layers. The hatched strip is the copper-free barrier between the mains and the rest',
+          es: 'Layout 2D en Altium, 130 × 100 mm en dos capas. La franja rayada es la barrera sin cobre entre la red y el resto',
+        },
+      },
       {
         type: 'image',
         src: 'measurement',
@@ -701,10 +727,11 @@ export const HARDWARE = [
       { k: { en: 'Actuation', es: 'Actuación' }, v: 'PhotoMOS AQY414EHAX · NC · 5000 Vrms' },
       { k: { en: 'Sensors', es: 'Sensores' }, v: 'DS18B20 · AHT20 · DS3231' },
       { k: 'EDA', v: { en: 'Altium Designer · 6 hierarchical sheets', es: 'Altium Designer · 6 hojas jerárquicas' } },
-      { k: { en: 'Status', es: 'Estado' }, v: { en: 'Schematic done · BOM and layout next', es: 'Esquemático listo · siguen la BOM y el ruteo' } },
+      { k: 'PCB', v: { en: '130 × 100 mm · 2 layers · 1.6 mm', es: '130 × 100 mm · 2 capas · 1,6 mm' } },
+      { k: { en: 'Status', es: 'Estado' }, v: { en: 'Board routed · ordering from PCBWay', es: 'Placa ruteada · en pedido a PCBWay' } },
     ],
     en: {
-      tagline: 'A board that lives next to an electric car’s charger. It meters every charge, can stop it from an app and keeps the 120–240 V mains and the 3.3 V electronics apart with reinforced isolation. The schematic is done and the PCB is on its way.',
+      tagline: 'A board that lives next to an electric car’s charger. It meters every charge, can stop it from an app and keeps the 120–240 V mains and the 3.3 V electronics apart with reinforced isolation. The board is routed and on its way to fabrication.',
       problem: 'Charging an electric car at home or in a shared garage leaves open questions, like how much energy went in, what it cost and whether it can be stopped remotely. Answering them means measuring right on the mains, at 120 or 240 V, without any of it reaching the USB port, the sensors or the person who plugs in the car.',
       did: [
         'Drew the hierarchical schematic in Altium across six sheets (power, measurement, microcontroller, sensors, actuation and the top sheet that ties them together), choosing every part by comparing two or three options against its datasheet and the real stock at Sigma Electrónica and PCBWay.',
@@ -715,7 +742,7 @@ export const HARDWARE = [
       ],
     },
     es: {
-      tagline: 'Una placa que vive junto al cargador de un carro eléctrico. Mide cada carga, puede detenerla desde una app y separa la red de 120–240 V de la electrónica de 3,3 V con aislamiento reforzado. El esquemático está listo y la PCB viene en camino.',
+      tagline: 'Una placa que vive junto al cargador de un carro eléctrico. Mide cada carga, puede detenerla desde una app y separa la red de 120–240 V de la electrónica de 3,3 V con aislamiento reforzado. La placa ya está ruteada y va camino a fabricación.',
       problem: 'Cargar un carro eléctrico en casa o en un parqueadero compartido deja preguntas abiertas, como cuánta energía entró, cuánto costó y si se puede detener a distancia. Responderlas exige medir directo sobre la red, a 120 o 240 V, sin que nada de eso llegue al puerto USB, a los sensores ni a quien conecta el carro.',
       did: [
         'Dibujé el esquemático jerárquico en Altium, en seis hojas (alimentación, medición, microcontrolador, sensores, actuación y la superior que las une), y elegí cada pieza comparando dos o tres opciones contra su datasheet y el stock real en Sigma Electrónica y PCBWay.',
@@ -1164,7 +1191,7 @@ export const SKILLS = [
     rows: [
       { k: 'EDA', v: 'Altium Designer' },
       { k: { en: 'Simulation', es: 'Simulación' }, v: 'LTspice' },
-      { k: { en: 'Boards designed', es: 'Placas diseñadas' }, v: { en: '4+ custom PCBs to date', es: 'Más de 4 PCB a la medida hasta hoy' } },
+      { k: { en: 'Boards designed', es: 'Placas diseñadas' }, v: { en: '5+ custom PCBs to date', es: 'Más de 5 PCB a la medida hasta hoy' } },
       { k: { en: 'Mechanical', es: 'Mecánica' }, v: { en: '3D design & printing', es: 'Diseño e impresión 3D' } },
     ],
   },

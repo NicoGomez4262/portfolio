@@ -5,7 +5,10 @@ portafolio. Al terminar su trabajo, cada sesión debe **reescribir este archivo*
 sesión que sigue (mismo formato), hasta que el portafolio se considere completo — en ese punto, la sesión
 lo dice explícitamente en vez de generar un prompt nuevo.
 
-**Última actualización:** 19 oct 2026, en el commit que agrega el control de carga EVSE (en proceso, con su repo
+**Última actualización:** 23 oct 2026. El carrusel del EVSE ahora abre con un video de las 6 hojas del esquemático
+(`media.py slides` sobre `PROYECTO_F7.pdf`), el render 3D y el layout 2D (QR desenfocado; la cara de abajo nunca se
+muestra), y el contador del hero dice 5+ PCB. Siguen pendientes los videos y fotos de la placa midiendo en campo, que
+irán de primeros en ese carrusel. Antes de eso, 19 oct 2026, en el commit que agrega el control de carga EVSE (en proceso, con su repo
 nuevo `control-carga-evse`), el anonimizador de caras en Software, el carrusel y la línea corta de la tesis, y el
 título nuevo de Software («Software, too» / «También software»). Ver `git log`.
 

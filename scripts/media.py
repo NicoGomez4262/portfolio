@@ -4,6 +4,7 @@ Procesa fotos y videos de incoming/ para el sitio (public/media/…).
   python scripts/media.py video <origen> <destino-sin-ext> [--ss S] [--to S] [--crop W:H:X:Y] [--width N] [--crf N] [--poster S]
   python scripts/media.py image <origen> <destino-sin-ext> [--max N] [--box l,t,r,b] [--trim-black] [--quality N]
   python scripts/media.py still <video> <destino-sin-ext> --at S [--max N]
+  python scripts/media.py slides <pdf> <destino-sin-ext> [--pages 1-6] [--hold S] [--fade S] [--tail S] [--width N]
 
 - video: recorta el tramo [--ss, --to], quita el audio, convierte HDR (HLG/PQ de celular) a SDR,
   recorta (--crop en píxeles del cuadro ya rotado), escala a --width de ancho (alto par), baja a 30 fps y
@@ -13,6 +14,9 @@ Procesa fotos y videos de incoming/ para el sitio (public/media/…).
   franjas negras de capturas de pantalla), escala el lado largo a --max y guarda WebP sin metadatos.
   Lee HEIF/HEIC si está instalado pillow-heif.
 - still: saca un fotograma de un video como WebP (p. ej. una foto del prototipo desde un video largo).
+- slides: arma un video corto con páginas de un PDF (p. ej. las hojas de un esquemático de Altium), cada una
+  --hold segundos completa, con fundidos de --fade y la última --tail segundos más. Con 6 hojas y los valores
+  por defecto dura 5,5 s. Deja <destino>.mp4 y su póster (la primera página). Necesita pymupdf.
 
 ffmpeg: variable FFMPEG o `ffmpeg` en el PATH (sirve el binario portátil de `npm i ffmpeg-static`).
 """
@@ -116,6 +120,41 @@ def still(a):
     print(f'{out}  {img.size[0]}x{img.size[1]}  {os.path.getsize(out) / 1e3:.0f} KB')
 
 
+def slides(a):
+    import pymupdf
+
+    Path(a.dst).parent.mkdir(parents=True, exist_ok=True)
+    doc = pymupdf.open(a.src)
+    pages = []
+    for part in a.pages.split(','):
+        lo, _, hi = part.partition('-')
+        pages += range(int(lo), int(hi or lo) + 1)
+    rect = doc[pages[0] - 1].rect
+    w, h = a.width, round(a.width * rect.height / rect.width / 2) * 2
+    out = f'{a.dst}.mp4'
+    with tempfile.TemporaryDirectory() as tmp:
+        inputs = []
+        for k, n in enumerate(pages):
+            page = doc[n - 1]
+            z = 2 * w / page.rect.width  # renderiza al doble y reduce: líneas finas más limpias
+            png = Path(tmp) / f'{k}.png'
+            pix = page.get_pixmap(matrix=pymupdf.Matrix(z, z), alpha=False)
+            Image.frombytes('RGB', (pix.width, pix.height), pix.samples).resize((w, h), Image.LANCZOS).save(png)
+            dur = a.hold + a.fade + (a.tail if k == len(pages) - 1 else 0)
+            inputs += ['-loop', '1', '-framerate', '30', '-t', f'{dur:.3f}', '-i', str(png)]
+        chain, last = [], '[0:v]'
+        for k in range(1, len(pages)):
+            chain.append(f'{last}[{k}:v]xfade=transition=fade:duration={a.fade}:offset={k * a.hold:.3f}[v{k}]')
+            last = f'[v{k}]'
+        chain.append(f'{last}format=yuv420p[out]')
+        run([FFMPEG, '-v', 'error', '-y', *inputs, '-filter_complex', ';'.join(chain), '-map', '[out]',
+             '-c:v', 'libx264', '-preset', 'slow', '-crf', str(a.crf), '-profile:v', 'high', '-pix_fmt', 'yuv420p',
+             '-movflags', '+faststart', '-tag:v', 'avc1', out])
+    poster(out, a.dst, 0)
+    total = len(pages) * a.hold + a.fade + a.tail
+    print(f'{out}  {w}x{h}  {total:.1f} s  {os.path.getsize(out) / 1e6:.2f} MB  (+ póster .webp)')
+
+
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest='cmd', required=True)
@@ -147,6 +186,17 @@ if __name__ == '__main__':
     s.add_argument('--max', type=int, default=1600)
     s.add_argument('--quality', type=int, default=80)
     s.set_defaults(fn=still)
+
+    d = sub.add_parser('slides')
+    d.add_argument('src')
+    d.add_argument('dst')
+    d.add_argument('--pages', default='1-6')
+    d.add_argument('--hold', type=float, default=0.8)
+    d.add_argument('--fade', type=float, default=0.2)
+    d.add_argument('--tail', type=float, default=0.5)
+    d.add_argument('--width', type=int, default=1600)
+    d.add_argument('--crf', type=int, default=24)
+    d.set_defaults(fn=slides)
 
     args = p.parse_args()
     args.fn(args)

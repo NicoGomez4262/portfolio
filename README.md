@@ -129,7 +129,8 @@ media: [
 - `soon: true` es la tarjeta «Próximamente» (la tesis, al final y a ancho completo): su carrusel (sin medios, una
   fachada de LEDs dibujada), el nombre y una línea, sin specs ni modal, y no cuenta en el número de proyectos del hero.
 - `wip: true` pone la etiqueta «In progress» / «En proceso» en la tarjeta y en el modal (hoy, el control de carga
-  EVSE, que muestra cortes del esquemático mientras llegan las fotos de la PCB).
+  EVSE, que muestra el video del esquemático, el render 3D, el layout 2D y cortes del esquemático mientras llegan
+  los videos de la placa probada en campo; la cara de abajo no se muestra porque tiene el QR).
 
 **Cómo se comporta** (`src/components/ui/MediaCarousel.jsx` y `Lightbox.jsx`):
 
@@ -167,10 +168,15 @@ pip install pillow-heif    # solo si llegan fotos .heif / .heic
 python scripts/media.py video incoming/projects/<id>/<original>.mp4 public/media/projects/<id>/demo --ss 3 --to 18
 python scripts/media.py image incoming/projects/<id>/<original>.jpg public/media/projects/<id>/board
 python scripts/media.py still incoming/projects/<id>/<original>.mp4 public/media/projects/<id>/frame --at 12.5
+python scripts/media.py slides <esquemático>.pdf public/media/projects/<id>/schematic --pages 1-6   # necesita pymupdf
 ```
 
 Opciones: `video` acepta `--crop W:H:X:Y`, `--width` (1280), `--crf` (27) y `--poster S` (segundo del póster);
-`image`, `--max` (1600), `--box l,t,r,b` (fracciones), `--trim-black` y `--quality` (80). Detalle en el propio script.
+`image`, `--max` (1600), `--box l,t,r,b` (fracciones), `--trim-black` y `--quality` (80); `slides`, `--hold` (0,8 s
+por página), `--fade` (0,2 s), `--tail` (0,5 s más en la última) y `--width` (1600). Detalle en el propio script.
+
+El video del esquemático del EVSE sale de `PROYECTO_F7.pdf` (repo control-carga-evse, `docs/revisiones/`). Si el
+esquemático cambia, se exporta otro PDF desde Altium y se corre `slides` de nuevo con el mismo destino.
 Antes de publicar, revisa que no se vean caras ni datos personales (en el lote del 25 sep se descartaron o
 recortaron por eso).
 
